@@ -15,13 +15,17 @@ import group7.tcss450.uw.edu.centipedeandroid.R;
 class Centipede {
 
 
-    private int mBlockSize;
-
+    /** Starting position for centipede*/
     private final static int CENTIPEDE_Y = -100;
 
+    /** Height divisor for block size */
     private final static int HEIGHT_DIVISOR = 15;
 
+    /** Starting x position for centipede */
     private final static int STARTING_X = 2;
+
+    /** Size of each square in the boards grid*/
+    private int mBlockSize;
 
     /** Bitmap of the centipede head */
     private Bitmap mCentipedeHead;
@@ -39,8 +43,13 @@ class Centipede {
     private CentipedeBody mHead;
 
     // debugging
-    private int b;
+//    private int b;
 
+    /**
+     * Centipede constructor that takes in a centipedebody
+     * and makes it the new head of a new centipede.
+     * @param head a centipedebody.
+     */
     public Centipede(CentipedeBody head) {
         mHead = head;
         CentipedeBody temp = mHead;
@@ -56,6 +65,7 @@ class Centipede {
      * @param context  The context of the parent constructing the ship.
      * @param screenX  The X dimensions of the parent activity.
      * @param screenY  The Y dimensions of the parent activity.
+     * @param block    The size of a block on the screen.
      */
     Centipede(Context context, int screenX, int screenY, int block) {
         mScreenY = screenY;
@@ -72,6 +82,10 @@ class Centipede {
         }
     }
 
+    /**
+     *
+     * @param bitmap
+     */
     private void createCentipede(Bitmap bitmap) {
         int k = 0;
         for (int i = 0; i < 15; i++) {
@@ -84,10 +98,10 @@ class Centipede {
         }
     }
 
-    // testing and debugging
-    public int getB() {
-        return b;
-    }
+    // testing and debugging does nothing
+//    public int getB() {
+//        return b;
+//    }
 
     /**
      * Method that adds a node to the list and checks if the
@@ -122,10 +136,17 @@ class Centipede {
         return mHead;
     }
 
+    /**
+     *  Getter that returns the size of the centipede.
+     * @return an int of the size of the centipede.
+     */
     int getSize() {
         return this.mSize;
     }
 
+    /**
+     *  Setter that sets the size of the centipede.
+     */
     void setSize() {
         if (this.mSize >= 1) {
             this.mSize--;
