@@ -1,15 +1,12 @@
 <resources>
-    <string name="app_name">Centipede 2.0</string>
-    <string name="title_activity_main_menu">MainMenuActivity</string>
-
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <string name="action_settings">Settings</string>
-    <string name="start_button_text">Start New Game</string>
-    <string name="congrats">Congrats, You have defeated the Centipede!</string>
-    <string name="score">Your score is: </string>
-    <string name="return_to_menu">Thanks for playing, now returning to main screen.</string>
-    <string name="ok_button">OK</string>
-
+    <string name="app_name">CentipedeAndroid</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="enterUsername">Username</string>
+    <string name="enterPassword">Password</string>
+    <string name="confirmPassword">Confirm Password</string>
+    <string name="submitButton">Submit</string>
+    <string name="titleUserReg">User Registration</string>
+    <string name="loginButton">Login</string>
+    <string name="registerButton">Register</string>
+    <string name="startButton">Start Game!</string>
 </resources>
