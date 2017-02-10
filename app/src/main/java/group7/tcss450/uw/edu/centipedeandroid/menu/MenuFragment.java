@@ -67,8 +67,11 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_menu, container, false);
-        Button b= (Button)v.findViewById(R.id.startButton);
+        Button b = (Button)v.findViewById(R.id.startButton);
         b.setOnClickListener(this);
+        b = (Button)v.findViewById(R.id.startPlayerButton);
+        b.setOnClickListener(this);
+
         // Inflate the layout for this fragment
         return v;
     }
@@ -93,7 +96,16 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (mListener != null) {
-            mListener.onStartGame();
+            switch (v.getId()) {
+                case R.id.startButton:
+                    mListener.onStartGame();
+                    break;
+                case R.id.startPlayerButton:
+                    mListener.onPlayer();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -109,5 +121,6 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
      */
     public interface OnStartGame {
         void onStartGame();
+        void onPlayer();
     }
 }

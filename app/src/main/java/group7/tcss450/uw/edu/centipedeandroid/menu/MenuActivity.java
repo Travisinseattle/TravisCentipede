@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,11 +16,13 @@ import java.net.URL;
 
 import group7.tcss450.uw.edu.centipedeandroid.R;
 import group7.tcss450.uw.edu.centipedeandroid.authenication.AuthenicationActivity;
+import group7.tcss450.uw.edu.centipedeandroid.authenication.RegisterFragment;
 import group7.tcss450.uw.edu.centipedeandroid.game.GameActivity;
 
 public class MenuActivity extends AppCompatActivity implements MenuFragment.OnStartGame, PlayerFragment.OnPlaySound {
 //    private MediaPlayer mMediaPlayer;
     private AsyncTask<Integer,Void,String> mPlayMusicTask;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +30,7 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
 
         if (savedInstanceState == null) {
             if (findViewById(R.id.activity_menu) != null) {
-                getSupportFragmentManager().beginTransaction().add(R.id.activity_menu, new PlayerFragment()).commit();
+                getSupportFragmentManager().beginTransaction().add(R.id.activity_menu, new MenuFragment()).commit();
             }
         }
     }
@@ -36,6 +40,16 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
     public void onStartGame() {
         Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onPlayer() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        PlayerFragment fragment = new PlayerFragment();
+        fragmentTransaction.replace(R.id.activity_menu, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     @Override
@@ -82,13 +96,14 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
             super.onPostExecute(theURL);
             try {
                 mMediaPlayer.setDataSource(theURL);
-                mMediaPlayer.prepareAsync();
-                mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mp) {
-                        mp.start();
-                    }
-                });
+                mMediaPlayer.prepare();
+//                mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//                    @Override
+//                    public void onCompletion(MediaPlayer mp) {
+//                        mp.start();
+//                    }
+//                });
+                mMediaPlayer.start();
             } catch (IOException e) {
                 e.printStackTrace();
             }
