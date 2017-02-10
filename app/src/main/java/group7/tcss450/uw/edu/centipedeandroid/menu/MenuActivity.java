@@ -21,7 +21,7 @@ import group7.tcss450.uw.edu.centipedeandroid.game.GameActivity;
 
 public class MenuActivity extends AppCompatActivity implements MenuFragment.OnStartGame, PlayerFragment.OnPlaySound {
 //    private MediaPlayer mMediaPlayer;
-    private AsyncTask<Integer,Void,String> mPlayMusicTask;
+    private PlayMusicTask mPlayMusicTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +57,13 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
         mPlayMusicTask = new PlayMusicTask();
         mPlayMusicTask.execute(293);
 //        playTrack(293);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        mPlayMusicTask.stopPlayer();
+
     }
 
     private class PlayMusicTask extends AsyncTask<Integer,Void, String> {
@@ -106,6 +113,17 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
                 mMediaPlayer.start();
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+        }
+
+        public void stopPlayer()
+        {
+            if(mMediaPlayer != null)
+            {
+                if (mMediaPlayer.isPlaying())
+                {
+                    mMediaPlayer.stop();
+                }
             }
         }
     }
