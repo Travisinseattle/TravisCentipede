@@ -1,13 +1,21 @@
 package group7.tcss450.uw.edu.centipedeandroid.menu;
 
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import group7.tcss450.uw.edu.centipedeandroid.R;
 import group7.tcss450.uw.edu.centipedeandroid.game.GameActivity;
 
-public class MenuActivity extends AppCompatActivity implements MenuFragment.OnStartGame {
+public class MenuActivity extends AppCompatActivity implements MenuFragment.OnStartGame, PlayerFragment.OnPlaySound {
+    private MediaPlayer mMediaPlayer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +33,56 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
     public void onStartGame() {
         Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onPlayClick() {
+        playTrack(293);
+    }
+
+    public void playTrack(int trackID){
+        if (mMediaPlayer == null) {
+            mMediaPlayer = new MediaPlayer();
+            mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            try {
+                //https://api.soundcloud.com/tracks/"TRACK ID"/stream?client_id="YOUR CLIENT ID"
+                //293
+                // https://api.soundcloud.com/tracks/293/stream?client_id=f86c23ad615019f9a1d0bc51cff62a3f
+//                URL url = new URL("https://api.soundcloud.com/tracks/293/stream?client_id=f86c23ad615019f9a1d0bc51cff62a3f");
+//                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+                URL url = new URL("https://api.soundcloud.com/tracks/293/stream?client_id=f86c23ad615019f9a1d0bc51cff62a3f");
+                HttpURLConnection ucon = (HttpURLConnection) url.openConnection();
+                ucon.setInstanceFollowRedirects(false);
+                URL secondURL = new URL(ucon.getHeaderField("Location"));
+
+
+
+//                HttpResponse resp = wrapper.get(Request.to(res));
+//                if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_MOVED_TEMPORARILY) {
+//                    final Header location = resp.getFirstHeader("Location");
+//                    if (location != null && location.getValue() != null) {
+//                        String redirectedStream = location.getValue();
+//                        //...
+//                    }
+//                }
+
+//                mMediaPlayer.setDataSource("https://api.soundcloud.com/tracks/" + trackID + "/stream?client_id=" + "f86c23ad615019f9a1d0bc51cff62a3f");
+                Log.d("TEST", secondURL.toString());
+                mMediaPlayer.setDataSource(secondURL.toString());
+                mMediaPlayer.prepare();
+                mMediaPlayer.start();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            if (mMediaPlayer.isPlaying()) {
+                mMediaPlayer.stop();
+                mMediaPlayer.reset();
+            }
+
+        }
+
     }
 }
 

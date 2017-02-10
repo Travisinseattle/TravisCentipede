@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import group7.tcss450.uw.edu.centipedeandroid.R;
 
@@ -66,8 +67,8 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_menu, container, false);
-        v.findViewById(R.id.startButton);
-        v.setOnClickListener(this);
+        Button b= (Button)v.findViewById(R.id.startButton);
+        b.setOnClickListener(this);
         // Inflate the layout for this fragment
         return v;
     }
