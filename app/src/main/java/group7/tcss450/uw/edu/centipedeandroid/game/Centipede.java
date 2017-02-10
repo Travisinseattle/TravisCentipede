@@ -83,8 +83,8 @@ class Centipede {
     }
 
     /**
-     *
-     * @param bitmap
+     * Method that creates the centipede bodies.
+     * @param bitmap the bitmap image used for the bodies.
      */
     private void createCentipede(Bitmap bitmap) {
         int k = 0;
