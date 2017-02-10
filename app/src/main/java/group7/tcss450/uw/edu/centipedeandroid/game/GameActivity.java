@@ -16,20 +16,31 @@ import java.math.BigInteger;
 
 public class GameActivity extends Activity {
 
+    /****************************************Constants*********************************************/
 
     private static final int MIN_BLOCK_SIZE = 10 ;
-    private int mWidth;
-    private int mHeight;
+
+    /*****************************************Fields***********************************************/
+
+    /**
+     * Field representing the size of a block in the display field, used to maintain display
+     * proportions regardless of display parameters.
+     */
+    int mBlockSize;
     private static final int myBoardWidth = 10;
     private static final int myBoardHeight = 20;
-    int mBlockSize;
-//    private final GameOverFragment gameOver = new GameOverFragment();
-    TextView tv;
 
-
-    /*The view object that holds controls the logic and graphics for
-    * the game.*/
+    /**
+     * The view object that holds controls the logic and graphics for
+     * the game.
+     */
     GameView mGameView;
+    private int mHeight;
+    private int mWidth;
+
+
+
+    /*****************************************Constructor******************************************/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

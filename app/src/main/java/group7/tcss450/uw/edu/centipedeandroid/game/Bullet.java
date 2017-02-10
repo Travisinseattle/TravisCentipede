@@ -11,7 +11,7 @@ import group7.tcss450.uw.edu.centipedeandroid.R;
  * A class to represent a Bullet object, includes a rectf hitbox,
  * a bitmap image and AI behavior for movement and collision.
  */
-class Bullet {
+class /**/Bullet {
 
     /*****************************************Constants********************************************/
 
@@ -191,7 +191,7 @@ class Bullet {
      *
      * @return mLength the width of the bullet as an int..
      */
-    public int getWidth() {
+    int getWidth() {
         return this.mLength;
     }
 
@@ -200,7 +200,7 @@ class Bullet {
      *
      * @return mHeight the height of the bullet as an int.
      */
-    public int getHeight() {
+    int getHeight() {
         return this.mHeight;
     }
 

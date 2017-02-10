@@ -85,7 +85,7 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
             String stringURL = "";
 
             try {
-                URL url = new URL("https://api.soundcloud.com/tracks/293/stream?client_id=f86c23ad615019f9a1d0bc51cff62a3f");
+                URL url = new URL("https://api.soundcloud.com/tracks/118483464/stream?client_id=f86c23ad615019f9a1d0bc51cff62a3f");
                 HttpURLConnection ucon = (HttpURLConnection) url.openConnection();
                 ucon.setInstanceFollowRedirects(false);
                 URL secondURL = new URL(ucon.getHeaderField("Location"));

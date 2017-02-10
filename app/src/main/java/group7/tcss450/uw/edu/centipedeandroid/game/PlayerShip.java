@@ -14,19 +14,9 @@ class PlayerShip {
     /*****************************************Constants********************************************/
 
     /**
-     * Constant to be used for sizing the ship's height.
-     */
-    private final static int HEIGHT_DIVISOR = 10;
-
-    /**
      * Constant for the starting Y position of the Ship.
      */
     private final static int INITIAL_Y = 200;
-
-    /**
-     * Constant to be used for sizing the ship's width.
-     */
-    private final static int WIDTH_DIVISOR = 3;
 
     /*****************************************Fields***********************************************/
 
@@ -49,11 +39,6 @@ class PlayerShip {
      * Rectf Object, used for the hitbox of the Ship.
      */
     private RectF mRectf;
-
-    /**
-     * the height of the screen
-     */
-    private int mScreenY;
 
     /**
      * X coordinate of the Ship.
@@ -95,11 +80,6 @@ class PlayerShip {
         mYCoord = screenY - INITIAL_Y;
 
         /**
-         * Set the screen width for use in update().
-         */
-        mScreenY = screenY;
-
-        /**
          * Load the image for the ship
          */
         mBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.alienblaster);
@@ -139,15 +119,15 @@ class PlayerShip {
         return this.mHeight;
     }
 
-    /**
-     * Getter for the hitbox.
-     *
-     * @return mRectF The hitbox of the Ship.
-     *
-     */
-    RectF getRect(){
-        return mRectf;
-    }
+//    /**
+//     * Getter for the hitbox.
+//     *
+//     * @return mRectF The hitbox of the Ship.
+//     *
+//     */
+//    RectF getRect(){
+//        return mRectf;
+//    }
 
     /**
      * Getter for the X coordinate of the ship.

@@ -1,5 +1,6 @@
 package group7.tcss450.uw.edu.centipedeandroid.game;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
@@ -12,31 +13,44 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import group7.tcss450.uw.edu.centipedeandroid.game.Bullet;
-import group7.tcss450.uw.edu.centipedeandroid.game.Centipede;
-import group7.tcss450.uw.edu.centipedeandroid.game.CentipedeBody;
-import group7.tcss450.uw.edu.centipedeandroid.game.PlayerShip;
-
 /**
  * Created by Travis Holloway on 1/24/2017.
  * GameVIew class that serves as the Canvas for the game.
  */
+@SuppressLint("ViewConstructor")
 class GameView extends SurfaceView implements Runnable {
 
+
     /****************************************Constants*********************************************/
+
+    /**
+     * Constant to represent how much time the game should wait before the centipede enters the
+     * screen.
+     */
     private static int CENTIPEDE_DELAY = 3;
 
+    /**
+     * Constant to determine the size of the font.
+     */
     private static final float FONT_SIZE = 100;
 
     /*****************************************Fields***********************************************/
 
-
-    int mBlockSize;
+    /**
+     * A field that holds the current size of a 'block' in the display grid.  Used to ensure
+     * that all items are drawn at the same proportion regardless of screen display values.
+     */
+    protected int mBlockSize;
 
     /**
      * Canvas Object
      */
     protected Canvas mCanvas;
+
+    /**
+     * The Centipede object.
+     */
+    protected Centipede mCentipede;
 
     /**
      * Context object.
@@ -106,6 +120,11 @@ class GameView extends SurfaceView implements Runnable {
     protected boolean mShipMovement = false;
 
     /**
+     * Long that represents the time that the centipede should appear on screen.
+     */
+    private long mStartMilli;
+
+    /**
      * The X coord of a touch.
      */
     protected float mTouchX;
@@ -114,19 +133,6 @@ class GameView extends SurfaceView implements Runnable {
      * The Y coord of a touch.
      */
     protected float mTouchY;
-
-    /**
-     * The Centipede object.
-     */
-    protected Centipede mCentipede;
-
-    private long startFrameTime;
-
-    private long mFrameLength;
-
-    private long mStartMilli;
-
-    private long mCentUpdate;
 
     /*****************************************Constructor******************************************/
 
@@ -163,7 +169,6 @@ class GameView extends SurfaceView implements Runnable {
          */
         createLevel();
 
-
         /**
          * Set the playing boolean to true.
          */
@@ -173,6 +178,9 @@ class GameView extends SurfaceView implements Runnable {
 
     /*****************************************Public Methods***************************************/
 
+    /**
+     * Method to initialize all objects and variables that will be drawn.
+     */
     public void createLevel(){
 
         /**
@@ -202,6 +210,9 @@ class GameView extends SurfaceView implements Runnable {
 
     }
 
+    /**
+     * Method to draw the mGameView and display graphics
+     */
     public void draw() {
         //validity check on surface area to catch crashes.
         if (mHolder.getSurface().isValid()) {
@@ -256,13 +267,13 @@ class GameView extends SurfaceView implements Runnable {
                         mScreenSizeY / 2 +(FONT_SIZE), mPaint);
             }
 
-            //Draw the mShip.
+            //Draw the mPlayShip.
             mCanvas.drawBitmap(mPlayerShip.getBitmap(),
                     mPlayerShip.getX() - (mPlayerShip.getLength() / 2),
                     mPlayerShip.getY() - (mPlayerShip.getHeight() / 2),
                     mPaint);
 
-            //Draw the centipede
+            //Draw the mCentipede
             CentipedeBody temp = mCentipede.getHead();
             while (temp != null) {
                 if (temp.getVisible()) {
@@ -274,7 +285,7 @@ class GameView extends SurfaceView implements Runnable {
                 temp = temp.getNext();
             }
 
-            //draw the bullet
+            //draw the mBullet
             if(mPlayerBullet.getStatus()) {
                 mCanvas.drawBitmap(mPlayerBullet.getBitmap(),
                         mPlayerBullet.getX() - (mPlayerBullet.getWidth() / 2),
@@ -287,6 +298,14 @@ class GameView extends SurfaceView implements Runnable {
         }
     }
 
+    /**
+     * a method that defines what should happen when a user touches the screen.
+     * Currently used to update the location of the ship and the origin of the bullets.
+     *
+     * @param motionEvent The motion event that called the method
+     * @return  returns true by default, or false if the finger is no longer touching the
+     * screen.
+     */
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
 
@@ -307,6 +326,9 @@ class GameView extends SurfaceView implements Runnable {
         return true;
     }
 
+    /**
+     * Pause method that stops the view from being drawn until resume() is called.
+     */
     public void pause() {
         mPlaying = false;
         try {
@@ -316,18 +338,25 @@ class GameView extends SurfaceView implements Runnable {
         }
     }
 
+    /**
+     * Resume method that resumes drawing the view.
+     */
     public void resume() {
         mPlaying = true;
         mGameThread = new Thread(this);
         mGameThread.start();
     }
 
+    /**
+     *  Run method, determines what should interact with the game thread. Used for animation of
+     *  objects in the game.
+     */
     @Override
     public void run() {
 
         while (mPlaying) {
             //capture current time in milliseconds.
-            startFrameTime = System.currentTimeMillis();
+            long mStartFrameTime = System.currentTimeMillis();
 
             //Call the update thread.
             update();
@@ -337,7 +366,7 @@ class GameView extends SurfaceView implements Runnable {
             /**
              * Counts the frame decay time length.
              * */
-            mFrameLength = System.currentTimeMillis() - startFrameTime;
+            long mFrameLength = System.currentTimeMillis() - mStartFrameTime;
             if(mFrameLength > 0) {
                 mFps = 1000 / mFrameLength;
             }
@@ -345,15 +374,28 @@ class GameView extends SurfaceView implements Runnable {
 
     }
 
+    /**
+     * Method that gets called when the gameover boolean flips, used to stop the game and
+     * indicate that the session has ended.
+     */
     private void GameOver() {
         Intent intent = new Intent("kill");
         LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
     }
 
+    /**
+     * method to return the FPS as a function of the system time.
+     *
+     * @return  the FPS (system time - the start time) / 1000.0
+     */
     public double getElapsedTimeInSeconds() {
         return (System.currentTimeMillis() - mStartMilli) / 1000.0;
     }
 
+    /**
+     * The update method, updates the behavior of the objects in the game so that they
+     * can be drawn correctly.
+     */
     public void update() {
 
         if (mCentipede.getSize() < 1) {
@@ -401,6 +443,11 @@ class GameView extends SurfaceView implements Runnable {
         }
     }
 
+    /**
+     * Getter for the current score, to be used for updating the score in the database.
+     *
+     * @return the Score.
+     */
     public int getScore() {
         return this.mScore;
     }
