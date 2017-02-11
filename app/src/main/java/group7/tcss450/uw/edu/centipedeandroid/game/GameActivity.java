@@ -1,23 +1,32 @@
 package group7.tcss450.uw.edu.centipedeandroid.game;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.view.Display;
-import android.view.View;
-import android.widget.TextView;
-
 import java.math.BigInteger;
 
 public class GameActivity extends Activity {
 
     /****************************************Constants*********************************************/
 
+    /**
+     * Constant representing how tall the game view should be in terms of 'blocks'.  These blocks
+     * will be consistent in appearance as they take however much space is available and devide
+     * it by the amount specified in this constant.
+     */
+    private static final int BLOCK_COUNT_HEIGHT = 20;
+
+    /**
+     * Constant representing how wide the game view should be in terms of 'blocks'.  These blocks
+     * will be consistent in appearance as they take however much space is available and devide
+     * it by the amount specified in this constant.
+     */
+    private static final int BLOCK_COUNT_WIDTH = 10;
+
+    /**
+     * Constant representing the minimum amount of space that a block should be displayed at.
+     */
     private static final int MIN_BLOCK_SIZE = 10 ;
 
     /*****************************************Fields***********************************************/
@@ -27,53 +36,74 @@ public class GameActivity extends Activity {
      * proportions regardless of display parameters.
      */
     int mBlockSize;
-    private static final int myBoardWidth = 10;
-    private static final int myBoardHeight = 20;
 
     /**
      * The view object that holds controls the logic and graphics for
      * the game.
      */
     GameView mGameView;
+
+    /**
+     * The dimension of the screen on the Y axis.
+     */
     private int mHeight;
+
+    /**
+     * The dimension of the screen on the X axis.
+     */
     private int mWidth;
-
-
 
     /*****************************************Constructor******************************************/
 
+    /*****************************************Getters and Setters**********************************/
+
+    /*****************************************Public Methods***************************************/
+
+    /**
+     * OnCreate method for the activity.  Calculates and instantiates the block size to be used for
+     * drawing game objects.
+     *
+     * @param savedInstanceState The instance state passed to onCreate.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        LocalBroadcastManager.getInstance(this).registerReceiver(new MessageHandler(),
-                new IntentFilter("kill"));
-
+        /**
+         * Capture the size of the screen as a point and then pass that to the calculateBlocks()
+         * method so a suitable block size can be created for rendering purposes.
+         */
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         mWidth = size.x;
         mHeight = size.y;
         calculateBlockSize();
-//        tv  = (TextView) findViewById(R.id.score);
 
         /*Initialize Gameview object and set the content to it.*/
         mGameView = new GameView(this, mWidth, mHeight, mBlockSize);
         setContentView(mGameView);
     }
 
-    //Start game.
+    /**
+     * OnPause method to determine behavior when the app pauses
+     */
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mGameView.pause();
+    }
+
+    /**
+     * OnResume method to determine behavior when the app resumes
+     */
     @Override
     protected void onResume() {
         super.onResume();
         mGameView.resume();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mGameView.pause();
-    }
+    /*****************************************Private Methods**************************************/
 
     /**
      * Helper method to determine size of Panel.  Does modulus math on the width and height
@@ -87,8 +117,8 @@ public class GameActivity extends Activity {
          */
         final BigInteger width = BigInteger.valueOf(mWidth);
         final BigInteger height = BigInteger.valueOf(mHeight);
-        final BigInteger modWidth = BigInteger.valueOf(myBoardWidth);
-        final BigInteger modHeight = BigInteger.valueOf(myBoardHeight);
+        final BigInteger modWidth = BigInteger.valueOf(BLOCK_COUNT_WIDTH);
+        final BigInteger modHeight = BigInteger.valueOf(BLOCK_COUNT_HEIGHT);
 
 
         //Create an array using the BigInteger method divideAndRemainder.
@@ -101,7 +131,7 @@ public class GameActivity extends Activity {
          * If the newWidth is bigger than the allowed MIN_BLOCK_SIZE then examine
          * the quotient values of newWidth and newHeight.  Whichever is smaller will
          * then be used to update myBlockSize.  This insures that if the resize event
-         * only stretches width or height the panel will not grow out of bounds.
+         * only stretches width or height the view will not grow out of bounds.
          */
         if (newWidth >= MIN_BLOCK_SIZE) {
             if (newWidth < newHeight) {
@@ -109,30 +139,6 @@ public class GameActivity extends Activity {
             } else if (newHeight < newWidth) {
                 mBlockSize = newHeight;
             }
-        }
-
-    }
-
-    public void gameOverDiaglog(View view) {
-        GameOver();
-    }
-
-    void GameOver() {
-//        gameOver.dismiss();
-        mGameView.setVisibility(View.GONE);
-        finish();
-    }
-
-
-    public class MessageHandler extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            mGameView.pause();
-//            tv.setText(String.valueOf(mGameView.getScore()));
-//            FragmentTransaction ft = getFragmentManager().beginTransaction();
-//            gameOver.show(ft, "GameOver");
-
         }
     }
 }

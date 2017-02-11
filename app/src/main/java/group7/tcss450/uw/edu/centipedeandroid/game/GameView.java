@@ -2,16 +2,15 @@ package group7.tcss450.uw.edu.centipedeandroid.game;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import group7.tcss450.uw.edu.centipedeandroid.R;
 
 /**
  * Created by Travis Holloway on 1/24/2017.
@@ -19,7 +18,6 @@ import android.view.SurfaceView;
  */
 @SuppressLint("ViewConstructor")
 class GameView extends SurfaceView implements Runnable {
-
 
     /****************************************Constants*********************************************/
 
@@ -30,9 +28,19 @@ class GameView extends SurfaceView implements Runnable {
     private static int CENTIPEDE_DELAY = 3;
 
     /**
+     *
+     */
+    private static boolean DEBUG = true;
+
+    /**
      * Constant to determine the size of the font.
      */
-    private static final float FONT_SIZE = 100;
+    private static final float FONT_SIZE_LARGE = 100;
+
+    /**
+     * Constant to determine the size of the font.
+     */
+    private static final float FONT_SIZE_SMALL = 40;
 
     /*****************************************Fields***********************************************/
 
@@ -63,14 +71,14 @@ class GameView extends SurfaceView implements Runnable {
     protected long mFps;
 
     /**
-     * Thread Object
-     */
-    protected Thread mGameThread = null;
-
-    /**
      * Boolean representing an active game.  Set to true if game is not over, otherwise false.
      */
     protected boolean mGameState;
+
+    /**
+     * Thread Object
+     */
+    protected Thread mGameThread = null;
 
     /**
      * Holder Object
@@ -176,6 +184,17 @@ class GameView extends SurfaceView implements Runnable {
         mStartMilli = System.currentTimeMillis();
     }
 
+    /*****************************************Getters and Setters**********************************/
+
+    /**
+     * method to return the FPS as a function of the system time.
+     *
+     * @return  the FPS (system time - the start time) / 1000.0
+     */
+    public double getElapsedTimeInSeconds() {
+        return (System.currentTimeMillis() - mStartMilli) / 1000.0;
+    }
+
     /*****************************************Public Methods***************************************/
 
     /**
@@ -201,7 +220,7 @@ class GameView extends SurfaceView implements Runnable {
         /**
          * make a player bullet.
          */
-        mPlayerBullet = new Bullet(getContext(), mScreenSizeX, mScreenSizeY, mBlockSize);
+        mPlayerBullet = new Bullet(getContext(), mBlockSize);
 
         /**
          * Creates the centipede object.
@@ -228,52 +247,77 @@ class GameView extends SurfaceView implements Runnable {
             //set text size
             mPaint.setTextSize(45);
 
-            //display current FPS
-            boolean DEBUG = false;
+            /**
+             * If Debug is true, display statistics of the objects on screen.
+             */
             if (DEBUG) {
-                mCanvas.drawText("Screen Width: " + mScreenSizeX, 40, 110, mPaint);
-                mCanvas.drawText("Screen Height: " + mScreenSizeY, 40, 160, mPaint);
-                mCanvas.drawText("FPS: " + mFps, 40, 60, mPaint);
-                mCanvas.drawText("Ship X Cord: " + mPlayerShip.getX(), 40, 210, mPaint);
-                mCanvas.drawText("Ship Y Cord: " + mPlayerShip.getY(), 40, 260, mPaint);
-                mCanvas.drawText("Bullet (X, Y) Cord's: (" + mPlayerBullet.getX() + ", " +
-                        mPlayerBullet.getY() + ")", 40, 310, mPaint);
-                mCanvas.drawText("Head X Coord: " + mCentipede.getHead().getXCoord(),
-                        40, 350, mPaint);
-                mCanvas.drawText("Head Y Coord: " + mCentipede.getHead().getYCoord(),
-                        40, 390, mPaint);
-                mCanvas.drawText("Timer: " + getElapsedTimeInSeconds(), 40, 430, mPaint);
-                mCanvas.drawText("Block Size: " + mBlockSize, 40, 490, mPaint);
-                mCanvas.drawText("SCORE: " + mScore, 100, 590, mPaint);
+                int i = 1;
+                mCanvas.drawText(getContext().getString(R.string.screen_width) + mScreenSizeX,
+                        FONT_SIZE_SMALL, 10 + (FONT_SIZE_SMALL * i++), mPaint);
+                mCanvas.drawText(getContext().getString(R.string.screen_height) + mScreenSizeY,
+                        FONT_SIZE_SMALL, 10 + (FONT_SIZE_SMALL * i++), mPaint);
+                mCanvas.drawText(getContext().getString(R.string.fps) + mFps, FONT_SIZE_SMALL,
+                        10 + (FONT_SIZE_SMALL * i++), mPaint);
+                mCanvas.drawText(getContext().getString(R.string.ship_x) + mPlayerShip.getX(),
+                        FONT_SIZE_SMALL, 10 + (FONT_SIZE_SMALL * i++), mPaint);
+                mCanvas.drawText(getContext().getString(R.string.ship_y) + mPlayerShip.getY(),
+                        FONT_SIZE_SMALL, 10 + (FONT_SIZE_SMALL * i++), mPaint);
+                mCanvas.drawText(getContext().getString(R.string.bullet_location) +
+                        mPlayerBullet.getX() + getContext().getString(R.string.comma) +
+                        mPlayerBullet.getY() + getContext().getString(R.string.para),
+                        FONT_SIZE_SMALL, 10 + (FONT_SIZE_SMALL * i++), mPaint);
+                mCanvas.drawText(getContext().getString(R.string.head_x) +
+                        mCentipede.getHead().getXCoord(), FONT_SIZE_SMALL,
+                        10 + (FONT_SIZE_SMALL * i++), mPaint);
+                mCanvas.drawText(getContext().getString(R.string.head_y) +
+                        mCentipede.getHead().getYCoord(), FONT_SIZE_SMALL,
+                        10 + (FONT_SIZE_SMALL * i++), mPaint);
+                mCanvas.drawText(getContext().getString(R.string.timer) +
+                        getElapsedTimeInSeconds(), FONT_SIZE_SMALL,
+                        10 + (FONT_SIZE_SMALL * i++), mPaint);
+                mCanvas.drawText(getContext().getString(R.string.block_size) +
+                        mBlockSize, FONT_SIZE_SMALL, 10 + (FONT_SIZE_SMALL * i++), mPaint);
+                mCanvas.drawText(getContext().getString(R.string.score) + mScore,
+                        FONT_SIZE_SMALL, 10 + (FONT_SIZE_SMALL * (i + 1)), mPaint);
             } else {
-                mCanvas.drawText("SCORE: " + mScore, 100, 120, mPaint);
-                mCanvas.drawText("Centipede Segments: " + mCentipede.getSize(), 50, 180, mPaint);
+                //Display score and amount of centipede bodies left.
+                mCanvas.drawText(getContext().getString(R.string.score) + mScore, FONT_SIZE_LARGE,
+                        FONT_SIZE_LARGE + 10, mPaint);
+                mCanvas.drawText(getContext().getString(R.string.segments) + mCentipede.getSize(),
+                        FONT_SIZE_LARGE, 10 + (FONT_SIZE_LARGE * 2), mPaint);
             }
 
+            /**
+             * If mGamestate is true, game is over and so draw the gameover message.
+             */
             if (mGameState) {
-                String go = "GAME OVER";
-                String score = "Score: " + mScore;
-                String back = "Press Back To Try Again";
-                mPaint.setTextSize(FONT_SIZE);
+                String go = getContext().getString(R.string.game_over);
+                String score = getContext().getString(R.string.score) + mScore;
+                String back = getContext().getString(R.string.press_back);
+                mPaint.setTextSize(FONT_SIZE_LARGE);
                 mPaint.setColor(Color.GREEN);
                 float goWidth = mPaint.measureText(go);
                 float scoreWidth = mPaint.measureText(score);
                 float backWidth = mPaint.measureText(back);
                 mCanvas.drawText(go, (mScreenSizeX / 2) - (goWidth / 2),
-                        mScreenSizeY / 2 -(FONT_SIZE), mPaint);
+                        mScreenSizeY / 2 -(FONT_SIZE_LARGE), mPaint);
                 mCanvas.drawText(score, (mScreenSizeX / 2) - (scoreWidth / 2),
                         mScreenSizeY / 2, mPaint);
                 mCanvas.drawText(back, (mScreenSizeX / 2) - (backWidth / 2),
-                        mScreenSizeY / 2 +(FONT_SIZE), mPaint);
+                        mScreenSizeY / 2 +(FONT_SIZE_LARGE), mPaint);
             }
 
-            //Draw the mPlayShip.
+            /**
+             * Draw the mPlayShip.
+             */
             mCanvas.drawBitmap(mPlayerShip.getBitmap(),
                     mPlayerShip.getX() - (mPlayerShip.getLength() / 2),
                     mPlayerShip.getY() - (mPlayerShip.getHeight() / 2),
                     mPaint);
 
-            //Draw the mCentipede
+            /**
+             * Draw the mCentipede
+             */
             CentipedeBody temp = mCentipede.getHead();
             while (temp != null) {
                 if (temp.getVisible()) {
@@ -285,7 +329,9 @@ class GameView extends SurfaceView implements Runnable {
                 temp = temp.getNext();
             }
 
-            //draw the mBullet
+            /**
+             * draw the mBullet
+             */
             if(mPlayerBullet.getStatus()) {
                 mCanvas.drawBitmap(mPlayerBullet.getBitmap(),
                         mPlayerBullet.getX() - (mPlayerBullet.getWidth() / 2),
@@ -293,7 +339,9 @@ class GameView extends SurfaceView implements Runnable {
                         mPaint);
             }
 
-            //Draw it all to the screen
+            /**
+             * Draw it all to the screen
+             */
             mHolder.unlockCanvasAndPost(mCanvas);
         }
     }
@@ -371,25 +419,6 @@ class GameView extends SurfaceView implements Runnable {
                 mFps = 1000 / mFrameLength;
             }
         }
-
-    }
-
-    /**
-     * Method that gets called when the gameover boolean flips, used to stop the game and
-     * indicate that the session has ended.
-     */
-    private void GameOver() {
-        Intent intent = new Intent("kill");
-        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
-    }
-
-    /**
-     * method to return the FPS as a function of the system time.
-     *
-     * @return  the FPS (system time - the start time) / 1000.0
-     */
-    public double getElapsedTimeInSeconds() {
-        return (System.currentTimeMillis() - mStartMilli) / 1000.0;
     }
 
     /**
@@ -398,20 +427,24 @@ class GameView extends SurfaceView implements Runnable {
      */
     public void update() {
 
+        /**
+         * If there are no more centipede objects to kill, trigger game over boolean.
+         */
         if (mCentipede.getSize() < 1) {
             mGameState = true;
-           GameOver();
         } else {
-
             /**
              * Update the ship.
              */
             mPlayerShip.update(mShipMovement, mTouchX);
 
-            /** Update the centipede */
+            /**
+             *  Update the centipede
+             */
             if (!(getElapsedTimeInSeconds() < CENTIPEDE_DELAY)) {
                 mCentipede.update();
             }
+
             /**
              * Check the status of a player bullet.  If it is active, update it's location,
              * If it is inactive, shoot a new bullet.
@@ -431,8 +464,9 @@ class GameView extends SurfaceView implements Runnable {
                     temp = temp.getNext();
                 }
             } else {
+
                 /**
-                 * Pull the current position of the ship, adjust to the right to center the bullet.
+                 * Poll the current position of the ship, adjust to the right to center the bullet.
                  * and then call shoot.
                  */
                 mPlayerBullet.shoot(mPlayerShip.getX(), mPlayerShip.getY(), 0);
@@ -443,14 +477,14 @@ class GameView extends SurfaceView implements Runnable {
         }
     }
 
-    /**
-     * Getter for the current score, to be used for updating the score in the database.
-     *
-     * @return the Score.
-     */
-    public int getScore() {
-        return this.mScore;
-    }
+//    /**
+//     * Getter for the current score, to be used for updating the score in the database.
+//     *
+//     * @return the Score.
+//     */
+//    public int getScore() {
+//        return this.mScore;
+//    }
 
     /*****************************************Private Methods**************************************/
 

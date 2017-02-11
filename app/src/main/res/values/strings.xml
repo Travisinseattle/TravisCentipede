@@ -9,4 +9,20 @@
     <string name="loginButton">Login</string>
     <string name="registerButton">Register</string>
     <string name="startButton">Start Game!</string>
+    <string name="screen_width">"Screen Width: "</string>
+    <string name="screen_height">"Screen Height: "</string>
+    <string name="fps">"FPS: "</string>
+    <string name="ship_x">"Ship X Cord: "</string>
+    <string name="ship_y">"Ship Y Cord: "</string>
+    <string name="bullet_location">Bullet (X, Y) Cord\'s: (</string>
+    <string name="head_x">"Head X Coord: "</string>
+    <string name="head_y">"Head Y Coord: "</string>
+    <string name="timer">"Timer: "</string>
+    <string name="block_size">"Block Size: "</string>
+    <string name="score">"SCORE: "</string>
+    <string name="segments">"Centipede Segments: "</string>
+    <string name="game_over">GAME OVER</string>
+    <string name="press_back">Press Back To Try Again</string>
+    <string name="comma">", "</string>
+    <string name="para">)</string>
 </resources>
