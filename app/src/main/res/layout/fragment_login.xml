@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     android:gravity="center"
-    tools:context="group7.tcss450.uw.edu.centipedeandroid.authenication.LoginFragment">
+    tools:context="group7.tcss450.uw.edu.centipedeandroid.authentication.LoginFragment">
 
     <TextView
         android:layout_width="match_parent"

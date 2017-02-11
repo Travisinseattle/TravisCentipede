@@ -1,4 +1,4 @@
-package group7.tcss450.uw.edu.centipedeandroid.authenication;
+package group7.tcss450.uw.edu.centipedeandroid.authentication;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -18,14 +18,25 @@ import group7.tcss450.uw.edu.centipedeandroid.R;
  * to handle interaction events.
  */
 public class LoginFragment extends Fragment implements View.OnClickListener {
-
+    /**
+     * The {@link LoginFragment.OnLogin} instance
+     */
     private OnLogin mListener;
 
+    /**
+     * Constructs a {@link RegisterFragment}.
+     */
     public LoginFragment() {
         // Required empty public constructor
     }
 
-
+    /**
+     * Creates the biew and sets button listeners
+     * @param inflater The inflater.
+     * @param container The container.
+     * @param savedInstanceState The saved instance.
+     * @return Inflated view.
+     */
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -37,6 +48,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         return v;
     }
 
+    /**
+     * Attachs the listener to the context.
+     * @param context the context.
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -48,12 +63,19 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * Detaches the listener
+     */
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
 
+    /**
+     * Receives click events for buttons and performs actions based on View id.
+     * @param v the view
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId())
@@ -83,19 +105,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-
     /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
+     * The events for button interactions.
      */
     public interface OnLogin {
-        // TODO: Update argument type and name
         void onLoginInteraction(String user, String pass);
         void onRegisterInteraction();
     }

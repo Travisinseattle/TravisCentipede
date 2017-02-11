@@ -1,7 +1,6 @@
 package group7.tcss450.uw.edu.centipedeandroid.menu;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -19,15 +18,25 @@ import group7.tcss450.uw.edu.centipedeandroid.R;
  */
 public class PlayerFragment extends Fragment implements View.OnClickListener {
 
-
-
+    /**
+     * {@link OnPlaySound} listener instance
+     */
     private OnPlaySound mListener;
 
+    /**
+     * Empty Constructor
+     */
     public PlayerFragment() {
         // Required empty public constructor
     }
 
-
+    /**
+     * Creates the view and sets the button listener.
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -38,6 +47,10 @@ public class PlayerFragment extends Fragment implements View.OnClickListener {
         return v;
     }
 
+    /**
+     * Click listener for play button.
+     * @param v the view.
+     */
     @Override
     public void onClick(View v) {
         if (mListener != null) {
@@ -45,6 +58,10 @@ public class PlayerFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * Attaches the listener to a context.
+     * @param context the context.
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -56,6 +73,9 @@ public class PlayerFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * Detaches the listener.
+     */
     @Override
     public void onDetach() {
         super.onDetach();
@@ -63,14 +83,7 @@ public class PlayerFragment extends Fragment implements View.OnClickListener {
     }
 
     /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
+     * Emit emitted on button click.
      */
     public interface OnPlaySound {
         void onPlayClick();

@@ -1,4 +1,4 @@
-package group7.tcss450.uw.edu.centipedeandroid.authenication;
+package group7.tcss450.uw.edu.centipedeandroid.authentication;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -20,30 +20,51 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 import group7.tcss450.uw.edu.centipedeandroid.R;
-import group7.tcss450.uw.edu.centipedeandroid.game.GameActivity;
 import group7.tcss450.uw.edu.centipedeandroid.menu.MenuActivity;
 
-public class AuthenicationActivity extends AppCompatActivity implements LoginFragment.OnLogin, RegisterFragment.OnRegister {
+/**
+ * An activity to authenticate an user.
+ */
+public class AuthenticationActivity extends AppCompatActivity implements LoginFragment.OnLogin, RegisterFragment.OnRegister {
+    /**
+     * The partial URL to the PHP files.
+     */
     private static final String PARTIAL_URL = "http://cssgate.insttech.washington.edu/~nmousel/";
-    AsyncTask<String,Void,String> task;
+    /**
+     * The task related to the authenication happening.
+     */
+    private AsyncTask<String,Void,String> mTask;
 
+    /**
+     * Creates a login fragment if there is no previous state.
+     * @param savedInstanceState The saved instance state.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authenication);
         if (savedInstanceState == null) {
-            task = null;
+            mTask = null;
             if (findViewById(R.id.activity_authenication) != null) {
                 getSupportFragmentManager().beginTransaction().add(R.id.activity_authenication, new LoginFragment()).commit();
             }
         }
     }
+
+    /**
+     * Listener that handles an User login.
+     * @param user The Username.
+     * @param pass The Password.
+     */
     @Override
     public void onLoginInteraction(String user, String pass) {
-        task = new PostLoginTask();
-        task.execute(PARTIAL_URL, user, pass);
+        mTask = new PostLoginTask();
+        mTask.execute(PARTIAL_URL, user, pass);
     }
 
+    /**
+     * Replaces the fragment with the RegisterFragment.
+     */
     @Override
     public void onRegisterInteraction() {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -55,21 +76,42 @@ public class AuthenicationActivity extends AppCompatActivity implements LoginFra
 
     }
 
+    /**
+     * Listener that handles an User registration.
+     * @param user The Username.
+     * @param pass The Password.
+     */
     @Override
     public void onRegisterInteraction(String user, String pass) {
-        task = new PostRegisterTask();
-        task.execute(PARTIAL_URL, user, pass);
+        mTask = new PostRegisterTask();
+        mTask.execute(PARTIAL_URL, user, pass);
     }
 
+    /**
+     * Called when an user successfully validates.
+     * @param user The Username.
+     * @param pass The Password.
+     */
     private void onSucess(String user, String pass)
     {
         Intent intent = new Intent(this, MenuActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * A task to login an user.
+     */
     private class PostLoginTask extends AsyncTask<String, Void, String> {
+        /**
+         * The service of the task.
+         */
         private final String SERVICE = "login.php";
 
+        /**
+         * Sends the user information to the service for validation and authentication
+         * @param strings PARTIAL_URL, Username, Password
+         * @return if successful, string JSON object else error string
+         */
         @Override
         protected String doInBackground(String... strings) {
             if (strings.length != 3) {
@@ -102,9 +144,13 @@ public class AuthenicationActivity extends AppCompatActivity implements LoginFra
             return response;
         }
 
+        /**
+         * Parses the user JSON or displays error string.
+         * @param result Error string or user JSON.
+         */
         @Override
-        protected void onPostExecute(String result) {         // Something wrong with the network or the URL.
-//            Log.d("TEST", "doInBackground: " + result);
+        protected void onPostExecute(String result) {
+            // Something wrong with the network or the URL.
             if (result.startsWith("Unable to") || result.startsWith("Error:")) {
                 Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
                 return;
@@ -124,9 +170,20 @@ public class AuthenicationActivity extends AppCompatActivity implements LoginFra
         }
     }
 
+    /**
+     * A task for authenticating an User registration.
+     */
     private class PostRegisterTask extends AsyncTask<String, Void, String> {
+        /**
+         * The service for the task.
+         */
         private final String SERVICE = "register.php";
 
+        /**
+         * Sends the user information to the service for validation and authentication
+         * @param strings PARTIAL_URL, Username, Password
+         * @return if successful, string JSON object else error string
+         */
         @Override
         protected String doInBackground(String... strings) {
             if (strings.length != 3) {
@@ -158,6 +215,10 @@ public class AuthenicationActivity extends AppCompatActivity implements LoginFra
             return response;
         }
 
+        /**
+         * Parses the user JSON or displays error string.
+         * @param result Error string or user JSON.
+         */
         @Override
         protected void onPostExecute(String result) {
             // Something wrong with the network or the URL.

@@ -1,10 +1,8 @@
 package group7.tcss450.uw.edu.centipedeandroid.menu;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,14 +19,14 @@ import group7.tcss450.uw.edu.centipedeandroid.R;
  * create an instance of this fragment.
  */
 public class MenuFragment extends Fragment implements View.OnClickListener {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    // UNUSED
+
 //    private static final String ARG_PARAM1 = "param1";
 //    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
+    // UNUSED
 //    private String mParam1;
 //    private String mParam2;
+    // UNUSED
 
     private OnStartGame mListener;
 
@@ -44,7 +42,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
      * @param param2 Parameter 2.
      * @return A new instance of fragment MenuFragment.
      */
-    // TODO: Rename and change types and number of parameters
+    // UNUSED
     public static MenuFragment newInstance(String param1, String param2) {
         MenuFragment fragment = new MenuFragment();
         Bundle args = new Bundle();
@@ -53,7 +51,11 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
         fragment.setArguments(args);
         return fragment;
     }
-
+// UNUSED
+    /**
+     * Creates the fragment
+     * @param savedInstanceState saved state
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +65,13 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * Creates the view and adds the button listeners
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -76,6 +85,10 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
         return v;
     }
 
+    /**
+     * Attaches the listener to a context.
+     * @param context the context.
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -87,12 +100,19 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * Detaches the listener
+     */
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
 
+    /**
+     * Emits an event based on the view id.
+     * @param v the view
+     */
     @Override
     public void onClick(View v) {
         if (mListener != null) {
@@ -110,14 +130,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
     }
 
     /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
+     * Listeners for game menu items
      */
     public interface OnStartGame {
         void onStartGame();

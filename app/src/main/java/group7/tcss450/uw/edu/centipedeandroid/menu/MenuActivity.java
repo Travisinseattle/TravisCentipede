@@ -8,21 +8,28 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 import group7.tcss450.uw.edu.centipedeandroid.R;
-import group7.tcss450.uw.edu.centipedeandroid.authenication.AuthenicationActivity;
-import group7.tcss450.uw.edu.centipedeandroid.authenication.RegisterFragment;
 import group7.tcss450.uw.edu.centipedeandroid.game.GameActivity;
 
+/**
+ * An activity to handle the game main menu.
+ */
 public class MenuActivity extends AppCompatActivity implements MenuFragment.OnStartGame, PlayerFragment.OnPlaySound {
-//    private MediaPlayer mMediaPlayer;
+
+    /**
+     * A task to play music
+     */
     private PlayMusicTask mPlayMusicTask;
 
+    /**
+     * Creates the view.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,13 +42,18 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
         }
     }
 
-
+    /**
+     * Starts {@link GameActivity}
+     */
     @Override
     public void onStartGame() {
         Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Replaces the current fragment with the SoundTest fragment
+     */
     @Override
     public void onPlayer() {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -52,6 +64,9 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
         fragmentTransaction.commit();
     }
 
+    /**
+     * The action to do when the play button is clicked.
+     */
     @Override
     public void onPlayClick() {
         mPlayMusicTask = new PlayMusicTask();
@@ -59,6 +74,9 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
 //        playTrack(293);
     }
 
+    /**
+     * Stops the player on back
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -66,10 +84,18 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
 
     }
 
+    /**
+     * A task for playing music from SoundCloud
+     */
     private class PlayMusicTask extends AsyncTask<Integer,Void, String> {
-
+        /**
+         * The MedisPlsyer instance
+         */
         private MediaPlayer mMediaPlayer;
 
+        /**
+         * Sets up the MediaPlayer
+         */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -77,6 +103,11 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
             mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         }
 
+        /**
+         * Gets the right url
+         * @param params the track to get.
+         * @return the redirected URL
+         */
         @Override
         protected String doInBackground(Integer... params) {
             if (params.length != 1) {
@@ -85,6 +116,7 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
             String stringURL = "";
 
             try {
+                // Follows the URL redirects
                 URL url = new URL("https://api.soundcloud.com/tracks/293/stream?client_id=f86c23ad615019f9a1d0bc51cff62a3f");
                 HttpURLConnection ucon = (HttpURLConnection) url.openConnection();
                 ucon.setInstanceFollowRedirects(false);
@@ -98,6 +130,10 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
             return stringURL;
         }
 
+        /**
+         * Plays the song from the link.
+         * @param theURL source of song
+         */
         @Override
         protected void onPostExecute(String theURL) {
             super.onPostExecute(theURL);
@@ -116,6 +152,9 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
             }
         }
 
+        /**
+         * Stops the player
+         */
         public void stopPlayer()
         {
             if(mMediaPlayer != null)

@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".authenication.AuthenicationActivity"
+            android:name=".authentication.AuthenticationActivity"
             android:label="AuthenicationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
