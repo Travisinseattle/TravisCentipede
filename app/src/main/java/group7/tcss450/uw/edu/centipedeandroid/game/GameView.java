@@ -30,7 +30,7 @@ class GameView extends SurfaceView implements Runnable {
     /**
      *
      */
-    private static boolean DEBUG = true;
+    private static boolean DEBUG = false;
 
     /**
      * Constant to determine the size of the font.
@@ -279,12 +279,12 @@ class GameView extends SurfaceView implements Runnable {
                         mBlockSize, FONT_SIZE_SMALL, 10 + (FONT_SIZE_SMALL * i++), mPaint);
                 mCanvas.drawText(getContext().getString(R.string.score) + mScore,
                         FONT_SIZE_SMALL, 10 + (FONT_SIZE_SMALL * (i + 1)), mPaint);
+                mCanvas.drawText(getContext().getString(R.string.segments) + mCentipede.getSize(),
+                        FONT_SIZE_LARGE, 10 + (FONT_SIZE_LARGE * 2), mPaint);
             } else {
                 //Display score and amount of centipede bodies left.
                 mCanvas.drawText(getContext().getString(R.string.score) + mScore, FONT_SIZE_LARGE,
                         FONT_SIZE_LARGE + 10, mPaint);
-                mCanvas.drawText(getContext().getString(R.string.segments) + mCentipede.getSize(),
-                        FONT_SIZE_LARGE, 10 + (FONT_SIZE_LARGE * 2), mPaint);
             }
 
             /**
