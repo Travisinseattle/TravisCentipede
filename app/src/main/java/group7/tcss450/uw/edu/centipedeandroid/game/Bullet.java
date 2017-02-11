@@ -11,7 +11,7 @@ import group7.tcss450.uw.edu.centipedeandroid.R;
  * A class to represent a Bullet object, includes a rectf hitbox,
  * a bitmap image and AI behavior for movement and collision.
  */
-class Bullet {
+class /**/Bullet {
 
     /*****************************************Constants********************************************/
 
@@ -84,12 +84,10 @@ class Bullet {
      * The constructor for a Bullet. Takes content and screen size from parent.
      *
      * @param context  The context of the parent constructing the bullet.
-     * @param screenX  The X dimensions of the parent activity.  Used to determine the size
-     *                 of the bullet.
-     * @param screenY  The Y dimensions of the parent activity.  Used to determine the size
-     *                 of the bullet.
+     * @param block The size of a block in the view grid, used for calculating how to
+     *              draw the bullet.
      */
-    Bullet (Context context, int screenX, int screenY, int block) {
+    Bullet (Context context, int block) {
 
         /**
          * set the dimensions of the bullet.
@@ -128,19 +126,6 @@ class Bullet {
      */
     Bitmap getBitmap(){
         return mBitmap;
-    }
-
-    /**
-     * a getter that returns the Y coordinate of the Bullet.
-     *
-     * @return mYCoord the Y coordinate of the bullet.
-     */
-    float getImpactPointY(){
-        if (mHeading == DOWN){
-            return mYCoord + mHeight;
-        }else{
-            return mYCoord;
-        }
     }
 
     /**
@@ -191,7 +176,7 @@ class Bullet {
      *
      * @return mLength the width of the bullet as an int..
      */
-    public int getWidth() {
+    int getWidth() {
         return this.mLength;
     }
 
@@ -200,7 +185,7 @@ class Bullet {
      *
      * @return mHeight the height of the bullet as an int.
      */
-    public int getHeight() {
+    int getHeight() {
         return this.mHeight;
     }
 
