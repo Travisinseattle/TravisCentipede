@@ -16,8 +16,7 @@ import group7.tcss450.uw.edu.centipedeandroid.R;
  * Created by Travis Holloway on 1/24/2017.
  * GameVIew class that serves as the Canvas for the game.
  */
-@SuppressLint("ViewConstructor")
-class GameView extends SurfaceView implements Runnable {
+public class GameView extends SurfaceView implements Runnable {
 
     /****************************************Constants*********************************************/
 
@@ -427,54 +426,55 @@ class GameView extends SurfaceView implements Runnable {
      */
     public void update() {
 
-        /**
-         * If there are no more centipede objects to kill, trigger game over boolean.
-         */
-        if (mCentipede.getSize() < 1) {
-            mGameState = true;
-        } else {
-            /**
-             * Update the ship.
-             */
-            mPlayerShip.update(mShipMovement, mTouchX);
 
-            /**
-             *  Update the centipede
-             */
-            if (!(getElapsedTimeInSeconds() < CENTIPEDE_DELAY)) {
-                mCentipede.update();
-            }
-
-            /**
-             * Check the status of a player bullet.  If it is active, update it's location,
-             * If it is inactive, shoot a new bullet.
-             */
-            if(mPlayerBullet.getStatus()) {
-                mPlayerBullet.update(mFps);
-                CentipedeBody temp = mCentipede.getHead();
-                while (temp != null) {
-                    if (temp.getVisible()) {
-                        if (RectF.intersects(mPlayerBullet.getRect(), temp.getRect())) {
-                            temp.setVisible(false);
-                            mPlayerBullet.setInactive();
-                            mScore = mScore + (mScreenSizeY - (int) temp.getYCoord());
-                            mCentipede.setSize();
-                        }
-                    }
-                    temp = temp.getNext();
-                }
-            } else {
-
-                /**
-                 * Poll the current position of the ship, adjust to the right to center the bullet.
-                 * and then call shoot.
-                 */
-                mPlayerBullet.shoot(mPlayerShip.getX(), mPlayerShip.getY(), 0);
-            }
-            if(mPlayerBullet.getY() < 0) {
-                mPlayerBullet.setInactive();
-            }
-        }
+//        /**
+//         * If there are no more centipede objects to kill, trigger game over boolean.
+//         */
+//        if (mCentipede.getSize() < 1) {
+//            mGameState = true;
+//        } else {
+//            /**
+//             * Update the ship.
+//             */
+//            mPlayerShip.update(mShipMovement, mTouchX);
+//
+//            /**
+//             *  Update the centipede
+//             */
+//            if (!(getElapsedTimeInSeconds() < CENTIPEDE_DELAY)) {
+//                mCentipede.update();
+//            }
+//
+//            /**
+//             * Check the status of a player bullet.  If it is active, update it's location,
+//             * If it is inactive, shoot a new bullet.
+//             */
+//            if(mPlayerBullet.getStatus()) {
+//                mPlayerBullet.update(mFps);
+//                CentipedeBody temp = mCentipede.getHead();
+//                while (temp != null) {
+//                    if (temp.getVisible()) {
+//                        if (RectF.intersects(mPlayerBullet.getRect(), temp.getRect())) {
+//                            temp.setVisible(false);
+//                            mPlayerBullet.setInactive();
+//                            mScore = mScore + (mScreenSizeY - (int) temp.getYCoord());
+//                            mCentipede.setSize();
+//                        }
+//                    }
+//                    temp = temp.getNext();
+//                }
+//            } else {
+//
+//                /**
+//                 * Poll the current position of the ship, adjust to the right to center the bullet.
+//                 * and then call shoot.
+//                 */
+//                mPlayerBullet.shoot(mPlayerShip.getX(), mPlayerShip.getY(), 0);
+//            }
+//            if(mPlayerBullet.getY() < 0) {
+//                mPlayerBullet.setInactive();
+//            }
+//        }
     }
 
 //    /**
