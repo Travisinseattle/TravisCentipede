@@ -13,13 +13,13 @@ public class Components  {
     }
 
     public static class Position implements Component {
-        float x, y;
-        int width, height;
-        float rotationDegrees;
+        public float x, y;
+        public int width, height;
+        public float rotationDegrees;
 
         @Override
         public String toString() {
-            return "("+super.toString()+" @ ("+x+","+y+") * rot."+rotationDegrees+")";
+            return "(" + super.toString() + " @ (" + x + "," + y + ") * rot." + rotationDegrees + ")";
         }
     }
 

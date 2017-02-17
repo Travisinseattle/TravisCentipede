@@ -10,7 +10,12 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import java.util.LinkedList;
+
 import group7.tcss450.uw.edu.centipedeandroid.R;
+import group7.tcss450.uw.edu.centipedeandroid.game.manager.EntityManager;
+import group7.tcss450.uw.edu.centipedeandroid.game.system.RenderSystem;
 
 /**
  * Created by Travis Holloway on 1/24/2017.
@@ -141,6 +146,12 @@ public class GameView extends SurfaceView implements Runnable {
      */
     protected float mTouchY;
 
+    private LinkedList<SubSystem> mOrderedSubSystems;
+
+    public EntityManager mEntityManager;
+
+    private RenderSystem mRenderSystem;
+
     /*****************************************Constructor******************************************/
 
     /**
@@ -162,6 +173,10 @@ public class GameView extends SurfaceView implements Runnable {
         //intitialize the holder and paint.
         mHolder = getHolder();
         mPaint = new Paint();
+
+        mOrderedSubSystems = new LinkedList<SubSystem>();
+        mEntityManager = new EntityManager();
+        mRenderSystem = new RenderSystem(this);
 
         /**
          * set the value for the screen size.
@@ -210,6 +225,7 @@ public class GameView extends SurfaceView implements Runnable {
          * Set the gamestate boolean to true.
          */
         mGameState = false;
+
 
         /**
          * Make a playership to be used in the game.
@@ -405,10 +421,21 @@ public class GameView extends SurfaceView implements Runnable {
             //capture current time in milliseconds.
             long mStartFrameTime = System.currentTimeMillis();
 
-            //Call the update thread.
-            update();
-            //call the draw method.
-            draw();
+            for (SubSystem system : mOrderedSubSystems)
+            {
+                system.processOneGameTick(lastFrameTime);
+            }
+
+            synchronized(mHolder)
+            {
+                mRenderingSystem.drawBackground();
+                mRenderingSystem.processOneGameTick(lastFrameTime);
+            }
+
+//            //Call the update thread.
+//            update();
+//            //call the draw method.
+//            draw();
 
             /**
              * Counts the frame decay time length.
