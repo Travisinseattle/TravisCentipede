@@ -139,12 +139,12 @@ public class GameView extends SurfaceView implements Runnable {
     /**
      * The X coord of a touch.
      */
-    protected float mTouchX;
+    public float mTouchX;
 
     /**
      * The Y coord of a touch.
      */
-    protected float mTouchY;
+    public float mTouchY;
 
     private LinkedList<SubSystem> mOrderedSubSystems;
 

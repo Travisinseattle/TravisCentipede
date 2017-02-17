@@ -9,6 +9,7 @@ import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
 
 /**
  * Created by nicholas on 2/13/17.
+ * The System that will handle the process of rendering a game object
  */
 
 public class RenderSystem extends SubSystem {
