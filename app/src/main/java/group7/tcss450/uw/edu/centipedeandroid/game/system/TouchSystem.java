@@ -4,6 +4,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import group7.tcss450.uw.edu.centipedeandroid.game.Component;
+import group7.tcss450.uw.edu.centipedeandroid.game.GameView;
 import group7.tcss450.uw.edu.centipedeandroid.game.SubSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
 import group7.tcss450.uw.edu.centipedeandroid.game.manager.GameManager;
@@ -16,17 +17,17 @@ import group7.tcss450.uw.edu.centipedeandroid.game.manager.GameManager;
 public class TouchSystem extends SubSystem {
 
 
-    public TouchSystem(GameManager theGameManager) {
+    public TouchSystem(GameView theGameManager) {
         super(theGameManager);
     }
 
     @Override
     public void processOneGameTick(long lastFrameTime) {
-        Set<UUID> allTouch = this.mGameManager.mEntityManager
+        Set<UUID> allTouch = mGameView.mEntityManager
                 .getAllEntitiesPossessingComponent(Components.Touch.class);
         for (UUID entityID : allTouch) {
-            Components.Movable move = entitySystem.getComponent(entityID, Components.Movable.class);
-            Components.Position pos = entitySystem.getComponent(entityID, Components.Position.class);
+            Components.Movable move = mGameView.mEntityManager.getComponent(entityID, Components.Movable.class);
+            Components.Position pos = mGameView.mEntityManager.getComponent(entityID, Components.Position.class);
             if (mGameView.mShipMovement) {
                 move.setDx(mGameView.mTouchX - pos.getX());
                 move.setDy(mGameView.mTouchY - pos.getY());

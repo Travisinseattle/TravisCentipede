@@ -129,7 +129,7 @@ public class GameView extends SurfaceView implements Runnable {
     /**
      * intial state of mShip.
      */
-    protected boolean mShipMovement = false;
+    public boolean mShipMovement = false;
 
     /**
      * Long that represents the time that the centipede should appear on screen.
@@ -452,6 +452,11 @@ public class GameView extends SurfaceView implements Runnable {
      * can be drawn correctly.
      */
     public void update() {
+
+/**
+ * Place the touch system before the movement system.
+ */
+
 
 
 //        /**

@@ -59,7 +59,7 @@ public class Components  {
     }
 
     public static class Health implements Component {
-        public int hitpoints;
+        private int hitpoints;
 
         public void setHitpoints(int amount) {
             this.hitpoints = amount;
@@ -79,6 +79,23 @@ public class Components  {
         @Override
         public String toString() {
             return "(" + super.toString() + " Touch)";
+        }
+    }
+
+    public static class Damage implements Component {
+        private int damage;
+
+        public int getDamage() {
+            return damage;
+        }
+
+        public void setDamage(int amount) {
+            this.damage = amount;
+        }
+
+        @Override
+        public String toString() {
+            return "(" + super.toString() + " Damage: " + damage +")";
         }
     }
 }
