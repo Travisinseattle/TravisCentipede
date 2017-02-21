@@ -1,8 +1,14 @@
 package group7.tcss450.uw.edu.centipedeandroid.game.system;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.util.Log;
+
 import java.util.Set;
 import java.util.UUID;
 
+import group7.tcss450.uw.edu.centipedeandroid.R;
 import group7.tcss450.uw.edu.centipedeandroid.game.GameView;
 import group7.tcss450.uw.edu.centipedeandroid.game.SubSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
@@ -17,6 +23,7 @@ public class RenderSystem extends SubSystem {
     public RenderSystem(GameView theGameView) {
         super(theGameView);
     }
+    Bitmap mBitmap;
 
     @Override
     public void processOneGameTick(long lastFrameTime) {
@@ -24,6 +31,32 @@ public class RenderSystem extends SubSystem {
         for (UUID entityID : allDrawables) {
             Components.Position pos = mGameView.mEntityManager.getComponent(entityID, Components.Position.class);
             int resourceID = mGameView.mEntityManager.getComponent(entityID, Components.CAndroidDrawable.class).resourceID;
+
+
+
+                try {
+                    mBitmap = BitmapFactory.decodeResource(mGameView.mContext.getResources(), resourceID);
+                } catch (NullPointerException e) {
+                    Log.e("Bitmap: ", e.getMessage());
+                }
+
+
+                if (mGameView.mPaint == null) {
+                    Log.e("They are Null", "it happened");
+                }
+
+                /**
+                 * Draw the mPlayShip.
+                 */
+                try {
+                    mGameView.mCanvas.drawBitmap(mBitmap,
+                            pos.getX(),
+                            pos.getY(),
+                            mGameView.mPaint);
+                } catch (NullPointerException e) {
+                    Log.e("What's Null", "Resource: " + resourceID + ", Position: "
+                            + pos.getX() + ", " + pos.getY());
+                }
 
 
         }
