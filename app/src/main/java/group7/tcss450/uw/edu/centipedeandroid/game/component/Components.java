@@ -10,6 +10,9 @@ public class Components  {
 
     public static class CAndroidDrawable implements Component {
         public int resourceID;
+        public CAndroidDrawable(int resourceID) {
+            this.resourceID = resourceID;
+        }
     }
 
     public static class Position implements Component {
@@ -77,7 +80,7 @@ public class Components  {
 
         @Override
         public String toString() {
-            return "("+super.toString()+"hitpoints: " +hitpoints+")";
+            return "("+super.toString()+"hitpoints: " + hitpoints +")";
         }
     }
 
