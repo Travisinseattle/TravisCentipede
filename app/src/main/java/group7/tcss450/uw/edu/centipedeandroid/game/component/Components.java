@@ -17,6 +17,12 @@ public class Components  {
         public int width, height;
         public float rotationDegrees;
 
+        public Position() {}
+        public Position(float x, float y) {
+            this.x = x;
+            this.y = y;
+        }
+
         public float getX() {
             return x;
         }
