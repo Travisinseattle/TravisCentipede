@@ -16,7 +16,7 @@ public class EntityFactory {
         MetaEntity mushroom = new MetaEntity();
         mushroom.add(new Components.Health());
         mushroom.add(new Components.Position());
-        mushroom.add(new Components.CAndroidDrawable(R.drawable.alienblaster));
+        mushroom.add(new Components.DamagedDrawable(new int[]{R.drawable.shroom, R.drawable.shroom3, R.drawable.shroom2, R.drawable.shroom1}));
         return mushroom;
     }
 
