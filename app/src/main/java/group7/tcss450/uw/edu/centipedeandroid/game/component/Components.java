@@ -15,6 +15,14 @@ public class Components  {
         }
     }
 
+    public static class DamagedDrawable implements Component {
+        // 0 index is no damage
+        public int[] resourceID;
+        public DamagedDrawable(int[] resourceID) {
+            this.resourceID = resourceID;
+        }
+    }
+
     public static class Position implements Component {
         public float x, y;
         public int width, height;
