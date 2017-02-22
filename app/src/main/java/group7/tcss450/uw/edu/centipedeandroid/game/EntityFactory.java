@@ -15,7 +15,7 @@ public class EntityFactory {
         mushroom.add(new Components.Health());
         mushroom.add(new Components.Position());
         mushroom.add(new Components.CAndroidDrawable(R.drawable.alienblaster));
-        return new MetaEntity();
+        return mushroom;
     }
 
     public static MetaEntity createShip() {
@@ -25,7 +25,9 @@ public class EntityFactory {
         ship.add(new Components.Movable());
         ship.add(new Components.Position());
         ship.add(new Components.Health());
-        return new MetaEntity();
+        return ship;
     }
+
+
 
 }
