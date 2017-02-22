@@ -31,6 +31,9 @@ public class TouchSystem extends SubSystem {
             if (mGameView.mShipMovement) {
                 move.setDx(mGameView.mTouchX - pos.getX());
                 move.setDy(mGameView.mTouchY - pos.getY());
+            } else {
+                move.setDx(0);
+                move.setDy(0);
             }
         }
     }

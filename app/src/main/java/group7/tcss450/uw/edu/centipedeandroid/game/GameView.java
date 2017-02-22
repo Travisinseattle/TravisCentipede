@@ -31,22 +31,22 @@ public class GameView extends SurfaceView implements Runnable {
      * Constant to represent how much time the game should wait before the centipede enters the
      * screen.
      */
-    private static int CENTIPEDE_DELAY = 3;
+    public static int CENTIPEDE_DELAY = 3;
 
     /**
      *
      */
-    private static boolean DEBUG = true;
+    public static boolean DEBUG = true;
 
     /**
      * Constant to determine the size of the font.
      */
-    private static final float FONT_SIZE_LARGE = 100;
+    public static final float FONT_SIZE_LARGE = 100;
 
     /**
      * Constant to determine the size of the font.
      */
-    private static final float FONT_SIZE_SMALL = 40;
+    public static final float FONT_SIZE_SMALL = 40;
 
     /*****************************************Fields***********************************************/
 
@@ -59,7 +59,7 @@ public class GameView extends SurfaceView implements Runnable {
     /**
      * Canvas Object
      */
-    protected Canvas mCanvas;
+    public Canvas mCanvas;
 
     /**
      * The Centipede object.
@@ -69,7 +69,7 @@ public class GameView extends SurfaceView implements Runnable {
     /**
      * Context object.
      */
-    protected Context mContext;
+    public Context mContext;
 
     /**
      * object to count FPS.
@@ -89,12 +89,12 @@ public class GameView extends SurfaceView implements Runnable {
     /**
      * Holder Object
      */
-    protected SurfaceHolder mHolder;
+    public SurfaceHolder mHolder;
 
     /**
      * Paint object.
      */
-    protected Paint mPaint;
+    public Paint mPaint;
 
     /**
      * Bullet object for the player
@@ -212,6 +212,10 @@ public class GameView extends SurfaceView implements Runnable {
         return (System.currentTimeMillis() - mStartMilli) / 1000.0;
     }
 
+    /**
+     *
+     */
+
     /*****************************************Public Methods***************************************/
 
     /**
@@ -260,14 +264,7 @@ public class GameView extends SurfaceView implements Runnable {
             //lock the canvas
             mCanvas = mHolder.lockCanvas();
 
-            //draw the background color.
-            mCanvas.drawColor(Color.BLACK);
 
-            //set the brush color
-            mPaint.setColor(Color.WHITE);
-
-            //set text size
-            mPaint.setTextSize(45);
 
             /**
              * If Debug is true, display statistics of the objects on screen.
@@ -364,7 +361,7 @@ public class GameView extends SurfaceView implements Runnable {
             /**
              * Draw it all to the screen
              */
-            mHolder.unlockCanvasAndPost(mCanvas);
+
         }
     }
 
@@ -435,9 +432,28 @@ public class GameView extends SurfaceView implements Runnable {
             }
             synchronized(mHolder)
             {
+                //validity check on surface area to catch crashes.
+                if (mHolder.getSurface().isValid()) {
+                    //lock the canvas
+                    mCanvas = mHolder.lockCanvas();
+
+                    //draw the background color.
+                    mCanvas.drawColor(Color.BLACK);
+
+                    //set the brush color
+                    mPaint.setColor(Color.WHITE);
+
+                    //set text size
+                    mPaint.setTextSize(45);
+
 //                mRenderSystem.drawBackground();
-                mRenderSystem.processOneGameTick(startFrameTime);
+                    mRenderSystem.processOneGameTick(startFrameTime);
+
+                    mHolder.unlockCanvasAndPost(mCanvas);
+                }
             }
+
+
 
 //            //Call the update thread.
 //            update();

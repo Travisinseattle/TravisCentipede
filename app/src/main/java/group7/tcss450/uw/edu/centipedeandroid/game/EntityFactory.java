@@ -10,6 +10,8 @@ import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
 
 public class EntityFactory {
 
+
+
     public static MetaEntity createMushroom() { // Mushrooms will look like aliens for now.
         MetaEntity mushroom = new MetaEntity();
         mushroom.add(new Components.Health());
