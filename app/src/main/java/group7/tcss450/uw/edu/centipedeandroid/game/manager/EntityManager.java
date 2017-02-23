@@ -222,17 +222,12 @@ public class EntityManager implements Serializable
         return entityHumanReadableNames.get( entity );
     }
 
-    public void killEntity(UUID entity)
-    {
+    public void killEntity(UUID entity) {
         if (frozen)
             return;
 
-        synchronized (componentStores)
-        {
-
-            for (HashMap<UUID, ? extends Component> componentStore : componentStores
-                    .values())
-            {
+        synchronized (componentStores) {
+            for (HashMap<UUID, ? extends Component> componentStore : componentStores.values()) {
                 componentStore.remove(entity);
             }
             allEntities.remove(entity);

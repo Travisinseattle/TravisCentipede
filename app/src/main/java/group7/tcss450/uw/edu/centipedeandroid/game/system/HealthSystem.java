@@ -6,7 +6,6 @@ import java.util.UUID;
 import group7.tcss450.uw.edu.centipedeandroid.game.GameView;
 import group7.tcss450.uw.edu.centipedeandroid.game.SubSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
-import group7.tcss450.uw.edu.centipedeandroid.game.manager.GameManager;
 
 /**
  * Created by Travis Holloway on 2/17/2017.
@@ -25,7 +24,7 @@ public class HealthSystem extends SubSystem {
             Components.Health health = mGameView.mEntityManager.getComponent(entityID, Components.Health.class);
             Components.Damage damage = mGameView.mEntityManager.getComponent(entityID, Components.Damage.class);
 
-            health.setHitpoints(health.getHitpoints() - damage.getDamage());
+            health.setHitPoints(health.getHitPoints() - damage.getDamage());
 
 
         }

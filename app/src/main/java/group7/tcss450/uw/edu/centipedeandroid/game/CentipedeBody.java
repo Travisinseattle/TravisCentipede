@@ -48,10 +48,10 @@ public class CentipedeBody {
 //    /** Prev node of current node. */   not implemented yet.
 //    private CentipedeBody mPrev;
 
-    /** Size of y axis for screen. */
+    /** EntitySize of y axis for screen. */
     private int mScreenY;
 
-    /** Size of x axis for screen. */
+    /** EntitySize of x axis for screen. */
     private int mScreenX;
 
     /** Height of the centipede body */

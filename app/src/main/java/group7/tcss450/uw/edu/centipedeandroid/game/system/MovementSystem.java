@@ -21,6 +21,14 @@ public class MovementSystem extends SubSystem {
         super(theGameView);
     }
 
+    /**
+     * First get all entities with a position and movable.  Add the dX of the Moveable to the
+     * X of the Position.  Do the same for Y.  Finally, update the HitBox of the entity based
+     * on it's new position.  (Last step is only necessary for those that have moved, not
+     * static items like mushrooms.)
+     *
+     * @param lastFrameTime The lastFrameTime from the previous call.
+     */
     @Override
     public void processOneGameTick(long lastFrameTime) {
         Set<UUID> allMove = mGameView.mEntityManager
@@ -32,6 +40,7 @@ public class MovementSystem extends SubSystem {
             pos.setX(pos.getX() + move.dx);
             pos.setY(pos.getY() + move.dy);
         }
+
     }
 
     @Override

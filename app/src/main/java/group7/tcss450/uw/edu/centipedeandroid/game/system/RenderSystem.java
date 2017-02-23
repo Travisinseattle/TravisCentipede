@@ -20,39 +20,27 @@ import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
 
 public class RenderSystem extends SubSystem {
 
+    private Bitmap mBitmap;
+
     public RenderSystem(GameView theGameView) {
         super(theGameView);
     }
-    Bitmap mBitmap;
 
     @Override
     public void processOneGameTick(long lastFrameTime) {
-        Set<UUID> allDrawables = mGameView.mEntityManager.getAllEntitiesPossessingComponent(Components.CAndroidDrawable.class);
+        Set<UUID> allDrawables = mGameView.mEntityManager
+                .getAllEntitiesPossessingComponent(Components.CAndroidDrawable.class);
         for (UUID entityID : allDrawables) {
-            Components.Position pos = mGameView.mEntityManager.getComponent(entityID, Components.Position.class);
-            int resourceID = mGameView.mEntityManager.getComponent(entityID, Components.CAndroidDrawable.class).resourceID;
-
-
-                try {
-                    mBitmap = BitmapFactory.decodeResource(mGameView.mContext.getResources(), resourceID);
-                    mBitmap = Bitmap.createScaledBitmap(mBitmap, mGameView.mBlockSize, mGameView.mBlockSize, false);
-                } catch (NullPointerException e) {
-                    Log.e("Bitmap: ", e.getMessage());
-                }
-
-
-                if (mGameView.mPaint == null) {
-                    Log.e("They are Null", "it happened");
-                }
-
-                /**
-                 * Draw the mPlayShip.
-                 */
-                    mGameView.mCanvas.drawBitmap(mBitmap,
-                            pos.getX() - (mGameView.mBlockSize / 2),
-                            pos.getY() - (mGameView.mBlockSize / 2),
-                            mGameView.mPaint);
-
+            Components.Position pos = mGameView.mEntityManager
+                    .getComponent(entityID, Components.Position.class);
+            Components.EntitySize size = mGameView.mEntityManager
+                    .getComponent(entityID, Components.EntitySize.class);
+            mBitmap = mGameView.mEntityManager
+                    .getComponent(entityID, Components.CAndroidDrawable.class).getBitMap();
+            mBitmap = Bitmap.createScaledBitmap(mBitmap, (int) size.getEntityWidth(),
+                    (int) size.getEntityHeight(), false);
+            mGameView.mCanvas.drawBitmap(mBitmap, pos.getX() - size.getHalfWidth(),
+                    pos.getY() - size.getHalfHeight(), mGameView.mPaint);
         }
     }
 

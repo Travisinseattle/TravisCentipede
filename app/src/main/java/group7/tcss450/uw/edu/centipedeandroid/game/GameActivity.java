@@ -59,9 +59,24 @@ public class GameActivity extends Activity {
 
     /*****************************************Getters and Setters**********************************/
 
+    /**
+     * A getter to return the block size calculated for the screen dimensions.
+     *
+     * @return mBlockSize the value of the calculated block size
+     */
     public static float getBlockSize() {
         return (float) mBlockSize;
     }
+
+    /**
+     * Getter to return the GameView of the GameActivity
+     *
+     * @return mGameView the GameView of the GameActivity
+     */
+    public GameView getGameView() {
+        return this.mGameView;
+    }
+
     /*****************************************Public Methods***************************************/
 
     /**

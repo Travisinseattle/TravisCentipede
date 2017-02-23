@@ -1,11 +1,11 @@
 package group7.tcss450.uw.edu.centipedeandroid.game;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.RectF;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -203,6 +203,14 @@ public class GameView extends SurfaceView implements Runnable {
     /*****************************************Getters and Setters**********************************/
 
     /**
+     * Getter for the bullet speed.
+     * @return mBulletSpeed the speed of a bullet.
+     */
+    public int getBulletSpeed() {
+        return mBulletSpeed;
+    }
+
+    /**
      * method to return the FPS as a function of the system time.
      *
      * @return  the FPS (system time - the start time) / 1000.0
@@ -211,8 +219,13 @@ public class GameView extends SurfaceView implements Runnable {
         return (System.currentTimeMillis() - mStartMilli) / 1000.0;
     }
 
-    public int getBulletSpeed() {
-        return mBulletSpeed;
+    /**
+     * A Setter to set the Bullet speed
+     *      *
+     * @param mBulletSpeed the speed to be set.
+     */
+    public void setMBulletSpeed(int mBulletSpeed) {
+        this.mBulletSpeed = mBulletSpeed;
     }
 
     /*****************************************Public Methods***************************************/
@@ -239,9 +252,8 @@ public class GameView extends SurfaceView implements Runnable {
         /**
          * Make a playership to be used in the game.
          */
-        mPlayerShip = EntityFactory.createShip();
+        mPlayerShip = EntityFactory.createShip(this);
 
-        mPlayerBullet = EntityFactory.createBullet(mScreenSizeX / 2, mScreenSizeY / 2);
 
         /**
          * Creates the centipede object.
@@ -453,9 +465,6 @@ public class GameView extends SurfaceView implements Runnable {
                 }
 
             }
-
-
-
 //            //Call the update thread.
 //            update();
 //            //call the draw method.

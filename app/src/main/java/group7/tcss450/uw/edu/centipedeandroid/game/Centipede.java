@@ -24,19 +24,19 @@ class Centipede {
     /** Starting x position for centipede */
     private final static int STARTING_X = 2;
 
-    /** Size of each square in the boards grid*/
+    /** EntitySize of each square in the boards grid*/
     private int mBlockSize;
 
     /** Bitmap of the centipede head */
     private Bitmap mCentipedeHead;
 
-    /** Size of Y axis of screen */
+    /** EntitySize of Y axis of screen */
     private int mScreenY;
 
     /** X axis size of screen */
     private int mScreenX;
 
-    /** Size of the centipede */
+    /** EntitySize of the centipede */
     private int mSize;
 
     /** Head node of the centipede */
