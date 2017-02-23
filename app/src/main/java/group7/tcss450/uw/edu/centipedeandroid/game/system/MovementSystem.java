@@ -1,5 +1,7 @@
 package group7.tcss450.uw.edu.centipedeandroid.game.system;
 
+import android.util.Log;
+
 import java.util.Set;
 import java.util.UUID;
 
@@ -21,9 +23,9 @@ public class MovementSystem extends SubSystem {
 
     @Override
     public void processOneGameTick(long lastFrameTime) {
-        Set<UUID> allHealth = mGameView.mEntityManager
+        Set<UUID> allMove = mGameView.mEntityManager
                 .getAllEntitiesPossessingComponent(Components.Movable.class);
-        for (UUID entityID : allHealth) {
+        for (UUID entityID : allMove) {
             Components.Movable move = mGameView.mEntityManager.getComponent(entityID, Components.Movable.class);
             Components.Position pos = mGameView.mEntityManager.getComponent(entityID, Components.Position.class);
 

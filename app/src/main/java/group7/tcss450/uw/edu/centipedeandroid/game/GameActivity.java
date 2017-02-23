@@ -35,7 +35,7 @@ public class GameActivity extends Activity {
      * Field representing the size of a block in the display field, used to maintain display
      * proportions regardless of display parameters.
      */
-    int mBlockSize;
+    static int mBlockSize;
 
     /**
      * The view object that holds controls the logic and graphics for
@@ -46,17 +46,22 @@ public class GameActivity extends Activity {
     /**
      * The dimension of the screen on the Y axis.
      */
-    private int mHeight;
+    public static int mHeight;
 
     /**
      * The dimension of the screen on the X axis.
      */
-    private int mWidth;
+    public static int mWidth;
+
+
 
     /*****************************************Constructor******************************************/
 
     /*****************************************Getters and Setters**********************************/
 
+    public static float getBlockSize() {
+        return (float) mBlockSize;
+    }
     /*****************************************Public Methods***************************************/
 
     /**

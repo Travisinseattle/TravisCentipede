@@ -17,6 +17,7 @@ import group7.tcss450.uw.edu.centipedeandroid.R;
 import group7.tcss450.uw.edu.centipedeandroid.game.manager.EntityManager;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.MovementSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.RenderSystem;
+import group7.tcss450.uw.edu.centipedeandroid.game.system.ShootSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.TouchSystem;
 
 /**
@@ -27,11 +28,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     /****************************************Constants*********************************************/
 
-    /**
-     * Constant to represent how much time the game should wait before the centipede enters the
-     * screen.
-     */
-    public static int CENTIPEDE_DELAY = 3;
+    public static int INITIAL_BULLET_SPEED = 300;
 
     /**
      *
@@ -54,7 +51,9 @@ public class GameView extends SurfaceView implements Runnable {
      * A field that holds the current size of a 'block' in the display grid.  Used to ensure
      * that all items are drawn at the same proportion regardless of screen display values.
      */
-    protected int mBlockSize;
+    public int mBlockSize;
+
+    private int mBulletSpeed;
 
     /**
      * Canvas Object
@@ -99,7 +98,7 @@ public class GameView extends SurfaceView implements Runnable {
     /**
      * Bullet object for the player
      */
-    protected Bullet mPlayerBullet;
+    protected MetaEntity mPlayerBullet;
 
     /**
      * The playership object.
@@ -212,9 +211,9 @@ public class GameView extends SurfaceView implements Runnable {
         return (System.currentTimeMillis() - mStartMilli) / 1000.0;
     }
 
-    /**
-     *
-     */
+    public int getBulletSpeed() {
+        return mBulletSpeed;
+    }
 
     /*****************************************Public Methods***************************************/
 
@@ -222,13 +221,15 @@ public class GameView extends SurfaceView implements Runnable {
      * Method to initialize all objects and variables that will be drawn.
      */
     public void createLevel(){
-
-
-
         /**
          * set the score
          */
         mScore = 0;
+
+        /**
+         * set the bullet speed.
+         */
+        mBulletSpeed = INITIAL_BULLET_SPEED;
 
         /**
          * Set the gamestate boolean to true.
@@ -240,10 +241,7 @@ public class GameView extends SurfaceView implements Runnable {
          */
         mPlayerShip = EntityFactory.createShip();
 
-        /**
-         * make a player bullet.
-         */
-        mPlayerBullet = new Bullet(getContext(), mBlockSize);
+        mPlayerBullet = EntityFactory.createBullet(mScreenSizeX / 2, mScreenSizeY / 2);
 
         /**
          * Creates the centipede object.
@@ -252,6 +250,7 @@ public class GameView extends SurfaceView implements Runnable {
 
         mOrderedSubSystems.add(new MovementSystem(this));
         mOrderedSubSystems.add(new TouchSystem(this));
+        mOrderedSubSystems.add(new ShootSystem(this));
 
     }
 
@@ -281,10 +280,10 @@ public class GameView extends SurfaceView implements Runnable {
 //                        FONT_SIZE_SMALL, 10 + (FONT_SIZE_SMALL * i++), mPaint);
 //                mCanvas.drawText(getContext().getString(R.string.ship_y) + mPlayerShip.getY(),
 //                        FONT_SIZE_SMALL, 10 + (FONT_SIZE_SMALL * i++), mPaint);
-                mCanvas.drawText(getContext().getString(R.string.bullet_location) +
-                        mPlayerBullet.getX() + getContext().getString(R.string.comma) +
-                        mPlayerBullet.getY() + getContext().getString(R.string.para),
-                        FONT_SIZE_SMALL, 10 + (FONT_SIZE_SMALL * i++), mPaint);
+//                mCanvas.drawText(getContext().getString(R.string.bullet_location) +
+//                        mPlayerBullet.getX() + getContext().getString(R.string.comma) +
+//                        mPlayerBullet.getY() + getContext().getString(R.string.para),
+//                        FONT_SIZE_SMALL, 10 + (FONT_SIZE_SMALL * i++), mPaint);
                 mCanvas.drawText(getContext().getString(R.string.head_x) +
                         mCentipede.getHead().getXCoord(), FONT_SIZE_SMALL,
                         10 + (FONT_SIZE_SMALL * i++), mPaint);
@@ -351,12 +350,12 @@ public class GameView extends SurfaceView implements Runnable {
             /**
              * draw the mBullet
              */
-            if(mPlayerBullet.getStatus()) {
-                mCanvas.drawBitmap(mPlayerBullet.getBitmap(),
-                        mPlayerBullet.getX() - (mPlayerBullet.getWidth() / 2),
-                        mPlayerBullet.getY() - (mPlayerBullet.getHeight() / 2),
-                        mPaint);
-            }
+//            if(mPlayerBullet.getStatus()) {
+//                mCanvas.drawBitmap(mPlayerBullet.getBitmap(),
+//                        mPlayerBullet.getX() - (mPlayerBullet.getWidth() / 2),
+//                        mPlayerBullet.getY() - (mPlayerBullet.getHeight() / 2),
+//                        mPaint);
+//            }
 
             /**
              * Draw it all to the screen
@@ -430,6 +429,7 @@ public class GameView extends SurfaceView implements Runnable {
             {
                 system.processOneGameTick(startFrameTime - lastLoopStartTime);
             }
+
             synchronized(mHolder)
             {
                 //validity check on surface area to catch crashes.
@@ -451,6 +451,7 @@ public class GameView extends SurfaceView implements Runnable {
 
                     mHolder.unlockCanvasAndPost(mCanvas);
                 }
+
             }
 
 
@@ -475,63 +476,63 @@ public class GameView extends SurfaceView implements Runnable {
      * The update method, updates the behavior of the objects in the game so that they
      * can be drawn correctly.
      */
-    public void update() {
-
-/**
- * Place the touch system before the movement system.
- */
-
-
-
-        /**
-         * If there are no more centipede objects to kill, trigger game over boolean.
-         */
-        if (mCentipede.getSize() < 1) {
-            mGameState = true;
-        } else {
-            /**
-             * Update the ship.
-             */
-//            mPlayerShip.update(mShipMovement, mTouchX);
-
-            /**
-             *  Update the centipede
-             */
-            if (!(getElapsedTimeInSeconds() < CENTIPEDE_DELAY)) {
-                mCentipede.update();
-            }
-
-            /**
-             * Check the status of a player bullet.  If it is active, update it's location,
-             * If it is inactive, shoot a new bullet.
-             */
-            if(mPlayerBullet.getStatus()) {
-                mPlayerBullet.update(mFps);
-                CentipedeBody temp = mCentipede.getHead();
-                while (temp != null) {
-                    if (temp.getVisible()) {
-                        if (RectF.intersects(mPlayerBullet.getRect(), temp.getRect())) {
-                            temp.setVisible(false);
-                            mPlayerBullet.setInactive();
-                            mScore = mScore + (mScreenSizeY - (int) temp.getYCoord());
-                            mCentipede.setSize();
-                        }
-                    }
-                    temp = temp.getNext();
-                }
-            } else {
-
-                /**
-                 * Poll the current position of the ship, adjust to the right to center the bullet.
-                 * and then call shoot.
-                 */
-//                mPlayerBullet.shoot(mPlayerShip.getX(), mPlayerShip.getY(), 0);
-            }
-            if(mPlayerBullet.getY() < 0) {
-                mPlayerBullet.setInactive();
-            }
-        }
-    }
+//    public void update() {
+//
+///**
+// * Place the touch system before the movement system.
+// */
+//
+//
+//
+//        /**
+//         * If there are no more centipede objects to kill, trigger game over boolean.
+//         */
+//        if (mCentipede.getSize() < 1) {
+//            mGameState = true;
+//        } else {
+//            /**
+//             * Update the ship.
+//             */
+////            mPlayerShip.update(mShipMovement, mTouchX);
+//
+//            /**
+//             *  Update the centipede
+//             */
+//            if (!(getElapsedTimeInSeconds() < CENTIPEDE_DELAY)) {
+//                mCentipede.update();
+//            }
+//
+//            /**
+//             * Check the status of a player bullet.  If it is active, update it's location,
+//             * If it is inactive, shoot a new bullet.
+//             */
+//            if(mPlayerBullet.getStatus()) {
+//                mPlayerBullet.update(mFps);
+//                CentipedeBody temp = mCentipede.getHead();
+//                while (temp != null) {
+//                    if (temp.getVisible()) {
+//                        if (RectF.intersects(mPlayerBullet.getRect(), temp.getRect())) {
+//                            temp.setVisible(false);
+//                            mPlayerBullet.setInactive();
+//                            mScore = mScore + (mScreenSizeY - (int) temp.getYCoord());
+//                            mCentipede.setSize();
+//                        }
+//                    }
+//                    temp = temp.getNext();
+//                }
+//            } else {
+//
+//                /**
+//                 * Poll the current position of the ship, adjust to the right to center the bullet.
+//                 * and then call shoot.
+//                 */
+////                mPlayerBullet.shoot(mPlayerShip.getX(), mPlayerShip.getY(), 0);
+//            }
+//            if(mPlayerBullet.getY() < 0) {
+//                mPlayerBullet.setInactive();
+//            }
+//        }
+//    }
 
 //    /**
 //     * Getter for the current score, to be used for updating the score in the database.

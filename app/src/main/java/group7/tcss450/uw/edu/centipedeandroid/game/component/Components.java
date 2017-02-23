@@ -49,7 +49,14 @@ public class Components  {
     }
 
     public static class Movable implements Component {
+
         public float dx, dy;
+
+        public Movable() {}
+        public Movable(float x, float y) {
+            this.dx = x;
+            this.dy = y;
+        }
         /** How much to rotate per second (will be multipled by frametime/1000) */
         public float dRotationDegrees;
 
@@ -105,6 +112,14 @@ public class Components  {
         @Override
         public String toString() {
             return "(" + super.toString() + " Damage: " + damage +")";
+        }
+    }
+
+    public static class Shoot implements Component {
+
+        @Override
+        public String toString() {
+            return super.toString();
         }
     }
 }

@@ -33,9 +33,9 @@ public class RenderSystem extends SubSystem {
             int resourceID = mGameView.mEntityManager.getComponent(entityID, Components.CAndroidDrawable.class).resourceID;
 
 
-
                 try {
                     mBitmap = BitmapFactory.decodeResource(mGameView.mContext.getResources(), resourceID);
+                    mBitmap = Bitmap.createScaledBitmap(mBitmap, mGameView.mBlockSize, mGameView.mBlockSize, false);
                 } catch (NullPointerException e) {
                     Log.e("Bitmap: ", e.getMessage());
                 }
@@ -48,16 +48,10 @@ public class RenderSystem extends SubSystem {
                 /**
                  * Draw the mPlayShip.
                  */
-                try {
                     mGameView.mCanvas.drawBitmap(mBitmap,
-                            pos.getX(),
-                            pos.getY(),
+                            pos.getX() - (mGameView.mBlockSize / 2),
+                            pos.getY() - (mGameView.mBlockSize / 2),
                             mGameView.mPaint);
-                } catch (NullPointerException e) {
-                    Log.e("What's Null", "Resource: " + resourceID + ", Position: "
-                            + pos.getX() + ", " + pos.getY());
-                }
-
 
         }
     }
