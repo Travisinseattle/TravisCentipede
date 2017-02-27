@@ -1,10 +1,12 @@
 package group7.tcss450.uw.edu.centipedeandroid.game.system;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.util.Log;
 
+import java.util.HashMap;
 import java.util.Set;
 import java.util.UUID;
 
@@ -21,9 +23,11 @@ import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
 public class RenderSystem extends SubSystem {
 
     private Bitmap mBitmap;
+    private HashMap<Integer, Bitmap> scaledBitmaps;
 
     public RenderSystem(GameView theGameView) {
         super(theGameView);
+        scaledBitmaps = new HashMap<>();
     }
 
     @Override
@@ -31,16 +35,18 @@ public class RenderSystem extends SubSystem {
         Set<UUID> allDrawables = mGameView.mEntityManager
                 .getAllEntitiesPossessingComponent(Components.CAndroidDrawable.class);
         for (UUID entityID : allDrawables) {
-            Components.Position pos = mGameView.mEntityManager
-                    .getComponent(entityID, Components.Position.class);
-            Components.EntitySize size = mGameView.mEntityManager
-                    .getComponent(entityID, Components.EntitySize.class);
-            mBitmap = mGameView.mEntityManager
-                    .getComponent(entityID, Components.CAndroidDrawable.class).getBitMap();
-            mBitmap = Bitmap.createScaledBitmap(mBitmap, (int) size.getEntityWidth(),
-                    (int) size.getEntityHeight(), false);
-            mGameView.mCanvas.drawBitmap(mBitmap, pos.getX() - size.getHalfWidth(),
-                    pos.getY() - size.getHalfHeight(), mGameView.mPaint);
+            int resID= mGameView.mEntityManager.getComponent(entityID, Components.CAndroidDrawable.class).getResourceID();
+            Components.Position pos = mGameView.mEntityManager.getComponent(entityID, Components.Position.class);
+            Components.EntitySize size = mGameView.mEntityManager.getComponent(entityID, Components.EntitySize.class);
+            mBitmap = scaledBitmaps.get(resID);
+            if (mBitmap == null) {
+//                Resources res = mGameView.mContext.getResources();
+                mBitmap = BitmapFactory.decodeResource(mGameView.getResources(), resID);
+                mBitmap = Bitmap.createScaledBitmap(mBitmap, (int) size.getEntityWidth(), (int) size.getEntityHeight(), false);
+                scaledBitmaps.put(resID, mBitmap);
+            }
+
+            mGameView.mCanvas.drawBitmap(mBitmap, pos.getX() - size.getHalfWidth(), pos.getY() - size.getHalfHeight(), mGameView.mPaint);
         }
     }
 

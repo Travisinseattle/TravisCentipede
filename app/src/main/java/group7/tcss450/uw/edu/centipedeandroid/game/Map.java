@@ -12,19 +12,23 @@ public class Map {
     private int height;
     private int width;
     private float tileSize;
+    private int playerZone;
+    private int centipedeSpawnArea;
 
     public Map(int width, int height, int tileSize) {
         this.width = width;
         this.height = height;
         this.tileSize = tileSize;
+        this.playerZone = 3;
+        this.centipedeSpawnArea = 1;
     }
 
     public ArrayList<Components.Position> getMushroomPositions() {
         ArrayList<Components.Position> result = new ArrayList<>();
         for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
+            for (int j = centipedeSpawnArea; j < height - playerZone; j++) {
                 if (Math.random() > 0.6) {
-                    result.add(new Components.Position(i * tileSize, j * tileSize));
+                    result.add(new Components.Position((i * tileSize)  + tileSize,(j * tileSize) + tileSize));
                 }
             }
         }
