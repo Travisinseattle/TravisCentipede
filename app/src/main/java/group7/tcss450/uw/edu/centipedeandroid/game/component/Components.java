@@ -126,6 +126,14 @@ public class Components  {
     public static class Damage implements Component {
         private int damage;
 
+        public Damage() {
+            damage = 0;
+        }
+
+        public Damage(int value) {
+            damage = value;
+        }
+
         public int getDamage() {
             return damage;
         }

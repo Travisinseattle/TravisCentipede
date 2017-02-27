@@ -1,6 +1,8 @@
 package group7.tcss450.uw.edu.centipedeandroid.game;
 
 
+import java.util.Random;
+
 import group7.tcss450.uw.edu.centipedeandroid.R;
 import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
 
@@ -25,8 +27,9 @@ public class EntityFactory {
         mushroom.add(new Components.EntitySize(GameActivity.getBlockSize(),
                 GameActivity.getBlockSize()));
         mushroom.add(new Components.Health());
+        mushroom.add(new Components.Damage(new Random().nextInt(3))); // for now lets give the mushroom some random damage
         mushroom.add(p);
-        mushroom.add(new Components.CAndroidDrawable(R.drawable.shroom));
+        mushroom.add(new Components.DamagedDrawable(new int[] {R.drawable.shroom, R.drawable.shroom3, R.drawable.shroom2, R.drawable.shroom1}));
         return mushroom;
     }
 

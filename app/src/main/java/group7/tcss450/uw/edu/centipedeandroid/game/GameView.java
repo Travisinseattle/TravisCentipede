@@ -18,6 +18,7 @@ import group7.tcss450.uw.edu.centipedeandroid.R;
 import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
 import group7.tcss450.uw.edu.centipedeandroid.game.manager.EntityManager;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.MovementSystem;
+import group7.tcss450.uw.edu.centipedeandroid.game.system.RenderDamagedSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.RenderSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.ShootSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.TouchSystem;
@@ -154,6 +155,7 @@ public class GameView extends SurfaceView implements Runnable {
     public EntityManager mEntityManager;
 
     private RenderSystem mRenderSystem;
+    private RenderDamagedSystem mRenderDamagedSystem;
 
     private Map mMap;
 
@@ -183,6 +185,7 @@ public class GameView extends SurfaceView implements Runnable {
         mEntityManager = new EntityManager();
         MetaEntity.defaultEntityManager = mEntityManager;
         mRenderSystem = new RenderSystem(this);
+        mRenderDamagedSystem = new RenderDamagedSystem(this);
 
         /**
          * set the value for the screen size.
@@ -469,6 +472,7 @@ public class GameView extends SurfaceView implements Runnable {
 
 //                mRenderSystem.drawBackground();
                     mRenderSystem.processOneGameTick(startFrameTime);
+                    mRenderDamagedSystem.processOneGameTick(startFrameTime);
 
                     mHolder.unlockCanvasAndPost(mCanvas);
                 }
