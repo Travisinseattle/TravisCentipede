@@ -11,11 +11,14 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import group7.tcss450.uw.edu.centipedeandroid.R;
+import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
 import group7.tcss450.uw.edu.centipedeandroid.game.manager.EntityManager;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.MovementSystem;
+import group7.tcss450.uw.edu.centipedeandroid.game.system.RenderDamagedSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.RenderSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.ShootSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.TouchSystem;
@@ -152,6 +155,9 @@ public class GameView extends SurfaceView implements Runnable {
     public EntityManager mEntityManager;
 
     private RenderSystem mRenderSystem;
+    private RenderDamagedSystem mRenderDamagedSystem;
+
+    private Map mMap;
 
     /*****************************************Constructor******************************************/
 
@@ -179,6 +185,7 @@ public class GameView extends SurfaceView implements Runnable {
         mEntityManager = new EntityManager();
         MetaEntity.defaultEntityManager = mEntityManager;
         mRenderSystem = new RenderSystem(this);
+        mRenderDamagedSystem = new RenderDamagedSystem(this);
 
         /**
          * set the value for the screen size.
@@ -187,7 +194,7 @@ public class GameView extends SurfaceView implements Runnable {
         mScreenSizeY = screenY;
 
         this.mBlockSize = block;
-
+        mMap = new Map(mScreenSizeX / mBlockSize, mScreenSizeY /mBlockSize, mBlockSize);
         /**
          * Initialize the level.
          */
@@ -253,6 +260,11 @@ public class GameView extends SurfaceView implements Runnable {
          * Make a playership to be used in the game.
          */
         mPlayerShip = EntityFactory.createShip(this);
+        ArrayList<Components.Position> mushroomPositions = mMap.getMushroomPositions();
+
+        for (Components.Position p : mushroomPositions) {
+            EntityFactory.createMushroom(this, p);
+        }
 
 
         /**
@@ -460,6 +472,7 @@ public class GameView extends SurfaceView implements Runnable {
 
 //                mRenderSystem.drawBackground();
                     mRenderSystem.processOneGameTick(startFrameTime);
+                    mRenderDamagedSystem.processOneGameTick(startFrameTime);
 
                     mHolder.unlockCanvasAndPost(mCanvas);
                 }

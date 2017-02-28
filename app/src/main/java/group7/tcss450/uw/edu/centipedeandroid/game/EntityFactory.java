@@ -1,6 +1,8 @@
 package group7.tcss450.uw.edu.centipedeandroid.game;
 
 
+import java.util.Random;
+
 import group7.tcss450.uw.edu.centipedeandroid.R;
 import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
 
@@ -16,7 +18,18 @@ public class EntityFactory {
                 GameActivity.getBlockSize()));
         mushroom.add(new Components.Health());
         mushroom.add(new Components.Position());
-        mushroom.add(new Components.CAndroidDrawable(theGameView, R.drawable.shroom));
+        mushroom.add(new Components.CAndroidDrawable(R.drawable.shroom));
+        return mushroom;
+    }
+
+    public static MetaEntity createMushroom(GameView theGameView, Components.Position p) { // Mushrooms will look like aliens for now.
+        MetaEntity mushroom = new MetaEntity();
+        mushroom.add(new Components.EntitySize(GameActivity.getBlockSize(),
+                GameActivity.getBlockSize()));
+        mushroom.add(new Components.Health());
+        mushroom.add(new Components.Damage(new Random().nextInt(3))); // for now lets give the mushroom some random damage
+        mushroom.add(p);
+        mushroom.add(new Components.DamagedDrawable(new int[] {R.drawable.shroom, R.drawable.shroom3, R.drawable.shroom2, R.drawable.shroom1}));
         return mushroom;
     }
 
@@ -24,7 +37,7 @@ public class EntityFactory {
         MetaEntity ship = new MetaEntity();
         ship.add(new Components.EntitySize(GameActivity.getBlockSize() * 2,
                 GameActivity.getBlockSize()));
-        ship.add(new Components.CAndroidDrawable(theGameView, R.drawable.alienblaster));
+        ship.add(new Components.CAndroidDrawable(R.drawable.alienblaster));
         ship.add(new Components.Touch());
         ship.add(new Components.Movable());
         ship.add(new Components.Position((GameActivity.mWidth / 2),  (GameActivity.mHeight -
@@ -38,7 +51,7 @@ public class EntityFactory {
         MetaEntity bullet = new MetaEntity();
         bullet.add(new Components.EntitySize(GameActivity.getBlockSize() / 2,
                 GameActivity.getBlockSize() / 2));
-        bullet.add(new Components.CAndroidDrawable(theGameView, R.drawable.fireball));
+        bullet.add(new Components.CAndroidDrawable(R.drawable.fireball));
         bullet.add(new Components.Movable(0, - 100));
                 //GameActivity.getBlockSize()));
         bullet.add(new Components.Position(x, y));

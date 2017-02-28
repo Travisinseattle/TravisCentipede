@@ -25,12 +25,10 @@ public class ShootSystem extends SubSystem {
     private int counter;
     private int speed;
     private List<UUID> killList;
-    private GameView gameView;
 
 
     public ShootSystem(GameView theGameView) {
         super(theGameView);
-        this.gameView = theGameView;
         counter = 0;
         speed = theGameView.getBulletSpeed();
     }
@@ -47,7 +45,7 @@ public class ShootSystem extends SubSystem {
             Components.Position pos = mGameView.mEntityManager.getComponent(entityID, Components.Position.class);
             if (counter > speed) {
                 counter -= speed;
-                EntityFactory.createBullet(gameView, pos.getX(), pos.getY() );
+                EntityFactory.createBullet(mGameView, pos.getX(), pos.getY() );
             }
         }
 

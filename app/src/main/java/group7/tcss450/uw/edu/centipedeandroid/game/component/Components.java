@@ -17,15 +17,14 @@ import group7.tcss450.uw.edu.centipedeandroid.game.GameView;
 public class Components  {
 
     public static class CAndroidDrawable implements Component {
-        private Bitmap entityBitmap;
+        private int resourceID;
 
-        public CAndroidDrawable(GameView gameView, int resourceID) {
-            this.entityBitmap = BitmapFactory.decodeResource(gameView.mContext.getResources(),
-                    resourceID);
+        public CAndroidDrawable(int resourceID) {
+            this.resourceID = resourceID;
         }
 
-        public Bitmap getBitMap() {
-            return this.entityBitmap;
+        public int getResourceID() {
+            return resourceID;
         }
     }
 
@@ -126,6 +125,14 @@ public class Components  {
 
     public static class Damage implements Component {
         private int damage;
+
+        public Damage() {
+            damage = 0;
+        }
+
+        public Damage(int value) {
+            damage = value;
+        }
 
         public int getDamage() {
             return damage;
