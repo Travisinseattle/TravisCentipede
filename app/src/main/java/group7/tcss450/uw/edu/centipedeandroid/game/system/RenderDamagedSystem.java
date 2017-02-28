@@ -1,14 +1,14 @@
 package group7.tcss450.uw.edu.centipedeandroid.game.system;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+        import android.graphics.BitmapFactory;
 
-import java.util.Set;
-import java.util.UUID;
+        import java.util.Set;
+        import java.util.UUID;
 
-import group7.tcss450.uw.edu.centipedeandroid.game.GameView;
-import group7.tcss450.uw.edu.centipedeandroid.game.SubSystem;
-import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
+        import group7.tcss450.uw.edu.centipedeandroid.game.GameView;
+        import group7.tcss450.uw.edu.centipedeandroid.game.SubSystem;
+        import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
 
 /**
  * Created by nicholas on 2/22/17.
