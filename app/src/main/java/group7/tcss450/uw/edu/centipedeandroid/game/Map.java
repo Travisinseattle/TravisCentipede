@@ -27,9 +27,10 @@ public class Map {
         ArrayList<Components.Position> result = new ArrayList<>();
         for (int i = 0; i < width; i++) {
             for (int j = centipedeSpawnArea; j < height - playerZone; j++) {
-                if (Math.random() > 0.6) {
-                    result.add(new Components.Position((i * tileSize)  + tileSize,(j * tileSize) + tileSize));
+                if (Math.random() > 0.7) {
+                    result.add(new Components.Position(i * tileSize,j * tileSize));
                 }
+//                result.add(new Components.Position(i * tileSize,j * tileSize));
             }
         }
         return result;

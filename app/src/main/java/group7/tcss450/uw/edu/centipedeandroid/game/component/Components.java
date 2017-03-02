@@ -1,14 +1,10 @@
 package group7.tcss450.uw.edu.centipedeandroid.game.component;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.RectF;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
+
+import java.util.UUID;
 
 import group7.tcss450.uw.edu.centipedeandroid.game.Component;
-import group7.tcss450.uw.edu.centipedeandroid.game.GameActivity;
-import group7.tcss450.uw.edu.centipedeandroid.game.GameView;
 
 /**
  * Created by nicholas on 2/16/17.
@@ -16,23 +12,39 @@ import group7.tcss450.uw.edu.centipedeandroid.game.GameView;
 
 public class Components  {
 
-    public static class CAndroidDrawable implements Component {
-        private int resourceID;
+    public static class ParentComponent implements Component {
+        public UUID[] mySegments;
 
-        public CAndroidDrawable(int resourceID) {
-            this.resourceID = resourceID;
+        public ParentComponent (UUID[] theSegmentIDs) {
+            mySegments = theSegmentIDs;
+        }
+    }
+
+    public static class SegmentComponent implements Component {
+        public UUID myParentEntity;
+
+        public SegmentComponent(UUID theParentEntity) {
+            myParentEntity = theParentEntity;
+        }
+    }
+
+    public static class CAndroidDrawable implements Component {
+        private int myResourceID;
+
+        public CAndroidDrawable(int theResourceID) {
+            myResourceID = theResourceID;
         }
 
-        public int getResourceID() {
-            return resourceID;
+        public int getMyResourceID() {
+            return myResourceID;
         }
     }
 
     public static class DamagedDrawable implements Component {
         // 0 index is no damage
-        public int[] resourceID;
-        public DamagedDrawable(int[] resourceID) {
-            this.resourceID = resourceID;
+        public int[] myResourceID;
+        public DamagedDrawable(int[] theResourceID) {
+            myResourceID = theResourceID;
         }
     }
 

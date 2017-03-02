@@ -1,16 +1,12 @@
 package group7.tcss450.uw.edu.centipedeandroid.game.system;
 
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.util.Log;
 
 import java.util.HashMap;
 import java.util.Set;
 import java.util.UUID;
 
-import group7.tcss450.uw.edu.centipedeandroid.R;
 import group7.tcss450.uw.edu.centipedeandroid.game.GameView;
 import group7.tcss450.uw.edu.centipedeandroid.game.SubSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
@@ -35,7 +31,7 @@ public class RenderSystem extends SubSystem {
         Set<UUID> allDrawables = mGameView.mEntityManager
                 .getAllEntitiesPossessingComponent(Components.CAndroidDrawable.class);
         for (UUID entityID : allDrawables) {
-            int resID= mGameView.mEntityManager.getComponent(entityID, Components.CAndroidDrawable.class).getResourceID();
+            int resID= mGameView.mEntityManager.getComponent(entityID, Components.CAndroidDrawable.class).getMyResourceID();
             Components.Position pos = mGameView.mEntityManager.getComponent(entityID, Components.Position.class);
             Components.EntitySize size = mGameView.mEntityManager.getComponent(entityID, Components.EntitySize.class);
             mBitmap = scaledBitmaps.get(resID);

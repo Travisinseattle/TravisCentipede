@@ -31,20 +31,37 @@ public class MovementSystem extends SubSystem {
      */
     @Override
     public void processOneGameTick(long lastFrameTime) {
-        Set<UUID> allMove = mGameView.mEntityManager
-                .getAllEntitiesPossessingComponent(Components.Movable.class);
+        Set<UUID> allMove = mGameView.mEntityManager.getAllEntitiesPossessingComponent(Components.Movable.class);
         for (UUID entityID : allMove) {
             Components.Movable move = mGameView.mEntityManager.getComponent(entityID, Components.Movable.class);
             Components.Position pos = mGameView.mEntityManager.getComponent(entityID, Components.Position.class);
+            float x = pos.getX();
+            float y = pos.getY();
+            if (move.dx != 0 || move.dy != 0) {
+                if (move.dx != 0) {
+                    pos.setX(x + move.dx);
+                }
+                if (move.dy != 0) {
+                    pos.setY(y + move.dy);
+                }
+                if (mGameView.mEntityManager.hasComponent(entityID, Components.HitBox.class)) {
+                    Components.HitBox hitBox = mGameView.mEntityManager.getComponent(entityID, Components.HitBox.class);
 
-            pos.setX(pos.getX() + move.dx);
-            pos.setY(pos.getY() + move.dy);
+                    x = pos.getX();
+                    y = pos.getY();
+                    Components.EntitySize es = mGameView.mEntityManager.getComponent(entityID, Components.EntitySize.class);
+                    hitBox.setHitBox(x, y, x + es.getEntityWidth(), y + es.getEntityHeight());
+
+                }
+
+            }
+
         }
 
     }
 
     @Override
     public String getSimpleName() {
-        return "Health";
+        return "Movement";
     }
 }

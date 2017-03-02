@@ -17,11 +17,11 @@ import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
 
 public class RenderDamagedSystem extends SubSystem {
     private Bitmap mBitmap;
-    private HashMap<Integer, Bitmap> scaledBitmaps;
+    private HashMap<Integer, Bitmap> myScaledBitmaps;
 
     public RenderDamagedSystem(GameView theGameView) {
         super(theGameView);
-        scaledBitmaps = new HashMap<>();
+        myScaledBitmaps = new HashMap<>();
     }
 
 
@@ -32,17 +32,17 @@ public class RenderDamagedSystem extends SubSystem {
             Components.Position pos = mGameView.mEntityManager.getComponent(entityID, Components.Position.class);
             Components.Damage damage = mGameView.mEntityManager.getComponent(entityID, Components.Damage.class);
             Components.EntitySize size = mGameView.mEntityManager.getComponent(entityID, Components.EntitySize.class);
-            int resourceIDs[] = mGameView.mEntityManager.getComponent(entityID, Components.DamagedDrawable.class).resourceID;
+            int resourceIDs[] = mGameView.mEntityManager.getComponent(entityID, Components.DamagedDrawable.class).myResourceID;
             int value = damage.getDamage();
             if (value > resourceIDs.length - 1) {
                 value = resourceIDs.length - 1;
             }
             int resID = resourceIDs[value];
-            mBitmap = scaledBitmaps.get(resID);
+            mBitmap = myScaledBitmaps.get(resID);
             if (mBitmap == null) {
                 mBitmap = BitmapFactory.decodeResource(mGameView.getResources(), resID);
                 mBitmap = Bitmap.createScaledBitmap(mBitmap, (int) size.getEntityWidth(), (int) size.getEntityHeight(), false);
-                scaledBitmaps.put(resID, mBitmap);
+                myScaledBitmaps.put(resID, mBitmap);
             }
             mGameView.mCanvas.drawBitmap(mBitmap, pos.getX(), pos.getY(), mGameView.mPaint);
 

@@ -17,7 +17,9 @@ import java.util.LinkedList;
 import group7.tcss450.uw.edu.centipedeandroid.R;
 import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
 import group7.tcss450.uw.edu.centipedeandroid.game.manager.EntityManager;
+import group7.tcss450.uw.edu.centipedeandroid.game.system.CollisionSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.MovementSystem;
+import group7.tcss450.uw.edu.centipedeandroid.game.system.PhysicsSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.RenderDamagedSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.RenderSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.ShootSystem;
@@ -156,8 +158,11 @@ public class GameView extends SurfaceView implements Runnable {
 
     private RenderSystem mRenderSystem;
     private RenderDamagedSystem mRenderDamagedSystem;
+    public ArrayList<Collision> myCollisions;
 
     private Map mMap;
+
+//    private A
 
     /*****************************************Constructor******************************************/
 
@@ -186,6 +191,7 @@ public class GameView extends SurfaceView implements Runnable {
         MetaEntity.defaultEntityManager = mEntityManager;
         mRenderSystem = new RenderSystem(this);
         mRenderDamagedSystem = new RenderDamagedSystem(this);
+        myCollisions = new ArrayList<>();
 
         /**
          * set the value for the screen size.
@@ -273,11 +279,18 @@ public class GameView extends SurfaceView implements Runnable {
         mCentipede = new Centipede(getContext(), mScreenSizeX, mScreenSizeY, mBlockSize);
 
         mOrderedSubSystems.add(new MovementSystem(this));
+        mOrderedSubSystems.add(new PhysicsSystem(this));
+        mOrderedSubSystems.add(new CollisionSystem(this));
         mOrderedSubSystems.add(new TouchSystem(this));
         mOrderedSubSystems.add(new ShootSystem(this));
 
     }
 
+    private void renderScore() {
+        mCanvas.drawText(getResources().getString(R.string.score) + mScore, FONT_SIZE_LARGE,
+                FONT_SIZE_LARGE + 10, mPaint);
+        mCanvas.drawText("Lives: 3", mScreenSizeX - FONT_SIZE_LARGE * 2, FONT_SIZE_LARGE + 10, mPaint);
+    }
     /**
      * Method to draw the mGameView and display graphics
      */
@@ -398,7 +411,7 @@ public class GameView extends SurfaceView implements Runnable {
      */
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
-
+//        mTouchX = motionEvent.
         mTouchX = (int) motionEvent.getX();
         mTouchY = (int) motionEvent.getY();
 
@@ -473,7 +486,7 @@ public class GameView extends SurfaceView implements Runnable {
 //                mRenderSystem.drawBackground();
                     mRenderSystem.processOneGameTick(startFrameTime);
                     mRenderDamagedSystem.processOneGameTick(startFrameTime);
-
+                    renderScore();
                     mHolder.unlockCanvasAndPost(mCanvas);
                 }
 
