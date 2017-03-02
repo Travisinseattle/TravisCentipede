@@ -53,7 +53,7 @@ public class ShootSystem extends SubSystem {
                 .getAllEntitiesPossessingComponent(Components.Shoot.class);
         for (UUID entityID : allShoot) {
             Components.Position pos = mGameView.mEntityManager.getComponent(entityID, Components.Position.class);
-            if (pos.getY() < 0 ) {
+            if (pos.getY() < mGameView.mBlockSize ) {
                 killList.add(entityID);
             }
         }
