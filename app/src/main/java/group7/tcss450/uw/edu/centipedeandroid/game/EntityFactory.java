@@ -31,15 +31,15 @@ public class EntityFactory {
 //        return centipede;
 //    }
 
-    public static MetaEntity createCentipedeSegment(UUID theParent) {
-        MetaEntity segment = new MetaEntity();
-        segment.add(new Components.EntitySize());
-        segment.add(new Components.Health());
-        segment.add(new Components.Damage());
-        segment.add(new Components.Movable());
-        segment.add(new Components.SegmentComponent(theParent));
-        return segment;
-    }
+//    public static MetaEntity createCentipedeSegment(UUID theParent) {
+//        MetaEntity segment = new MetaEntity();
+//        segment.add(new Components.EntitySize());
+//        segment.add(new Components.Health());
+//        segment.add(new Components.Damage());
+//        segment.add(new Components.Movable());
+//        segment.add(new Components.SegmentComponent(theParent));
+//        return segment;
+//    }
 
     public static MetaEntity createMushroom() { // Mushrooms will look like aliens for now.
         MetaEntity mushroom = new MetaEntity();
