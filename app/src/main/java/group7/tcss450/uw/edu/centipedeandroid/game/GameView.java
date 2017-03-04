@@ -292,6 +292,19 @@ public class GameView extends SurfaceView implements Runnable {
 
     }
 
+    /**
+     * Called when the player wins the game.
+     */
+    public void gameWin() {
+
+    }
+
+    /**
+     * Called when the player loses the game.
+     */
+    public void gameLose() {
+
+    }
     private void renderScore() {
         mCanvas.drawText(getResources().getString(R.string.score) + mScore, FONT_SIZE_LARGE,
                 FONT_SIZE_LARGE + 10, mPaint);
