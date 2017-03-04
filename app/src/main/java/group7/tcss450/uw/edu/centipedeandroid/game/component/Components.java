@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import group7.tcss450.uw.edu.centipedeandroid.game.Component;
 import group7.tcss450.uw.edu.centipedeandroid.game.EntityFactory;
+import group7.tcss450.uw.edu.centipedeandroid.game.GameView;
 import group7.tcss450.uw.edu.centipedeandroid.game.MetaEntity;
 
 /**
@@ -14,6 +15,69 @@ import group7.tcss450.uw.edu.centipedeandroid.game.MetaEntity;
  */
 
 public class Components  {
+
+    public static class Hazard implements Component {
+        public enum Team {
+            ALL,
+            RED,
+            BLUE,
+            WHITE
+        }
+        public int myDamage;
+        public Hazard() {
+            myDamage = 0;
+        }
+        public Hazard(int theDamage) {
+            myDamage = theDamage;
+        }
+    }
+
+    public static class Team implements Component {
+        public enum Color {
+
+            Red,
+            Blue,
+            White
+        }
+        public Color myTeam;
+        public Team(Color theTeam) {
+            myTeam = theTeam;
+        }
+    }
+
+    public interface CollisionListener {
+        void onCollision(GameView v, UUID theEntity, UUID theOtherEntity);
+    }
+
+    public static class Obstacle implements Component, CollisionListener {
+        public boolean mySolid;
+        public Obstacle(boolean theSolid) {
+            mySolid = theSolid;
+        }
+
+        @Override
+        public void onCollision(GameView v, UUID theEntity, UUID theOtherEntity) {
+            if (mySolid) {
+
+
+            }
+
+        }
+    }
+
+    public static class Collision implements Component {
+        public UUID collidedWith;
+        public Collision() {
+            collidedWith = null;
+        }
+        public Collision(UUID theCollision) {
+            collidedWith = theCollision;
+        }
+    }
+
+//    public static class Collided implements Component {
+//        public UUID
+//    }
 
     public static class Direction implements Component {
 
@@ -162,23 +226,29 @@ public class Components  {
     }
 
     public static class Health implements Component {
-        private int hitPoints;
+        private final int myMaxHitPoints;
+        private int myHitPoints;
 
-        public Health() {
-            this.hitPoints = 1;
+        public Health(final int theHitPoints) {
+            myMaxHitPoints = theHitPoints;
+            myHitPoints = theHitPoints;
+
         }
 
-        public void setHitPoints(int amount) {
-            this.hitPoints = amount;
+        public void setHitPoints(final int amount) {
+            myHitPoints = amount;
         }
 
+        public int getMyMaxHitPoints() {
+            return myMaxHitPoints;
+        }
         public int getHitPoints() {
-            return this.hitPoints;
+            return myHitPoints;
         }
 
         @Override
         public String toString() {
-            return "("+super.toString()+"hitPoints: " + hitPoints +")";
+            return "("+super.toString()+"hitPoints: " + myHitPoints +")";
         }
     }
 
@@ -223,6 +293,8 @@ public class Components  {
     }
 
     public static class HitBox implements Component {
+
+        public boolean mySolid = true;
 
         RectF hitBox;
 

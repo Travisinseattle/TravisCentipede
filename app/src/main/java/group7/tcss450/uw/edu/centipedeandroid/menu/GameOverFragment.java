@@ -40,14 +40,14 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_login, container, false);
-        Button b = (Button) v.findViewById(R.id.playAgain);
-        b.setOnClickListener(this);
-        b = (Button) v.findViewById(R.id.mainMenu);
-        b.setOnClickListener(this);
+//        Button b = (Button) v.findViewById(R.id.playAgain);
+//        b.setOnClickListener(this);
+//        b = (Button) v.findViewById(R.id.mainMenu);
+//        b.setOnClickListener(this);
         Bundle args = getArguments();
         int score = args.getInt("Score", 0);
-        TextView textView = (TextView) v.findViewById(R.id.score);
-        textView.setText("Score " + score);
+//        TextView textView = (TextView) v.findViewById(R.id.score);
+//        textView.setText("Score " + score);
         return v;
     }
 
@@ -70,19 +70,19 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId())
-        {
-            case R.id.playAgain:
-                mListener.onStartGame();
-                break;
-            case R.id.mainMenu:
-                MenuFragment menuFrag = new MenuFragment();
-                this.getFragmentManager().beginTransaction()
-                       .replace(R.id.activity_menu, menuFrag, "Menu Fragment")
-                        .addToBackStack(null)
-                       .commit();
-                break;
-        }
+//        switch (v.getId())
+//        {
+//            case R.id.playAgain:
+//                mListener.onStartGame();
+//                break;
+//            case R.id.mainMenu:
+//                MenuFragment menuFrag = new MenuFragment();
+//                this.getFragmentManager().beginTransaction()
+//                       .replace(R.id.activity_menu, menuFrag, "Menu Fragment")
+//                        .addToBackStack(null)
+//                       .commit();
+//                break;
+//        }
     }
 
     /**

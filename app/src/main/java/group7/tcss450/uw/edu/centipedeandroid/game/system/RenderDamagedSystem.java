@@ -30,11 +30,12 @@ public class RenderDamagedSystem extends SubSystem {
         Set<UUID> allDrawables = mGameView.mEntityManager.getAllEntitiesPossessingComponent(Components.DamagedDrawable.class);
         for (UUID entityID : allDrawables) {
             Components.Position pos = mGameView.mEntityManager.getComponent(entityID, Components.Position.class);
-            Components.Damage damage = mGameView.mEntityManager.getComponent(entityID, Components.Damage.class);
+            Components.Health health = mGameView.mEntityManager.getComponent(entityID, Components.Health.class);
             Components.EntitySize size = mGameView.mEntityManager.getComponent(entityID, Components.EntitySize.class);
             int resourceIDs[] = mGameView.mEntityManager.getComponent(entityID, Components.DamagedDrawable.class).myResourceID;
-            int value = damage.getDamage();
-            if (value > resourceIDs.length - 1) {
+            int value = health.getMyMaxHitPoints() - health.getHitPoints();
+//            int value = 0;
+            if (value > resourceIDs.length) {
                 value = resourceIDs.length - 1;
             }
             int resID = resourceIDs[value];

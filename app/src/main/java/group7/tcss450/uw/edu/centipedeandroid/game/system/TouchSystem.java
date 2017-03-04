@@ -30,11 +30,19 @@ public class TouchSystem extends SubSystem {
             Components.Position pos = mGameView.mEntityManager.getComponent(entityID, Components.Position.class);
             if (mGameView.mShipMovement) {
                 if (mGameView.mTouchX < pos.getX()) {
-                    move.setDx(-100.f);
+                    move.setDx(-25.f);
                 }
 
                 if (mGameView.mTouchX > pos.getX()) {
-                    move.setDx(100.f);
+                    move.setDx(25.f);
+                }
+
+                if (mGameView.mTouchY > pos.getY()) {
+                    move.setDy(25.f);
+                }
+
+                if (mGameView.mTouchY < pos.getY()) {
+                    move.setDy(-25.f);
                 }
 
 //                move.setDx(mGameView.mTouchX - pos.getX());
