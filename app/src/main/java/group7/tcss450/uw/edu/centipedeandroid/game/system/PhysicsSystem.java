@@ -1,5 +1,6 @@
 package group7.tcss450.uw.edu.centipedeandroid.game.system;
 
+import android.graphics.RectF;
 import android.util.Log;
 
 import java.util.Set;
@@ -22,20 +23,22 @@ public class PhysicsSystem extends SubSystem {
         Set<UUID> allHitBoxes = mGameView.mEntityManager.getAllEntitiesPossessingComponent(Components.HitBox.class);
         for (UUID id: allHitBoxes) {
             if (!mGameView.mEntityManager.hasComponent(id, Components.Collision.class)) {
-            if (mGameView.mEntityManager.hasComponent(id, Components.Movable.class)) {
+                if (mGameView.mEntityManager.hasComponent(id, Components.Movable.class)) {
 
-                    Components.HitBox box = mGameView.mEntityManager.getComponent(id, Components.HitBox.class);
-                    for (UUID otherID : allHitBoxes) {
-                        if (otherID.equals(id))
-                            continue;
-                        Components.HitBox otherBox = mGameView.mEntityManager.getComponent(otherID, Components.HitBox.class);
-                        if (otherBox.getHitBox().intersect(box.getHitBox())) {
-                            mGameView.mEntityManager.addComponent(id, new Components.Collision(otherID));
+                        Components.HitBox box = mGameView.mEntityManager.getComponent(id, Components.HitBox.class);
+                        for (UUID otherID : allHitBoxes) {
+                            if (otherID.equals(id))
+                                continue;
+                            Components.HitBox otherBox = mGameView.mEntityManager.getComponent(otherID, Components.HitBox.class);
+    //                        if (otherBox.getHitBox().intersect(box.getHitBox())) {
+                            if (RectF.intersects(box.getHitBox(), otherBox.getHitBox())) {
+                                mGameView.mEntityManager.addComponent(id, new Components.Collision(otherID));
+                                Log.e("Hitbox", "box:" + id + ", otherBox: " + otherID);
+                            }
+
                         }
-
                     }
                 }
-            }
         }
 
     }

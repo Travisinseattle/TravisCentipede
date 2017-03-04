@@ -86,19 +86,24 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             default:
                 if (mListener !=null) {
                     View test = getView();
+                    assert test != null;
                     EditText userText =( EditText)test.findViewById(R.id.userText);
                     String user = userText.getText().toString();
                     EditText passText = ((EditText)test.findViewById(R.id.passText));
                     String pass = passText.getText().toString();
-                    if (user != "" && pass != "")
-                        mListener.onLoginInteraction(user, pass);
+                    //int numDigits = Utilities.getNumberDigits(pass);
+                    if (user.equals("") || user.length() < 4) {
+                        userText.setError("You must provide a user name 4 digits or longer.!");
+                    } else if (pass.equals("") || pass.length() < 6) {
+                        passText.setError("You must provide a password 6 digits or longer.!");
+                    } else if ( user.equals(pass) || pass.equals(user)) {
+                        userText.setError("User and Passwords cannot be the same.");
+                        passText.setError("User and Passwords cannot be the same.");
+                    } else if (!pass.toLowerCase().equals(pass)) {
+
+                    }
                     else {
-                        if (user == "") {
-                            passText.setError("Enter a username!");
-                        }
-                        if (pass == "") {
-                            passText.setError("Enter a password!");
-                        }
+                            mListener.onLoginInteraction(user, pass);
                     }
                 }
                 break;

@@ -300,7 +300,7 @@ public class Components  {
         }
     }
 
-    public static class HitBox implements Component {
+    public static class HitBox extends RectF implements Component {
 
         public boolean mySolid = true;
 

@@ -45,7 +45,7 @@ public class ShootSystem extends SubSystem {
             Components.Position pos = mGameView.mEntityManager.getComponent(entityID, Components.Position.class);
             if (counter > speed) {
                 counter -= speed;
-                EntityFactory.createBullet(mGameView, pos.getX(), pos.getY() );
+                EntityFactory.createBullet(pos.getX(), pos.getY() );
             }
         }
 

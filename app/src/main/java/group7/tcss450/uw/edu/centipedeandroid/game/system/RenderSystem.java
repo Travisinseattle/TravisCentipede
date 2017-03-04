@@ -42,7 +42,11 @@ public class RenderSystem extends SubSystem {
                 scaledBitmaps.put(resID, mBitmap);
             }
 
-            mGameView.mCanvas.drawBitmap(mBitmap, pos.getX() - size.getHalfWidth(), pos.getY() - size.getHalfHeight(), mGameView.mPaint);
+            if (!mGameView.mEntityManager.hasComponent(entityID, Components.Touch.class)) {
+                mGameView.mCanvas.drawBitmap(mBitmap, pos.getX(), pos.getY(), mGameView.mPaint);
+            } else {
+                mGameView.mCanvas.drawBitmap(mBitmap, pos.getX() - size.getHalfWidth(), pos.getY() - size.getHalfHeight(), mGameView.mPaint);
+            }
         }
     }
 

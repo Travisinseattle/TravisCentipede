@@ -26,7 +26,7 @@ public class CentMovementSystem extends SubSystem{
             Components.Movable move = mGameView.mEntityManager.getComponent(entityID, Components.Movable.class);
             Components.Position pos = mGameView.mEntityManager.getComponent(entityID, Components.Position.class);
             Components.Direction dir = mGameView.mEntityManager.getComponent(entityID, Components.Direction.class);
-            if (pos.getX() > 1400) {
+            if (pos.getX() > mGameView.getmScreenSizeX()) {
                 dir.swapDir(dir.getDir());
                 pos.setY(pos.getY() + mGameView.mBlockSize/2);
                 move.setDx(-10);

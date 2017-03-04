@@ -69,7 +69,7 @@ public class EntityFactory {
         return mushroom;
     }
 
-    public static MetaEntity createShip(GameView theGameView) {
+    public static MetaEntity createShip() {
         MetaEntity ship = new MetaEntity();
         ship.add(new Components.EntitySize(GameActivity.getBlockSize() * 2,
                 GameActivity.getBlockSize()));
@@ -83,7 +83,7 @@ public class EntityFactory {
         return ship;
     }
 
-    public static MetaEntity createBullet(GameView theGameView, float x, float y) {
+    public static MetaEntity createBullet(float x, float y) {
         MetaEntity bullet = new MetaEntity();
         Components.EntitySize es = new Components.EntitySize(GameActivity.getBlockSize() / 2,
                 GameActivity.getBlockSize() / 2);
@@ -91,7 +91,6 @@ public class EntityFactory {
         bullet.add(new Components.CAndroidDrawable(R.drawable.fireball));
         bullet.add(new Components.Health(1));
         bullet.add(new Components.Movable(0, - 100));
-                //GameActivity.getBlockSize()));
         bullet.add(new Components.Position(x, y));
         bullet.add(new Components.Hazard(1));
         bullet.add(new Components.Shoot());
@@ -100,15 +99,17 @@ public class EntityFactory {
         return bullet;
     }
 
-    public static MetaEntity createCentBody(GameView theGameView, float x, float y) {
+    public static MetaEntity createCentBody(float x, float y) {
         MetaEntity centBody = new MetaEntity();
-        centBody.add(new Components.EntitySize(GameActivity.getBlockSize() / 2,
-                GameActivity.getBlockSize() / 2));
+        Components.EntitySize es = new Components.EntitySize(GameActivity.getBlockSize(),
+                GameActivity.getBlockSize());
+        centBody.add(es);
         centBody.add(new Components.CAndroidDrawable(R.drawable.centipede));
         centBody.add(new Components.Movable(10,0));
         centBody.add(new Components.Direction(true));
         centBody.add(new Components.Position(x,y));
-//        centBody.add(new Components.Health());
+        centBody.add(new Components.Health(1));
+        centBody.add(new Components.HitBox(x, y, x + es.getEntityWidth(), y + es.getEntityHeight()));
         return centBody;
     }
 
@@ -118,7 +119,7 @@ public class EntityFactory {
         int k = 0;
         for (int i = 0; i<theSize; i++ ) {
             k -= theGameView.mBlockSize/2;
-            MetaEntity temp = EntityFactory.createCentBody(theGameView, (theGameView.mScreenSizeX)/2-k, -50);
+            MetaEntity temp = EntityFactory.createCentBody((theGameView.mScreenSizeX)/2-k, -50);
             ids[i] = temp.entity;
         }
         centipede.add(new Components.CentipedeID(ids));

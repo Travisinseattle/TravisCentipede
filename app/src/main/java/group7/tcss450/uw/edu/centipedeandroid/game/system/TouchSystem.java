@@ -37,10 +37,10 @@ public class TouchSystem extends SubSystem {
             if (mGameView.mShipMovement) {
 
                 //The distance between last position and current touch in X
-                float differenceX = pos.getX() - mGameView.mTouchX;
+                float differenceX = pos.getX() - mGameView.getmTouchX();
 
                 //The distance between last position and current touch in Y
-                float differenceY = pos.getY() - mGameView.mTouchY;
+                float differenceY = pos.getY() - mGameView.getmTouchY();
 
                 /**
                  * If the distance between touch and pos is small enough, stop movement.
