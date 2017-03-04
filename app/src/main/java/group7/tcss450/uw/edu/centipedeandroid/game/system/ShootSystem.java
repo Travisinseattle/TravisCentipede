@@ -32,7 +32,6 @@ public class ShootSystem extends SubSystem {
         counter = 0;
         speed = theGameView.getBulletSpeed();
     }
-    Bitmap mBitmap;
 
     @Override
     public void processOneGameTick(long lastFrameTime) {

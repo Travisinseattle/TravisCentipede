@@ -1,6 +1,7 @@
 package group7.tcss450.uw.edu.centipedeandroid.game;
 
 
+import android.graphics.RectF;
 import android.view.View;
 
 import java.util.Random;
@@ -41,9 +42,21 @@ public class EntityFactory {
 //        return segment;
 //    }
 
-    public static MetaEntity createGameBoard() {
-        MetaEntity board = new MetaEntity();
-        return board;
+    // TODO: dimensions for area need to be added
+    public static MetaEntity createGameArea() {
+        MetaEntity area = new MetaEntity();
+//        board
+        area.add(new Components.Hazard(1));
+        area.add(new Components.Container(new RectF()));
+        return area;
+    }
+
+    // TODO: dimensions for area need to be added
+    public static MetaEntity createPlayerArea() {
+        MetaEntity area = new MetaEntity();
+//        board
+        area.add(new Components.Container(new RectF()));
+        return area;
     }
 
     public static MetaEntity createMushroom() { // Mushrooms will look like aliens for now.
@@ -74,12 +87,13 @@ public class EntityFactory {
         ship.add(new Components.EntitySize(GameActivity.getBlockSize() * 2,
                 GameActivity.getBlockSize()));
         ship.add(new Components.CAndroidDrawable(R.drawable.alienblaster));
+        ship.add(new Components.Team(Components.Team.Color.Blue));
         ship.add(new Components.Touch());
         ship.add(new Components.Movable());
         ship.add(new Components.Position((GameActivity.mWidth / 2),  (GameActivity.mHeight -
                 GameActivity.mBlockSize)));
-//        ship.add(new Components.Health());
-//        ship.add(new Components.HitBox());
+        ship.add(new Components.Health(1));
+        ship.add(new Components.HitBox());
         return ship;
     }
 
@@ -107,6 +121,8 @@ public class EntityFactory {
         centBody.add(new Components.CAndroidDrawable(R.drawable.centipede));
         centBody.add(new Components.Movable(10,0));
         centBody.add(new Components.Direction(true));
+        centBody.add(new Components.Team(Components.Team.Color.Red));
+        centBody.add(new Components.Hazard(1, Components.Team.Color.Blue));
         centBody.add(new Components.Position(x,y));
 //        centBody.add(new Components.Health());
         return centBody;

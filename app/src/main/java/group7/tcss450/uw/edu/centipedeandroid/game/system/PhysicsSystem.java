@@ -21,9 +21,8 @@ public class PhysicsSystem extends SubSystem {
     public void processOneGameTick(long lastFrameTime) {
         Set<UUID> allHitBoxes = mGameView.mEntityManager.getAllEntitiesPossessingComponent(Components.HitBox.class);
         for (UUID id: allHitBoxes) {
-            if (!mGameView.mEntityManager.hasComponent(id, Components.Collision.class)) {
             if (mGameView.mEntityManager.hasComponent(id, Components.Movable.class)) {
-
+                if (!mGameView.mEntityManager.hasComponent(id, Components.Collision.class)) {
                     Components.HitBox box = mGameView.mEntityManager.getComponent(id, Components.HitBox.class);
                     for (UUID otherID : allHitBoxes) {
                         if (otherID.equals(id))
