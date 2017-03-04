@@ -21,7 +21,7 @@ public class GameLoseSystem extends SubSystem {
     public void processOneGameTick(long lastFrameTime) {
         Set<UUID> player = mGameView.mEntityManager.getAllEntitiesPossessingComponent(Components.Touch.class);
         if (player.size() == 0) {
-            mGameView.gameLose();
+            //mGameView.gameLose();
         }
     }
 
