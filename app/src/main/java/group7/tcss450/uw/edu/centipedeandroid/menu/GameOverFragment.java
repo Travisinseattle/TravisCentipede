@@ -78,7 +78,7 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
             case R.id.mainMenu:
                 MenuFragment menuFrag = new MenuFragment();
                 this.getFragmentManager().beginTransaction()
-                       .replace(R.id.activity_menu, menuFrag, "Menu Fragment")
+                       .replace(R.id.activity_game, menuFrag, "Menu Fragment")
                         .addToBackStack(null)
                        .commit();
                 break;
