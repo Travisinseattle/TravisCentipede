@@ -5,30 +5,41 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     android:gravity="center"
-    tools:context="group7.tcss450.uw.edu.centipedeandroid.authentication.LoginFragment">
+    android:background="@drawable/space"
+    tools:context="group7.tcss450.uw.edu.centipedeandroid.authentication.LoginFragment"
+    android:weightSum="1"
+    android:baselineAligned="false">
 
-    <TextView
-        android:layout_width="match_parent"
+    <ImageView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/loginButton"
-        android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
+        android:layout_gravity="start"
+        android:background="@drawable/title"
+        android:layout_weight="0.02" />
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
         android:id="@+id/userText"
         android:maxLines="1"
+        android:textColorHint="#FFFFFF"
         android:hint="@string/enterUsername"/>
     <EditText
+        android:textColor="#FFFFFF"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/passText"
         android:inputType="textPassword"
+        android:textColorHint="#FFFFFF"
         android:hint="@string/enterPassword"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <Button
+            style="@android:style/Widget.Holo.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -36,6 +47,7 @@
             android:id="@+id/registerButton"/>
 
         <Button
+            style="@android:style/Widget.Holo.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

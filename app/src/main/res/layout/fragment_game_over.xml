@@ -1,0 +1,51 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/space"
+    tools:context="group7.tcss450.uw.edu.centipedeandroid.menu.GameOverFragment">
+
+    <Button
+        style="@android:style/Widget.Holo.Button"
+        android:text="Play Again"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="199dp"
+        android:id="@+id/playAgain" />
+
+    <Button
+        style="@android:style/Widget.Holo.Button"
+        android:text="Main Menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="52dp"
+        android:id="@+id/mainMenu"
+        android:layout_alignTop="@+id/playAgain"
+        android:layout_alignLeft="@+id/playAgain"
+        android:layout_alignStart="@+id/playAgain" />
+
+    <TextView
+        android:textColor="#FFFFFF"
+        android:text="Game Over!"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/playAgain"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="82dp"
+        android:id="@+id/gameOver"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+    <TextView
+        android:textColor="#FFFFFF"
+        android:text="score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="34dp"
+        android:id="@+id/score"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:layout_above="@+id/playAgain"
+        android:layout_alignLeft="@+id/gameOver"
+        android:layout_alignStart="@+id/gameOver" />
+</RelativeLayout>
