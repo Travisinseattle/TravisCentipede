@@ -6,6 +6,7 @@
 
     <group7.tcss450.uw.edu.centipedeandroid.game.GameView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:id="@+id/theView" />
 
 </FrameLayout>
