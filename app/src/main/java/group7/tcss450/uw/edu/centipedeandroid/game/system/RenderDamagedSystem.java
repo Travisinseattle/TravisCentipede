@@ -2,6 +2,7 @@ package group7.tcss450.uw.edu.centipedeandroid.game.system;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.SparseArray;
 
 import java.util.HashMap;
 import java.util.Set;
@@ -13,6 +14,7 @@ import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
 
 /**
  * Created by nicholas on 2/22/17.
+ * A system to update drawables with damage
  */
 
 public class RenderDamagedSystem extends SubSystem {

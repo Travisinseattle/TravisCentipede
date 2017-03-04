@@ -39,10 +39,14 @@ public class MovementSystem extends SubSystem {
             float y = pos.getY();
             if (move.dx != 0 || move.dy != 0) {
                 if (move.dx != 0) {
-                    pos.setX(x + move.dx);
+                    if ((x + move.getDx()) > 0 && (x + move.getDx()) < mGameView.getWidth()) {
+                        pos.setX(x + move.dx);
+                    }
                 }
                 if (move.dy != 0) {
-                    pos.setY(y + move.dy);
+                    if ((y + move.getDy()) > 0 && (y + move.getDy()) < mGameView.getHeight()) {
+                        pos.setY(y + move.dy);
+                    }
                 }
                 if (mGameView.mEntityManager.hasComponent(entityID, Components.HitBox.class)) {
                     Components.HitBox hitBox = mGameView.mEntityManager.getComponent(entityID, Components.HitBox.class);

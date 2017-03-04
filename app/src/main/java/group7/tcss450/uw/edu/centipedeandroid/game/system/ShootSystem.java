@@ -49,18 +49,18 @@ public class ShootSystem extends SubSystem {
             }
         }
 
-//        Set<UUID> allShoot = mGameView.mEntityManager
-//                .getAllEntitiesPossessingComponent(Components.Shoot.class);
-//        for (UUID entityID : allShoot) {
-//            Components.Position pos = mGameView.mEntityManager.getComponent(entityID, Components.Position.class);
-//            if (pos.getY() < 0 ) {
-//                killList.add(entityID);
-//            }
-//        }
-//
-//        for (UUID entityID : killList) {
-//            mGameView.mEntityManager.killEntity(entityID);
-//        }
+        Set<UUID> allShoot = mGameView.mEntityManager
+                .getAllEntitiesPossessingComponent(Components.Shoot.class);
+        for (UUID entityID : allShoot) {
+            Components.Position pos = mGameView.mEntityManager.getComponent(entityID, Components.Position.class);
+            if (pos.getY() < mGameView.mBlockSize ) {
+                killList.add(entityID);
+            }
+        }
+
+        for (UUID entityID : killList) {
+            mGameView.mEntityManager.killEntity(entityID);
+        }
     }
 
     @Override

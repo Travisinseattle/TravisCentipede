@@ -219,6 +219,14 @@ public class Components  {
             this.dy = newDy;
         }
 
+        public float getDx() {
+            return this.dx;
+        }
+
+        public float getDy() {
+            return this.dy;
+        }
+
         @Override
         public String toString() {
             return "(" + super.toString() + " delta:" + dx + "," + dy + " * rot." + dRotationDegrees + ")";
