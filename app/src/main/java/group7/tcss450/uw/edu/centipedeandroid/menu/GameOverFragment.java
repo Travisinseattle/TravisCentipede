@@ -40,7 +40,7 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_login, container, false);
-        //Button b = (Button) v.findViewById(R.id.playAgain);
+//        Button b = (Button) v.findViewById(R.id.playAgain);
 //        b.setOnClickListener(this);
 //        b = (Button) v.findViewById(R.id.mainMenu);
 //        b.setOnClickListener(this);
@@ -70,19 +70,18 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-//        switch (v.getId())
-//        {
-//            case R.id.playAgain:
-//                mListener.onStartGame();
-//                break;
-//            case R.id.mainMenu:
-//                MenuFragment menuFrag = new MenuFragment();
-//                this.getFragmentManager().beginTransaction()
-//                       .replace(R.id.activity_menu, menuFrag, "Menu Fragment")
-//                        .addToBackStack(null)
-//                       .commit();
-//                break;
-//        }
+        switch (v.getId()) {
+            case R.id.playAgain:
+                mListener.onStartGame();
+                break;
+            case R.id.mainMenu:
+                MenuFragment menuFrag = new MenuFragment();
+                this.getFragmentManager().beginTransaction()
+                       .replace(R.id.activity_game, menuFrag, "Menu Fragment")
+                        .addToBackStack(null)
+                       .commit();
+                break;
+        }
     }
 
     /**

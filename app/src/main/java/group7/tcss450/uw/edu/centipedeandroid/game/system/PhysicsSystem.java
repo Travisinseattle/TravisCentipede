@@ -5,7 +5,6 @@ import android.util.Log;
 import java.util.Set;
 import java.util.UUID;
 
-import group7.tcss450.uw.edu.centipedeandroid.game.Collision;
 import group7.tcss450.uw.edu.centipedeandroid.game.GameView;
 import group7.tcss450.uw.edu.centipedeandroid.game.SubSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
@@ -22,15 +21,20 @@ public class PhysicsSystem extends SubSystem {
     public void processOneGameTick(long lastFrameTime) {
         Set<UUID> allHitBoxes = mGameView.mEntityManager.getAllEntitiesPossessingComponent(Components.HitBox.class);
         for (UUID id: allHitBoxes) {
-            Components.HitBox box = mGameView.mEntityManager.getComponent(id, Components.HitBox.class);
-            for (UUID otherID : allHitBoxes) {
-                if(otherID.equals(id))
-                    continue;
-                Components.HitBox otherBox = mGameView.mEntityManager.getComponent(otherID, Components.HitBox.class);
-                if (otherBox.getHitBox().intersect(box.getHitBox())) {
-                    mGameView.myCollisions.add(new Collision(id, otherID));
-                }
+            if (!mGameView.mEntityManager.hasComponent(id, Components.Collision.class)) {
+            if (mGameView.mEntityManager.hasComponent(id, Components.Movable.class)) {
 
+                    Components.HitBox box = mGameView.mEntityManager.getComponent(id, Components.HitBox.class);
+                    for (UUID otherID : allHitBoxes) {
+                        if (otherID.equals(id))
+                            continue;
+                        Components.HitBox otherBox = mGameView.mEntityManager.getComponent(otherID, Components.HitBox.class);
+                        if (otherBox.getHitBox().intersect(box.getHitBox())) {
+                            mGameView.mEntityManager.addComponent(id, new Components.Collision(otherID));
+                        }
+
+                    }
+                }
             }
         }
 

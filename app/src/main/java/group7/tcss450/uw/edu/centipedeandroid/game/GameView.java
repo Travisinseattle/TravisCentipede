@@ -18,6 +18,8 @@ import group7.tcss450.uw.edu.centipedeandroid.R;
 import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
 import group7.tcss450.uw.edu.centipedeandroid.game.manager.EntityManager;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.CollisionSystem;
+import group7.tcss450.uw.edu.centipedeandroid.game.system.DestroySystem;
+import group7.tcss450.uw.edu.centipedeandroid.game.system.DrawHitBoxSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.MovementSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.PhysicsSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.RenderDamagedSystem;
@@ -100,6 +102,8 @@ public class GameView extends SurfaceView implements Runnable {
      */
     public Paint mPaint;
 
+    private DrawHitBoxSystem myHitDebug;
+
     /**
      * Bullet object for the player
      */
@@ -158,7 +162,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     private RenderSystem mRenderSystem;
     private RenderDamagedSystem mRenderDamagedSystem;
-    public ArrayList<Collision> myCollisions;
+//    public ArrayList<Collision> myCollisions;
 
     private Map mMap;
 
@@ -191,7 +195,7 @@ public class GameView extends SurfaceView implements Runnable {
         MetaEntity.defaultEntityManager = mEntityManager;
         mRenderSystem = new RenderSystem(this);
         mRenderDamagedSystem = new RenderDamagedSystem(this);
-        myCollisions = new ArrayList<>();
+//        myCollisions = new ArrayList<>();
 
         /**
          * set the value for the screen size.
@@ -199,6 +203,7 @@ public class GameView extends SurfaceView implements Runnable {
         mScreenSizeX = screenX;
         mScreenSizeY = screenY;
 
+        myHitDebug = new DrawHitBoxSystem(this);
         this.mBlockSize = block;
         mMap = new Map(mScreenSizeX / mBlockSize, mScreenSizeY /mBlockSize, mBlockSize);
         /**
@@ -281,6 +286,7 @@ public class GameView extends SurfaceView implements Runnable {
         mOrderedSubSystems.add(new MovementSystem(this));
         mOrderedSubSystems.add(new PhysicsSystem(this));
         mOrderedSubSystems.add(new CollisionSystem(this));
+        mOrderedSubSystems.add(new DestroySystem(this));
         mOrderedSubSystems.add(new TouchSystem(this));
         mOrderedSubSystems.add(new ShootSystem(this));
 
@@ -462,8 +468,7 @@ public class GameView extends SurfaceView implements Runnable {
             //capture current time in milliseconds.
             long startFrameTime = System.currentTimeMillis();
 
-            for (SubSystem system : mOrderedSubSystems)
-            {
+            for (SubSystem system : mOrderedSubSystems) {
                 system.processOneGameTick(startFrameTime - lastLoopStartTime);
             }
 
@@ -487,6 +492,7 @@ public class GameView extends SurfaceView implements Runnable {
                     mRenderSystem.processOneGameTick(startFrameTime);
                     mRenderDamagedSystem.processOneGameTick(startFrameTime);
                     renderScore();
+                    myHitDebug.processOneGameTick(startFrameTime);
                     mHolder.unlockCanvasAndPost(mCanvas);
                 }
 

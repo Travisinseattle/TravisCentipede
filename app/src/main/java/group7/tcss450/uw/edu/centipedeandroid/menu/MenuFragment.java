@@ -1,8 +1,11 @@
 package group7.tcss450.uw.edu.centipedeandroid.menu;
 
+
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,9 +79,9 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_menu, container, false);
-        Button b = (Button)v.findViewById(R.id.startButton);
+        Button b = (Button)v.findViewById(R.id.playButton);
         b.setOnClickListener(this);
-        b = (Button)v.findViewById(R.id.startPlayerButton);
+        b = (Button)v.findViewById(R.id.highScoreButton);
         b.setOnClickListener(this);
 
         // Inflate the layout for this fragment
@@ -117,11 +120,16 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         if (mListener != null) {
             switch (v.getId()) {
-                case R.id.startButton:
+                case R.id.playButton:
                     mListener.onStartGame();
                     break;
-                case R.id.startPlayerButton:
-                    mListener.onPlayer();
+                case R.id.highScoreButton:
+//                    FragmentManager fragmentManager = getFragmentManager();
+//                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                    GameOverFragment fragment = new GameOverFragment();
+//                    fragmentTransaction.replace(R.id.activity_menu, fragment);
+//                    fragmentTransaction.addToBackStack(null);
+//                    fragmentTransaction.commit();
                     break;
                 default:
                     break;

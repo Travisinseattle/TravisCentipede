@@ -1,12 +1,20 @@
 package group7.tcss450.uw.edu.centipedeandroid.game;
 
-import android.app.Activity;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import java.math.BigInteger;
 
-public class GameActivity extends Activity {
+import group7.tcss450.uw.edu.centipedeandroid.R;
+import group7.tcss450.uw.edu.centipedeandroid.authentication.RegisterFragment;
+import group7.tcss450.uw.edu.centipedeandroid.menu.GameOverFragment;
+import group7.tcss450.uw.edu.centipedeandroid.menu.MenuFragment;
+
+public class GameActivity extends AppCompatActivity implements GameOverFragment.OnFragmentInteractionListener, MenuFragment.OnStartGame {
 
     /****************************************Constants*********************************************/
 
@@ -53,6 +61,10 @@ public class GameActivity extends Activity {
      */
     public static int mWidth;
 
+    /**
+     * Variable that will play music
+     */
+    private PlayMusicTask mPlayMusicTask;
 
 
     /*****************************************Constructor******************************************/
@@ -103,6 +115,15 @@ public class GameActivity extends Activity {
         /*Initialize Gameview object and set the content to it.*/
         mGameView = new GameView(this, mWidth, mHeight, mBlockSize);
         setContentView(mGameView);
+//        mPlayMusicTask = new PlayMusicTask();
+//        mPlayMusicTask.execute(292);
+//
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        GameOverFragment fragment = new GameOverFragment();
+//        fragmentTransaction.replace(R.id.activity_game, fragment);
+//        fragmentTransaction.addToBackStack(null);
+//        fragmentTransaction.commit();
     }
 
     /**
@@ -112,6 +133,13 @@ public class GameActivity extends Activity {
     protected void onPause() {
         super.onPause();
         mGameView.pause();
+       // mPlayMusicTask.stopPlayer();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();  // Always call the superclass method first
+        //mPlayMusicTask.stopPlayer();
     }
 
     /**
@@ -121,6 +149,8 @@ public class GameActivity extends Activity {
     protected void onResume() {
         super.onResume();
         mGameView.resume();
+        //mPlayMusicTask = new PlayMusicTask();
+        //mPlayMusicTask.execute(292);
     }
 
     /*****************************************Private Methods**************************************/
@@ -160,5 +190,19 @@ public class GameActivity extends Activity {
                 mBlockSize = newHeight;
             }
         }
+    }
+
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    @Override
+    public void onStartGame() {
+
+    }
+
+    @Override
+    public void onPlayer() {
+
     }
 }

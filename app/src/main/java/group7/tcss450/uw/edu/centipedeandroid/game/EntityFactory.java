@@ -41,11 +41,16 @@ public class EntityFactory {
 //        return segment;
 //    }
 
+    public static MetaEntity createGameBoard() {
+        MetaEntity board = new MetaEntity();
+        return board;
+    }
+
     public static MetaEntity createMushroom() { // Mushrooms will look like aliens for now.
         MetaEntity mushroom = new MetaEntity();
         mushroom.add(new Components.EntitySize(GameActivity.getBlockSize(),
                 GameActivity.getBlockSize()));
-        mushroom.add(new Components.Health());
+        mushroom.add(new Components.Health(4));
         mushroom.add(new Components.Position());
         mushroom.add(new Components.CAndroidDrawable(R.drawable.shroom));
         return mushroom;
@@ -56,8 +61,8 @@ public class EntityFactory {
         Components.EntitySize es = new Components.EntitySize(GameActivity.getBlockSize(),
                 GameActivity.getBlockSize());
         mushroom.add(es);
-        mushroom.add(new Components.Health());
-        mushroom.add(new Components.Damage(new Random().nextInt(3))); // for now lets give the mushroom some random damage
+        mushroom.add(new Components.Health(4));
+//        mushroom.add(new Components.Damage(new Random().nextInt(3))); // for now lets give the mushroom some random damage
         mushroom.add(p);
         mushroom.add(new Components.DamagedDrawable(new int[] {R.drawable.shroom, R.drawable.shroom3, R.drawable.shroom2, R.drawable.shroom1}));
         mushroom.add(new Components.HitBox(p.getX(), p.getY(), p.getX() + es.getEntityWidth(), p.getY() + es.getEntityHeight()));
@@ -73,21 +78,25 @@ public class EntityFactory {
         ship.add(new Components.Movable());
         ship.add(new Components.Position((GameActivity.mWidth / 2),  (GameActivity.mHeight -
                 GameActivity.mBlockSize)));
-        ship.add(new Components.Health());
-        ship.add(new Components.HitBox());
+//        ship.add(new Components.Health());
+//        ship.add(new Components.HitBox());
         return ship;
     }
 
     public static MetaEntity createBullet(GameView theGameView, float x, float y) {
         MetaEntity bullet = new MetaEntity();
-        bullet.add(new Components.EntitySize(GameActivity.getBlockSize() / 2,
-                GameActivity.getBlockSize() / 2));
+        Components.EntitySize es = new Components.EntitySize(GameActivity.getBlockSize() / 2,
+                GameActivity.getBlockSize() / 2);
+        bullet.add(es);
         bullet.add(new Components.CAndroidDrawable(R.drawable.fireball));
+        bullet.add(new Components.Health(1));
         bullet.add(new Components.Movable(0, - 100));
                 //GameActivity.getBlockSize()));
         bullet.add(new Components.Position(x, y));
-        bullet.add(new Components.Health());
+        bullet.add(new Components.Hazard(1));
         bullet.add(new Components.Shoot());
+        bullet.add(new Components.HitBox(x, y, x + es.getEntityWidth(), y + es.getEntityHeight()));
+
         return bullet;
     }
 
@@ -99,7 +108,7 @@ public class EntityFactory {
         centBody.add(new Components.Movable(10,0));
         centBody.add(new Components.Direction(true));
         centBody.add(new Components.Position(x,y));
-        centBody.add(new Components.Health());
+//        centBody.add(new Components.Health());
         return centBody;
     }
 
@@ -130,7 +139,7 @@ public class EntityFactory {
         scorpian.add(new Components.CAndroidDrawable(R.drawable.scorpianeast));
         scorpian.add(new Components.Movable(1/2,0));
         scorpian.add(new Components.Position(x,y));
-        scorpian.add(new Components.Health());
+//        scorpian.add(new Components.Health());
         return scorpian;
     }
 }
