@@ -1,8 +1,12 @@
 package group7.tcss450.uw.edu.centipedeandroid.game.component;
 
+import android.graphics.Rect;
 import android.graphics.RectF;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.UUID;
 
 import group7.tcss450.uw.edu.centipedeandroid.game.Component;
@@ -16,28 +20,42 @@ import group7.tcss450.uw.edu.centipedeandroid.game.MetaEntity;
 
 public class Components  {
 
-    public static class Hazard implements Component {
-        public enum Team {
-            ALL,
-            RED,
-            BLUE,
-            WHITE
+    public static class Container implements Component {
+        public RectF mySpace;
+        public Container(RectF theSpace) {
+            mySpace = theSpace;
         }
+    }
+
+    public static class Contained implements Component {
+        public UUID myContainer;
+        public Contained(UUID theContainer) {
+            myContainer = theContainer;
+        }
+    }
+
+    public static class Hazard implements Component {
+        public EnumSet<Team.Color> myAffected;
         public int myDamage;
         public Hazard() {
             myDamage = 0;
+            myAffected = EnumSet.noneOf(Team.Color.class);
         }
         public Hazard(int theDamage) {
             myDamage = theDamage;
+            myAffected = EnumSet.noneOf(Team.Color.class);
+        }
+
+        public Hazard(int theDamage, Team.Color... theTeam) {
+            myDamage = theDamage;
+            myAffected = EnumSet.copyOf(Arrays.asList(theTeam));
         }
     }
 
     public static class Team implements Component {
         public enum Color {
-
             Red,
-            Blue,
-            White
+            Blue
         }
         public Color myTeam;
         public Team(Color theTeam) {

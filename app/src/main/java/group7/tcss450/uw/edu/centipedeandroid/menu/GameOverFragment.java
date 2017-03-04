@@ -28,25 +28,25 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    public static GameOverFragment newInstance(int theScore) {
-        GameOverFragment fragment = new GameOverFragment();
-        Bundle args = new Bundle();
-        args.putInt("Score", theScore);
-        fragment.setArguments(args);
-        return fragment;
-    }
+//    public static GameOverFragment newInstance(int theScore) {
+//        GameOverFragment fragment = new GameOverFragment();
+//        Bundle args = new Bundle();
+//        args.putInt("Score", theScore);
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_login, container, false);
-//        Button b = (Button) v.findViewById(R.id.playAgain);
-//        b.setOnClickListener(this);
-//        b = (Button) v.findViewById(R.id.mainMenu);
-//        b.setOnClickListener(this);
-        Bundle args = getArguments();
-        int score = args.getInt("Score", 0);
-//        TextView textView = (TextView) v.findViewById(R.id.score);
+        View v = inflater.inflate(R.layout.fragment_game_over, container, false);
+        Button b = (Button) v.findViewById(R.id.playAgain);
+        b.setOnClickListener(this);
+        Button mainButt = (Button) v.findViewById(R.id.mainMenu);
+        mainButt.setOnClickListener(this);
+//        Bundle args = getArguments();
+//        int score = args.getInt("Score", 0);
+        TextView textView = (TextView) v.findViewById(R.id.score);
 //        textView.setText("Score " + score);
         return v;
     }
@@ -77,7 +77,7 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
             case R.id.mainMenu:
                 MenuFragment menuFrag = new MenuFragment();
                 this.getFragmentManager().beginTransaction()
-                       .replace(R.id.activity_game, menuFrag, "Menu Fragment")
+                       .replace(R.id.activity_menu, menuFrag, "Menu Fragment")
                         .addToBackStack(null)
                        .commit();
                 break;

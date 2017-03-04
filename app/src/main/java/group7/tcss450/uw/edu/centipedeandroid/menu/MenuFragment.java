@@ -124,12 +124,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
                     mListener.onStartGame();
                     break;
                 case R.id.highScoreButton:
-//                    FragmentManager fragmentManager = getFragmentManager();
-//                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                    GameOverFragment fragment = new GameOverFragment();
-//                    fragmentTransaction.replace(R.id.activity_menu, fragment);
-//                    fragmentTransaction.addToBackStack(null);
-//                    fragmentTransaction.commit();
+                    mListener.onPlayer();
                     break;
                 default:
                     break;

@@ -35,12 +35,14 @@ public class CollisionSystem extends SubSystem {
             if (mGameView.mEntityManager.hasComponent(id, Components.Hazard.class)) {
                 if (mGameView.mEntityManager.hasComponent(collision.collidedWith, Components.Health.class)) {
 //                    // maybe this should be broken into a new system / event?
+                    if (!mGameView.mEntityManager.hasComponent(collision.collidedWith, Components.Team.class)) {
                         Components.Hazard hazard = mGameView.mEntityManager.getComponent(id, Components.Hazard.class);
                         Components.Health health = mGameView.mEntityManager.getComponent(collision.collidedWith, Components.Health.class);
                         Components.Health health1 = mGameView.mEntityManager.getComponent(id, Components.Health.class);
                         health.setHitPoints(health.getHitPoints() - hazard.myDamage);
                         health1.setHitPoints(health1.getHitPoints() - 1);
-                }
+                    }
+ }
             }
 
 //            // Special Behaviour for Centipedes?

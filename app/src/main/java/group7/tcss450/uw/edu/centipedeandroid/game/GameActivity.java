@@ -66,7 +66,6 @@ public class GameActivity extends AppCompatActivity implements GameOverFragment.
      */
     private PlayMusicTask mPlayMusicTask;
 
-
     /*****************************************Constructor******************************************/
 
     /*****************************************Getters and Setters**********************************/
@@ -115,15 +114,16 @@ public class GameActivity extends AppCompatActivity implements GameOverFragment.
         /*Initialize Gameview object and set the content to it.*/
         mGameView = new GameView(this, mWidth, mHeight, mBlockSize);
         setContentView(mGameView);
-//        mPlayMusicTask = new PlayMusicTask();
-//        mPlayMusicTask.execute(292);
-//
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        GameOverFragment fragment = new GameOverFragment();
-//        fragmentTransaction.replace(R.id.activity_game, fragment);
-//        fragmentTransaction.addToBackStack(null);
-//        fragmentTransaction.commit();
+
+
+    }
+
+    public void onGameOver() {
+        GameOverFragment gameFrag = new GameOverFragment();
+        this.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.activity_game, gameFrag ,"Game Over")
+                .addToBackStack(null)
+                .commit();
     }
 
     /**

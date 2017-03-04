@@ -3,6 +3,7 @@ package group7.tcss450.uw.edu.centipedeandroid.menu;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -19,7 +20,7 @@ import group7.tcss450.uw.edu.centipedeandroid.game.GameActivity;
 /**
  * An activity to handle the game main menu.
  */
-public class MenuActivity extends AppCompatActivity implements MenuFragment.OnStartGame, PlayerFragment.OnPlaySound {
+public class MenuActivity extends AppCompatActivity implements MenuFragment.OnStartGame, GameOverFragment.OnFragmentInteractionListener {
 
     /**
      * A task to play music
@@ -56,22 +57,7 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
      */
     @Override
     public void onPlayer() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        PlayerFragment fragment = new PlayerFragment();
-        fragmentTransaction.replace(R.id.activity_menu, fragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
-    }
 
-    /**
-     * The action to do when the play button is clicked.
-     */
-    @Override
-    public void onPlayClick() {
-        mPlayMusicTask = new PlayMusicTask();
-        mPlayMusicTask.execute(293);
-//        playTrack(293);
     }
 
     /**
@@ -81,6 +67,11 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
     public void onBackPressed() {
         super.onBackPressed();
         mPlayMusicTask.stopPlayer();
+
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
     }
 
