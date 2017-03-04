@@ -59,8 +59,8 @@ public class CollisionSystem extends SubSystem {
                 Components.Movable entityMov = mGameView.mEntityManager.getComponent(id, Components.Movable.class);
                 entityPos.setX(entityPos.x - entityMov.dx);
                 entityPos.setY(entityPos.y - entityMov.dy);
-                entityMov.dx = 0;
-                entityMov.dy = 0;
+                //entityMov.dx = 0;
+                //entityMov.dy = 0;
             }
             iter.remove();
         }

@@ -48,20 +48,16 @@ public class MovementSystem extends SubSystem {
                         pos.setY(y + move.dy);
                     }
                 }
-                if (mGameView.mEntityManager.hasComponent(entityID, Components.HitBox.class)) {
+                if (mGameView.mEntityManager.hasComponent(entityID, Components.Movable.class) && (!mGameView.mEntityManager.hasComponent(entityID, Components.Touch.class))) {
                     Components.HitBox hitBox = mGameView.mEntityManager.getComponent(entityID, Components.HitBox.class);
 
                     x = pos.getX();
                     y = pos.getY();
                     Components.EntitySize es = mGameView.mEntityManager.getComponent(entityID, Components.EntitySize.class);
                     hitBox.setHitBox(x, y, x + es.getEntityWidth(), y + es.getEntityHeight());
-
                 }
-
             }
-
         }
-
     }
 
     @Override

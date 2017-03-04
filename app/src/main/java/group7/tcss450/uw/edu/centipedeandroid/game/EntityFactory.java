@@ -42,105 +42,110 @@ public class EntityFactory {
 //    }
 
     public static MetaEntity createGameBoard() {
-        MetaEntity board = new MetaEntity();
+        MetaEntity board = new MetaEntity("board");
         return board;
     }
 
     public static MetaEntity createMushroom() { // Mushrooms will look like aliens for now.
-        MetaEntity mushroom = new MetaEntity();
-        mushroom.add(new Components.EntitySize(GameActivity.getBlockSize(),
-                GameActivity.getBlockSize()));
-        mushroom.add(new Components.Health(4));
-        mushroom.add(new Components.Position());
-        mushroom.add(new Components.CAndroidDrawable(R.drawable.shroom));
+        MetaEntity mushroom = new MetaEntity("mushroom",
+                new Components.EntitySize(GameActivity.getBlockSize(),
+                        GameActivity.getBlockSize()),
+                new Components.Health(4),
+                new Components.Position(),
+                new Components.CAndroidDrawable(R.drawable.shroom));
+
         return mushroom;
     }
 
     public static MetaEntity createMushroom(Components.Position p) { // Mushrooms will look like aliens for now.
-        MetaEntity mushroom = new MetaEntity();
         Components.EntitySize es = new Components.EntitySize(GameActivity.getBlockSize(),
                 GameActivity.getBlockSize());
-        mushroom.add(es);
-        mushroom.add(new Components.Health(4));
-//        mushroom.add(new Components.Damage(new Random().nextInt(3))); // for now lets give the mushroom some random damage
-        mushroom.add(p);
-        mushroom.add(new Components.DamagedDrawable(new int[] {R.drawable.shroom, R.drawable.shroom3, R.drawable.shroom2, R.drawable.shroom1}));
-        mushroom.add(new Components.HitBox(p.getX(), p.getY(), p.getX() + es.getEntityWidth(), p.getY() + es.getEntityHeight()));
+        MetaEntity mushroom = new MetaEntity("mushroom", es, p,
+                new Components.Health(4),
+                new Components.DamagedDrawable(
+                        new int[] {R.drawable.shroom,
+                        R.drawable.shroom3,
+                        R.drawable.shroom2,
+                        R.drawable.shroom1}),
+                new Components.HitBox(
+                        p.getX(),
+                        p.getY(),
+                        p.getX() + es.getEntityWidth(),
+                        p.getY() + es.getEntityHeight()));
         return mushroom;
     }
 
     public static MetaEntity createShip() {
-        MetaEntity ship = new MetaEntity();
-        ship.add(new Components.EntitySize(GameActivity.getBlockSize() * 2,
-                GameActivity.getBlockSize()));
-        ship.add(new Components.CAndroidDrawable(R.drawable.alienblaster));
-        ship.add(new Components.Touch());
-        ship.add(new Components.Movable());
-        ship.add(new Components.Position((GameActivity.mWidth / 2),  (GameActivity.mHeight -
-                GameActivity.mBlockSize)));
-//        ship.add(new Components.Health());
-//        ship.add(new Components.HitBox());
+        MetaEntity ship = new MetaEntity("ship",
+                new Components.EntitySize(GameActivity.getBlockSize() * 2,
+                        GameActivity.getBlockSize()),
+                new Components.CAndroidDrawable(R.drawable.alienblaster),
+                new Components.Touch(),
+                new Components.Movable(),
+                new Components.Position((GameActivity.mWidth / 2),
+                        (GameActivity.mHeight -
+                        GameActivity.mBlockSize)));
         return ship;
     }
 
     public static MetaEntity createBullet(float x, float y) {
-        MetaEntity bullet = new MetaEntity();
         Components.EntitySize es = new Components.EntitySize(GameActivity.getBlockSize() / 2,
                 GameActivity.getBlockSize() / 2);
-        bullet.add(es);
-        bullet.add(new Components.CAndroidDrawable(R.drawable.fireball));
-        bullet.add(new Components.Health(1));
-        bullet.add(new Components.Movable(0, - 100));
-        bullet.add(new Components.Position(x, y));
-        bullet.add(new Components.Hazard(1));
-        bullet.add(new Components.Shoot());
-        bullet.add(new Components.HitBox(x, y, x + es.getEntityWidth(), y + es.getEntityHeight()));
-
+        MetaEntity bullet = new MetaEntity("bullet", es,
+                new Components.CAndroidDrawable(R.drawable.fireball),
+                new Components.Health(1),
+                new Components.Movable(0, - 100),
+                new Components.Position(x, y),
+                new Components.Hazard(1),
+                new Components.Shoot(),
+                new Components.HitBox(x, y,
+                        x + es.getEntityWidth(),
+                        y + es.getEntityHeight()));
         return bullet;
     }
 
     public static MetaEntity createCentBody(float x, float y) {
-        MetaEntity centBody = new MetaEntity();
         Components.EntitySize es = new Components.EntitySize(GameActivity.getBlockSize(),
                 GameActivity.getBlockSize());
-        centBody.add(es);
-        centBody.add(new Components.CAndroidDrawable(R.drawable.centipede));
-        centBody.add(new Components.Movable(10,0));
-        centBody.add(new Components.Direction(true));
-        centBody.add(new Components.Position(x,y));
-        centBody.add(new Components.Health(1));
-        centBody.add(new Components.HitBox(x, y, x + es.getEntityWidth(), y + es.getEntityHeight()));
+        MetaEntity centBody = new MetaEntity("Centepede Body", es,
+                new Components.CAndroidDrawable(R.drawable.centipede),
+                new Components.Movable(10,0),
+                new Components.Direction(true),
+                new Components.Position(x,y),
+                new Components.Health(1),
+                new Components.HitBox(x, y,
+                        x + es.getEntityWidth(),
+                        y + es.getEntityHeight()));
         return centBody;
     }
 
     public static MetaEntity createCentipede(GameView theGameView, int theSize) {
-        MetaEntity centipede = new MetaEntity();
         UUID[] ids = new UUID[theSize];
         int k = 0;
         for (int i = 0; i<theSize; i++ ) {
-            k -= theGameView.mBlockSize/2;
-            MetaEntity temp = EntityFactory.createCentBody((theGameView.mScreenSizeX)/2-k, -50);
+            k -= theGameView.mBlockSize;
+//            MetaEntity temp = EntityFactory.createCentBody((theGameView.mScreenSizeX)/2-k, -theGameView.mBlockSize);
+            MetaEntity temp = EntityFactory.createCentBody((theGameView.mScreenSizeX)/2-k, 50);
             ids[i] = temp.entity;
         }
-        centipede.add(new Components.CentipedeID(ids));
-        //centipede.add(new Components.SegmentParent());
+        MetaEntity centipede = new MetaEntity("Centipede",
+                new Components.CentipedeID(ids));
         return centipede;
     }
 
     public static MetaEntity createCentipede(UUID[] theIDS) {
-        MetaEntity centipede = new MetaEntity();
-        centipede.add(new Components.CentipedeID(theIDS));
+        MetaEntity centipede = new MetaEntity("Centipede",
+                new Components.CentipedeID(theIDS));
         return centipede;
     }
 
     public static MetaEntity createScorpian(GameView theGameView, float x, float y) {
-        MetaEntity scorpian = new MetaEntity();
-        scorpian.add(new Components.EntitySize(GameActivity.getBlockSize() + 40,
-                GameActivity.getBlockSize() + 40)); // POSSIBLE CHANGE SIZE OF THIS CREATURE CURRENT NUMBERS ARE TEST NUMBERS
-        scorpian.add(new Components.CAndroidDrawable(R.drawable.scorpianeast));
-        scorpian.add(new Components.Movable(1/2,0));
-        scorpian.add(new Components.Position(x,y));
-//        scorpian.add(new Components.Health());
+        MetaEntity scorpian = new MetaEntity("Scorpian",
+                new Components.EntitySize(GameActivity.getBlockSize() + 40,
+                GameActivity.getBlockSize() + 40),
+                new Components.CAndroidDrawable(R.drawable.scorpianeast),
+                new Components.Movable(1/2,0),
+                new Components.Position(x,y));
         return scorpian;
     }
 }

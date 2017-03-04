@@ -52,14 +52,14 @@ public class MetaEntity
 	/**
 	 * Invoke this to use the global default {@link EntityManager} as the source
 	 */
-	public MetaEntity()
+	public MetaEntity(String name)
 	{
 		if( defaultEntityManager == null )
 			throw new IllegalArgumentException( "There is no global EntityManager; create a new EntityManager before creating Entity's" );
 		
 		parentEntityManager = defaultEntityManager; 
 		
-		entity = defaultEntityManager.createEntity();	
+		entity = defaultEntityManager.createEntity(name);
 	}
 	
 	/**
@@ -88,30 +88,32 @@ public class MetaEntity
 	 */
 	public MetaEntity( String n, Component... components )
 	{
-		this( components ); 
+		this(n);
 		
 		internalName = n;
-	}
-	
-	/**
-	 * This is the main constructor for Entities - usually, you'll know which Components you want them to have
-	 * 
-	 * NB: this is a NON-lazy way of instantiating Entities - in low-mem situations, you may want to
-	 * use an alternative constructor that accepts the CLASS of each Component, rather than the OBJECT, and
-	 * which only instantiates / allocates the memory for the data of each component when that component is
-	 * (eventually) initialized.
-	 * 
-	 * @param components
-	 */
-	public MetaEntity( Component... components )
-	{
-		this(); // takes care of getting the initial "entity" part
-		
+
 		for( Component c : components )
 		{
 			this.add( c );
 		}
 	}
+	
+//	/**
+//	 * This is the main constructor for Entities - usually, you'll know which Components you want them to have
+//	 *
+//	 * NB: this is a NON-lazy way of instantiating Entities - in low-mem situations, you may want to
+//	 * use an alternative constructor that accepts the CLASS of each Component, rather than the OBJECT, and
+//	 * which only instantiates / allocates the memory for the data of each component when that component is
+//	 * (eventually) initialized.
+//	 *
+//	 * @param components
+//	 */
+//	public MetaEntity( Component... components )
+//	{
+//		this(); // takes care of getting the initial "entity" part
+//
+//
+//	}
 	
 	/**
 	 * CONVENIENCE METHOD: delegates to the source {@link EntityManager} to do the add

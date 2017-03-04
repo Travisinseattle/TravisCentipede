@@ -281,16 +281,15 @@ public class GameView extends SurfaceView implements Runnable {
         /**
          * Creates the centipede object.
          */
-        mCentipede = EntityFactory.createCentipede(this, 8);
+        mCentipede = EntityFactory.createCentipede(this, 1);
 
-        mOrderedSubSystems.add(new MovementSystem(this));
+        mOrderedSubSystems.add(new CentMovementSystem(this));
+        mOrderedSubSystems.add(new TouchSystem(this));
         mOrderedSubSystems.add(new PhysicsSystem(this));
         mOrderedSubSystems.add(new CollisionSystem(this));
         mOrderedSubSystems.add(new DestroySystem(this));
-        mOrderedSubSystems.add(new TouchSystem(this));
         mOrderedSubSystems.add(new ShootSystem(this));
-        mOrderedSubSystems.add(new CentMovementSystem(this));
-
+        mOrderedSubSystems.add(new MovementSystem(this));
     }
 
     private void renderScore() {
