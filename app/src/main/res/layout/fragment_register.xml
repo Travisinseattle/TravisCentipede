@@ -3,30 +3,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/space"
     tools:context="group7.tcss450.uw.edu.centipedeandroid.authentication.RegisterFragment">
     <TextView
+        android:textColor="#fff"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/titleUserReg"
         android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
     <EditText
+        android:textColor="#fff"
+        android:textColorHint="#fff"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/userText"
         android:hint="@string/enterUsername"/>
     <EditText
+        android:textColor="#fff"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/passText"
+        android:textColorHint="#fff"
         android:inputType="textPassword"
         android:hint="@string/enterPassword"/>
     <EditText
+        android:textColor="#fff"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/confirmPassword"
         android:inputType="textPassword"
+        android:textColorHint="#fff"
         android:hint="@string/confirmPassword"/>
     <Button
+        style="@android:style/Widget.Holo.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/submitButton"

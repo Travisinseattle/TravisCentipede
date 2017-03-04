@@ -1,22 +1,33 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context="group7.tcss450.uw.edu.centipedeandroid.menu.MenuFragment">
+    android:background="@drawable/login"
+    tools:context="group7.tcss450.uw.edu.centipedeandroid.menu.MenuFragment"
+    android:weightSum="1">
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/startButton"
+        android:id="@+id/highScoreButton"
         android:gravity="center"
-        android:text="@string/startButton"/>
+        android:text="High Scores"
+        style="@android:style/Widget.Holo.Button"
+        android:layout_marginBottom="29dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/startPlayerButton"
+        android:id="@+id/playButton"
         android:gravity="center"
-        android:text="Sound Test"/>
+        android:text="Play Game"
+        style="@android:style/Widget.Holo.Button"
+        android:layout_above="@+id/highScoreButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="38dp" />
 
-</LinearLayout>
+</RelativeLayout>
