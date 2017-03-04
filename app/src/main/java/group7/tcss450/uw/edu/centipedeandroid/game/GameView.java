@@ -17,6 +17,7 @@ import java.util.LinkedList;
 import group7.tcss450.uw.edu.centipedeandroid.R;
 import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
 import group7.tcss450.uw.edu.centipedeandroid.game.manager.EntityManager;
+import group7.tcss450.uw.edu.centipedeandroid.game.system.CentMovementSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.CollisionSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.DestroySystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.DrawHitBoxSystem;
@@ -276,7 +277,7 @@ public class GameView extends SurfaceView implements Runnable {
         for (Components.Position p : mushroomPositions) {
             EntityFactory.createMushroom(p);
         }
-
+        EntityFactory.createCentipede(this, 8);
 
         /**
          * Creates the centipede object.
@@ -289,6 +290,8 @@ public class GameView extends SurfaceView implements Runnable {
         mOrderedSubSystems.add(new DestroySystem(this));
         mOrderedSubSystems.add(new TouchSystem(this));
         mOrderedSubSystems.add(new ShootSystem(this));
+        mOrderedSubSystems.add(new CentMovementSystem(this));
+
 
     }
 
@@ -296,15 +299,15 @@ public class GameView extends SurfaceView implements Runnable {
      * Called when the player wins the game.
      */
     public void gameWin() {
-
     }
 
     /**
      * Called when the player loses the game.
      */
     public void gameLose() {
-
+        ((GameActivity)getContext()).onGameOver();
     }
+
     private void renderScore() {
         mCanvas.drawText(getResources().getString(R.string.score) + mScore, FONT_SIZE_LARGE,
                 FONT_SIZE_LARGE + 10, mPaint);
