@@ -15,6 +15,8 @@ import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
 
 public class EntityFactory {
 
+    private static final float SHRINK_VALUE = GameActivity.getBlockSize() / 6;
+
 //    public static MetaEntity createCentipede(int theSize) {
 //        MetaEntity centipede = new MetaEntity();
 //        UUID[] segments = new UUID[theSize];
@@ -68,10 +70,10 @@ public class EntityFactory {
                         R.drawable.shroom2,
                         R.drawable.shroom1}),
                 new Components.HitBox(
-                        p.getX(),
-                        p.getY(),
-                        p.getX() + es.getEntityWidth(),
-                        p.getY() + es.getEntityHeight()));
+                        p.getX() + SHRINK_VALUE,
+                        p.getY() + SHRINK_VALUE,
+                        p.getX() + (es.getEntityWidth() - SHRINK_VALUE),
+                        p.getY() + (es.getEntityHeight() - SHRINK_VALUE)));
         return mushroom;
     }
 
@@ -105,8 +107,8 @@ public class EntityFactory {
     }
 
     public static MetaEntity createCentBody(float x, float y) {
-        Components.EntitySize es = new Components.EntitySize(GameActivity.getBlockSize(),
-                GameActivity.getBlockSize());
+        Components.EntitySize es = new Components.EntitySize(GameActivity.getBlockSize() /2,
+                GameActivity.getBlockSize() / 2);
         MetaEntity centBody = new MetaEntity("Centepede Body", es,
                 new Components.CAndroidDrawable(R.drawable.centipede),
                 new Components.Movable(10,0),
