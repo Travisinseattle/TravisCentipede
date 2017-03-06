@@ -93,13 +93,14 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                     passConfirm.length() < 6) {
                 passText.setError("You must provide a password 6 digits or longer.!");
                 passConfirmText.setError("You must provide a password 6 digits or longer.!");
+            } else if (!(pass.toLowerCase().equals(pass)) || !(pass.matches(".*\\d+.*"))) {
+                passText.setError("Password must contain Upper/Lower Case and a Number.");
+                passConfirmText.setError("Password must contain Upper/Lower Case and a Number.");
             } else if ( user.equals(pass) || user.equals(passConfirm) ||
                     pass.equals(user) || passConfirm.equals(user)) {
                 userText.setError("User and Passwords cannot be the same.");
                 passText.setError("User and Passwords cannot be the same.");
-            } else if (!(pass.toLowerCase().equals(pass)) || !(pass.matches(".*\\d+.*"))) {
-                passText.setError("Password must contain Upper/Lower Case and a Number.");
-            }  else {
+            } else {
                 mListener.onRegisterInteraction(user, pass);
             }
         }

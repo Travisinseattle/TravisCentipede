@@ -246,6 +246,10 @@ public class GameView extends SurfaceView implements Runnable {
         return mScreenSizeY;
     }
 
+    public int getmScore() {
+        return mScore;
+    }
+
     /*****************************************Public Methods***************************************/
 
     /**

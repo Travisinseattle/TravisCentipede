@@ -1,5 +1,8 @@
 package group7.tcss450.uw.edu.centipedeandroid;
 
+import android.support.annotation.NonNull;
+
+import java.util.Comparator;
 import java.util.Date;
 
 /**
@@ -7,7 +10,7 @@ import java.util.Date;
  * A custom class to track scores.
  */
 
-public class HighScore {
+public class HighScore implements Comparable<HighScore>{
 
         private int score;
         private Date date;
@@ -17,19 +20,24 @@ public class HighScore {
             this.date = theDate;
         }
 
-        public int getScore() {
+        int getScore() {
             return score;
         }
 
-        public Date getDate() {
+        Date getDate() {
             return date;
         }
 
-        public void setScore(int score) {
-            this.score = score;
-        }
 
-        public void setDate(Date date) {
-            this.date = date;
+
+    @Override
+    public int compareTo(@NonNull HighScore highScore) {
+        if  (this.score == highScore.getScore()) {
+            return 0;
+        }  else if(this.score > highScore.getScore()) {
+            return -1;
+        } else {
+            return 1;
         }
+    }
 }

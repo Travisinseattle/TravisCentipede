@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.Set;
 
 import group7.tcss450.uw.edu.centipedeandroid.HighScore;
+import group7.tcss450.uw.edu.centipedeandroid.HighScoreFragment;
 import group7.tcss450.uw.edu.centipedeandroid.R;
 import group7.tcss450.uw.edu.centipedeandroid.game.GameActivity;
 
@@ -32,12 +34,6 @@ import group7.tcss450.uw.edu.centipedeandroid.game.GameActivity;
  * An activity to handle the game main menu.
  */
 public class MenuActivity extends AppCompatActivity implements MenuFragment.OnStartGame, GameOverFragment.OnFragmentInteractionListener {
-
-    private static Context context;
-    private final static SharedPreferences getPrefs =
-            context.getSharedPreferences(context.getString(R.string.scores_preference),
-                    Context.MODE_PRIVATE);
-    private final static SharedPreferences.Editor setPrefs = getPrefs.edit();
 
 
     /**
@@ -55,7 +51,6 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        context = this;
 
         if (savedInstanceState == null) {
             if (findViewById(R.id.activity_menu) != null) {
@@ -71,6 +66,11 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
     public void onStartGame() {
         Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
+        /*********************************JUST FOR TESTING***************************************/
+        List<HighScore> blah = new ArrayList<>();
+        blah.add(new HighScore(0, new Date()));
+        MenuActivity.saveHighScores(getBaseContext(), "scores" , blah);
+        /*********************************JUST FOR TESTING***************************************/
     }
 
     /**
@@ -78,7 +78,10 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
      */
     @Override
     public void onPlayer() {
-
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.activity_menu, new HighScoreFragment())
+                .commit();
     }
 
     /**
@@ -178,21 +181,33 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
         }
     }
 
-    public static <T> void saveHighScores(String key, List<T> list) {
+    public static <T> void saveHighScores(final Context context,
+                                          final String key,
+                                          final List<T> list) {
         final Gson gson = new Gson();
         final String json = gson.toJson(list);
 
-        updateScores(key, json);
+        updateScores(context, key, json);
     }
 
-    private static void updateScores(String key, String value) {
+    private static void updateScores(final Context context,
+                                     final String key,
+                                     final String value) {
+       final SharedPreferences.Editor setPrefs =
+                context.getSharedPreferences(context.getString(R.string.scores_preference),
+                        Context.MODE_PRIVATE).edit();
         setPrefs.putString(key, value);
-        setPrefs.commit();
+        setPrefs.apply();
     }
 
-    public static List<HighScore> getHighScores(String key) {
+    public static List<HighScore> getHighScores(final Context context,
+                                                final String key) {
+        final SharedPreferences getPrefs =
+                context.getSharedPreferences(context.getString(R.string.scores_preference),
+                        Context.MODE_PRIVATE);
+
         final Gson gson = new Gson();
-        List<HighScore> highScores = new ArrayList<>();
+        List<HighScore> highScores;
         final String listOfScores = getPrefs.getString(key, "");
 
         Type type = new TypeToken<List<HighScore>>() {}.getType();

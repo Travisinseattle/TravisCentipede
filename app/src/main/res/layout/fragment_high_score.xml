@@ -7,17 +7,20 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/White">
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/high_scores" />
+            android:layout_height="wrap_content"
+            android:textColor="@color/Black"
+            android:text="@string/high_scores"
+            android:gravity="center_horizontal"/>
 
         <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/high_scores" />
+            android:id="@+id/high_scores_list"/>
 
     </LinearLayout>
 
