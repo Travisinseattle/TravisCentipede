@@ -20,10 +20,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import group7.tcss450.uw.edu.centipedeandroid.HighScore;
 import group7.tcss450.uw.edu.centipedeandroid.HighScoreFragment;
@@ -66,11 +63,6 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
     public void onStartGame() {
         Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
-        /*********************************JUST FOR TESTING***************************************/
-        List<HighScore> blah = new ArrayList<>();
-        blah.add(new HighScore(0, new Date()));
-        MenuActivity.saveHighScores(getBaseContext(), "scores" , blah);
-        /*********************************JUST FOR TESTING***************************************/
     }
 
     /**
@@ -90,8 +82,11 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        mPlayMusicTask.stopPlayer();
-
+        try {
+            mPlayMusicTask.stopPlayer();
+        } catch (Exception e) {
+            Log.e("StopPlayer fail", e.getMessage());
+        }
     }
 
     @Override

@@ -51,16 +51,19 @@ public class HighScoreFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
         List<HighScore> listOfScores =
                 MenuActivity.getHighScores(mContext, mContext.getString(R.string.scores_list));
         List<String> scores = new ArrayList<>();
-        for (HighScore temp : listOfScores) {
-            Calendar cal = toCalendar(temp.getDate());
-            Log.e("Date", temp.getDate().toString());
-            scores.add("SCORE: " + temp.getScore() + " : " + "Date: " + cal.get(Calendar.MONTH)
-                    + "/" + cal.get(Calendar.DAY_OF_MONTH) + "/" + cal.get(Calendar.YEAR));
+        if (listOfScores != null) {
+            for (HighScore temp : listOfScores) {
+                Calendar cal = toCalendar(temp.getDate());
+                scores.add("SCORE: " + temp.getScore() + " : " + "Date: " + cal.get(Calendar.MONTH)
+                        + "/" + cal.get(Calendar.DAY_OF_MONTH) + "/" + cal.get(Calendar.YEAR));
+            }
+        } else {
+            scores.add("You must Play A Game To Have A Score!");
         }
+
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext,
                 android.R.layout.simple_list_item_1, scores);
         listView.setAdapter(adapter);
