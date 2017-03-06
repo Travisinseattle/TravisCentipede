@@ -1,8 +1,7 @@
-package group7.tcss450.uw.edu.centipedeandroid;
+package group7.tcss450.uw.edu.centipedeandroid.menu;
 
 import android.support.annotation.NonNull;
 
-import java.util.Comparator;
 import java.util.Date;
 
 /**

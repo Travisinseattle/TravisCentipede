@@ -1,10 +1,9 @@
-package group7.tcss450.uw.edu.centipedeandroid;
+package group7.tcss450.uw.edu.centipedeandroid.menu;
 
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +15,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import group7.tcss450.uw.edu.centipedeandroid.menu.MenuActivity;
+import group7.tcss450.uw.edu.centipedeandroid.R;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * Created by Travis Holloway on 3/5/2017.
+ * A fragment to load and display High Scores from the preferences file.
  */
 public class HighScoreFragment extends Fragment {
 
@@ -46,6 +46,14 @@ public class HighScoreFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
+    }
+
+    /**
+     * Calls super.onDetach().
+     */
+    @Override
+    public void onDetach() {
+        super.onDetach();
     }
 
     @Override

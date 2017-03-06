@@ -7,8 +7,6 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,8 +20,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
-import group7.tcss450.uw.edu.centipedeandroid.HighScore;
-import group7.tcss450.uw.edu.centipedeandroid.HighScoreFragment;
 import group7.tcss450.uw.edu.centipedeandroid.R;
 import group7.tcss450.uw.edu.centipedeandroid.game.GameActivity;
 
@@ -73,6 +69,7 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.activity_menu, new HighScoreFragment())
+                .addToBackStack(null)
                 .commit();
     }
 
