@@ -1,6 +1,8 @@
 package group7.tcss450.uw.edu.centipedeandroid.menu;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -10,10 +12,19 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
+import group7.tcss450.uw.edu.centipedeandroid.HighScore;
 import group7.tcss450.uw.edu.centipedeandroid.R;
 import group7.tcss450.uw.edu.centipedeandroid.game.GameActivity;
 
@@ -22,6 +33,13 @@ import group7.tcss450.uw.edu.centipedeandroid.game.GameActivity;
  */
 public class MenuActivity extends AppCompatActivity implements MenuFragment.OnStartGame, GameOverFragment.OnFragmentInteractionListener {
 
+    private static Context context;
+    private final static SharedPreferences getPrefs =
+            context.getSharedPreferences(context.getString(R.string.scores_preference),
+                    Context.MODE_PRIVATE);
+    private final static SharedPreferences.Editor setPrefs = getPrefs.edit();
+
+
     /**
      * A task to play music
      */
@@ -29,12 +47,15 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
 
     /**
      * Creates the view.
+     *
      * @param savedInstanceState
      */
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+        context = this;
 
         if (savedInstanceState == null) {
             if (findViewById(R.id.activity_menu) != null) {
@@ -78,7 +99,7 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
     /**
      * A task for playing music from SoundCloud
      */
-    private class PlayMusicTask extends AsyncTask<Integer,Void, String> {
+    private class PlayMusicTask extends AsyncTask<Integer, Void, String> {
         /**
          * The MedisPlsyer instance
          */
@@ -96,6 +117,7 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
 
         /**
          * Gets the right url
+         *
          * @param params the track to get.
          * @return the redirected URL
          */
@@ -123,6 +145,7 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
 
         /**
          * Plays the song from the link.
+         *
          * @param theURL source of song
          */
         @Override
@@ -146,16 +169,36 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
         /**
          * Stops the player
          */
-        public void stopPlayer()
-        {
-            if(mMediaPlayer != null)
-            {
-                if (mMediaPlayer.isPlaying())
-                {
+        public void stopPlayer() {
+            if (mMediaPlayer != null) {
+                if (mMediaPlayer.isPlaying()) {
                     mMediaPlayer.stop();
                 }
             }
         }
+    }
+
+    public static <T> void saveHighScores(String key, List<T> list) {
+        final Gson gson = new Gson();
+        final String json = gson.toJson(list);
+
+        updateScores(key, json);
+    }
+
+    private static void updateScores(String key, String value) {
+        setPrefs.putString(key, value);
+        setPrefs.commit();
+    }
+
+    public static List<HighScore> getHighScores(String key) {
+        final Gson gson = new Gson();
+        List<HighScore> highScores = new ArrayList<>();
+        final String listOfScores = getPrefs.getString(key, "");
+
+        Type type = new TypeToken<List<HighScore>>() {}.getType();
+        highScores = gson.fromJson(listOfScores, type);
+
+        return highScores;
     }
 
 //    public void playTrack(int trackID){
@@ -202,5 +245,6 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
 //        }
 //
 //    }
+
 }
 

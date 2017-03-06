@@ -80,25 +80,27 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         if (mListener !=null) {
             View test = getView();
-            EditText userText =( EditText)test.findViewById(R.id.userText);
+            EditText userText = (EditText) test.findViewById(R.id.userText);
             String user = userText.getText().toString();
-            EditText passText = ((EditText)test.findViewById(R.id.passText));
+            EditText passText = ((EditText) test.findViewById(R.id.passText));
             String pass = passText.getText().toString();
-            EditText passConfirmText = ((EditText)test.findViewById(R.id.confirmPassword));
+            EditText passConfirmText = ((EditText) test.findViewById(R.id.confirmPassword));
             String passConfirm = passConfirmText.getText().toString();
-            if (!user.equals("") && !pass.equals("") &&  pass.equals(passConfirm))
+
+            if (user.equals("") || user.length() < 4) {
+                userText.setError("You must provide a user name 4 digits or longer.!");
+            } else if (pass.equals("") || passConfirm.equals("") || pass.length() < 6 ||
+                    passConfirm.length() < 6) {
+                passText.setError("You must provide a password 6 digits or longer.!");
+                passConfirmText.setError("You must provide a password 6 digits or longer.!");
+            } else if ( user.equals(pass) || user.equals(passConfirm) ||
+                    pass.equals(user) || passConfirm.equals(user)) {
+                userText.setError("User and Passwords cannot be the same.");
+                passText.setError("User and Passwords cannot be the same.");
+            } else if (!(pass.toLowerCase().equals(pass)) || !(pass.matches(".*\\d+.*"))) {
+                passText.setError("Password must contain Upper/Lower Case and a Number.");
+            }  else {
                 mListener.onRegisterInteraction(user, pass);
-            else {
-                if (user.equals("")) {
-                    passText.setError("Enter a username!");
-                }
-                if (pass.equals("")) {
-                    passText.setError("Enter a password!");
-                }
-                if (!pass.equals(passConfirm))
-                {
-                    passConfirmText.setError("Passwords do not match!");
-                }
             }
         }
     }
