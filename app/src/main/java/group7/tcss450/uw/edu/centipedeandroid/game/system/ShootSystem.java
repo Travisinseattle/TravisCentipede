@@ -21,18 +21,34 @@ import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
 
 public class ShootSystem extends SubSystem {
 
+    /** the rate at which bullets shoot out */
     private final static int MOD_RATE = 2;
+
+    /** counter for speed control */
     private int counter;
+
+    /** speed of the bullet */
     private int speed;
+
+    /** list of UUID's */
     private List<UUID> killList;
 
-
+    /**
+     * Constructor for the system, sets fields.
+     *
+     * @param theGameView
+     */
     public ShootSystem(GameView theGameView) {
         super(theGameView);
         counter = 0;
         speed = theGameView.getBulletSpeed();
     }
-
+    /**
+     * Method that process a game tick and creates a bullet entity based on the position of the ship.
+     * The system also sets the speed of the bullet and the frequency at which they are created.
+     *
+     * @param lastFrameTime is the frame being processed.
+     */
     @Override
     public void processOneGameTick(long lastFrameTime) {
         counter += lastFrameTime;
@@ -44,7 +60,7 @@ public class ShootSystem extends SubSystem {
             Components.Position pos = mGameView.mEntityManager.getComponent(entityID, Components.Position.class);
             if (counter > speed) {
                 counter -= speed;
-                EntityFactory.createBullet(pos.getX(), pos.getY() );
+                EntityFactory.createBullet(mGameView, pos.getX(), pos.getY() );
             }
         }
 
@@ -62,6 +78,11 @@ public class ShootSystem extends SubSystem {
         }
     }
 
+    /**
+     * Method used for getting the string name of the system.
+     *
+     * @return a string of the system.
+     */
     @Override
     public String getSimpleName() {
         return null;

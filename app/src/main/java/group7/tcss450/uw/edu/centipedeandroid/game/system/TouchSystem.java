@@ -17,7 +17,6 @@ import group7.tcss450.uw.edu.centipedeandroid.game.manager.GameManager;
  */
 
 public class TouchSystem extends SubSystem {
-
     private static final float MOVEMENT_DIVISOR = 5;
     private static final float CLOSE_ENOUGH = 20;
 
@@ -37,10 +36,10 @@ public class TouchSystem extends SubSystem {
             if (mGameView.mShipMovement) {
 
                 //The distance between last position and current touch in X
-                float differenceX = pos.getX() - mGameView.getmTouchX();
+                float differenceX = pos.getX() - mGameView.mTouchX;
 
                 //The distance between last position and current touch in Y
-                float differenceY = pos.getY() - mGameView.getmTouchY();
+                float differenceY = pos.getY() - mGameView.mTouchY;
 
                 /**
                  * If the distance between touch and pos is small enough, stop movement.
