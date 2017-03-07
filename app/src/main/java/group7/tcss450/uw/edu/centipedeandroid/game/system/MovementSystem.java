@@ -104,11 +104,17 @@ public class MovementSystem extends SubSystem {
                             hitBox.setHitBox(x, y, x + es.getEntityWidth(), y + es.getEntityHeight());
                         }
                 }
+
             }
             moveSegement = false;
 
-    }
+        }
 
+    /**
+     * Method used for getting the string name of the system.
+     *
+     * @return a string of the system.
+     */
     @Override
     public String getSimpleName() {
         return "Movement";

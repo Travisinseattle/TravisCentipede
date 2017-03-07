@@ -30,6 +30,7 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
      * The partial URL to the PHP files.
      */
     private static final String PARTIAL_URL = "http://cssgate.insttech.washington.edu/~nmousel/";
+
     /**
      * The task related to the authenication happening.
      */
@@ -40,7 +41,7 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
      * @param savedInstanceState The saved instance state.
      */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authenication);
         if (savedInstanceState == null) {
@@ -57,7 +58,7 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
      * @param pass The Password.
      */
     @Override
-    public void onLoginInteraction(String user, String pass) {
+    public void onLoginInteraction(final String user, final String pass) {
         mTask = new PostLoginTask();
         mTask.execute(PARTIAL_URL, user, pass);
     }
@@ -67,9 +68,9 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
      */
     @Override
     public void onRegisterInteraction() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        RegisterFragment fragment = new RegisterFragment();
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        final RegisterFragment fragment = new RegisterFragment();
         fragmentTransaction.replace(R.id.activity_authenication, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
@@ -82,19 +83,17 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
      * @param pass The Password.
      */
     @Override
-    public void onRegisterInteraction(String user, String pass) {
+    public void onRegisterInteraction(final String user, final String pass) {
         mTask = new PostRegisterTask();
         mTask.execute(PARTIAL_URL, user, pass);
     }
 
     /**
      * Called when an user successfully validates.
-     * @param user The Username.
-     * @param pass The Password.
      */
-    private void onSucess(String user, String pass)
+    private void onSuccess()
     {
-        Intent intent = new Intent(this, MenuActivity.class);
+        final Intent intent = new Intent(this, MenuActivity.class);
         startActivity(intent);
     }
 
@@ -119,19 +118,22 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
             }
             String response = "";
             HttpURLConnection urlConnection = null;
-            String url = strings[0];
+            final String url = strings[0];
             try {
-                URL urlObject = new URL(url + SERVICE);
+                final URL urlObject = new URL(url + SERVICE);
                 urlConnection = (HttpURLConnection) urlObject.openConnection();
                 urlConnection.setRequestMethod("POST");
                 urlConnection.setDoOutput(true);
-                OutputStreamWriter wr = new OutputStreamWriter(urlConnection.getOutputStream());
-                String data = URLEncoder.encode("login", "UTF-8") + "=" + URLEncoder.encode(strings[1], "UTF-8") + "&" + URLEncoder.encode("pass", "UTF-8") + "=" + URLEncoder.encode(strings[2], "UTF-8");
+                final OutputStreamWriter wr = new OutputStreamWriter(urlConnection.getOutputStream());
+                final String data = URLEncoder.encode("login", "UTF-8") +
+                        "=" + URLEncoder.encode(strings[1], "UTF-8") + "&" +
+                        URLEncoder.encode("pass", "UTF-8") + "=" +
+                        URLEncoder.encode(strings[2], "UTF-8");
                 wr.write(data);
                 wr.flush();
-                InputStream content = urlConnection.getInputStream();
-                BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                String s = "";
+                final InputStream content = urlConnection.getInputStream();
+                final BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                String s;
                 while ((s = buffer.readLine()) != null) {
                     response += s;
                 }
@@ -153,19 +155,18 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
             // Something wrong with the network or the URL.
             if (result.startsWith("Unable to") || result.startsWith("Error:")) {
                 Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
-                return;
             } else  {
                 String user = null;
                 String pass = null;
                 try {
-                    JSONObject jo = new JSONObject(result);
+                    final JSONObject jo = new JSONObject(result);
                     user = jo.getString("user");
                     pass = jo.getString("pass");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 if (user != null && pass != null)
-                    onSucess(user, pass);
+                    onSuccess();
             }
         }
     }
@@ -191,19 +192,22 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
             }
             String response = "";
             HttpURLConnection urlConnection = null;
-            String url = strings[0];
+            final String url = strings[0];
             try {
-                URL urlObject = new URL(url + SERVICE);
+                final URL urlObject = new URL(url + SERVICE);
                 urlConnection = (HttpURLConnection) urlObject.openConnection();
                 urlConnection.setRequestMethod("POST");
                 urlConnection.setDoOutput(true);
-                OutputStreamWriter wr = new OutputStreamWriter(urlConnection.getOutputStream());
-                String data = URLEncoder.encode("login", "UTF-8") + "=" + URLEncoder.encode(strings[1], "UTF-8") + "&" + URLEncoder.encode("pass", "UTF-8") + "=" + URLEncoder.encode(strings[2], "UTF-8");
+                final OutputStreamWriter wr = new OutputStreamWriter(urlConnection.getOutputStream());
+                final String data = URLEncoder.encode("login", "UTF-8") + "=" +
+                        URLEncoder.encode(strings[1], "UTF-8") + "&" +
+                        URLEncoder.encode("pass", "UTF-8") + "=" +
+                        URLEncoder.encode(strings[2], "UTF-8");
                 wr.write(data);
                 wr.flush();
-                InputStream content = urlConnection.getInputStream();
-                BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                String s = "";
+                final InputStream content = urlConnection.getInputStream();
+                final BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                String s;
                 while ((s = buffer.readLine()) != null) {
                     response += s;
                 }
@@ -225,20 +229,18 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
 //            Log.d("TEST", "doInBackground: " + result);
             if (result.startsWith("Unable to") || result.startsWith("Error:")) {
                 Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
-                return;
             } else {
                 String user = null;
                 String pass = null;
                 try {
-                    JSONObject jo = new JSONObject(result);
+                    final JSONObject jo = new JSONObject(result);
                     user = jo.getString("user");
                     pass = jo.getString("pass");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 if (user != null && pass != null) {
-//                    Log.d("TEST", "doInBackground: " + user);
-                    onSucess(user, pass);
+                    onSuccess();
                 }
             }
 

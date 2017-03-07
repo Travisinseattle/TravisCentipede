@@ -1,6 +1,9 @@
 package group7.tcss450.uw.edu.centipedeandroid.menu;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -9,10 +12,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 import group7.tcss450.uw.edu.centipedeandroid.R;
 import group7.tcss450.uw.edu.centipedeandroid.game.GameActivity;
@@ -20,12 +29,16 @@ import group7.tcss450.uw.edu.centipedeandroid.game.GameActivity;
 /**
  * An activity to handle the game main menu.
  */
-public class MenuActivity extends AppCompatActivity implements MenuFragment.OnStartGame, GameOverFragment.OnFragmentInteractionListener {
+public class MenuActivity extends AppCompatActivity implements MenuFragment.OnStartGame, GameOverFragment.OnFragmentInteractionListener, MenuFragment.SendSong {
 
     /**
      * A task to play music
      */
     private PlayMusicTask mPlayMusicTask;
+
+    private int mSong;
+
+    private MenuFragment.SendSong mSengSong;
 
     /**
      * Creates the view.
@@ -48,7 +61,8 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
      */
     @Override
     public void onStartGame() {
-        Intent intent = new Intent(this, GameActivity.class);
+        Intent intent = new Intent(this, GameActivity.class).putExtra(
+                "int_value", mSong);
         startActivity(intent);
     }
 
@@ -57,7 +71,15 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
      */
     @Override
     public void onPlayer() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.activity_menu, new HighScoreFragment())
+                .addToBackStack(null)
+                .commit();
+    }
 
+    public void setSong(int theSong) {
+        mSong = theSong;
     }
 
     /**
@@ -66,13 +88,83 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        mPlayMusicTask.stopPlayer();
-
+        try {
+            mPlayMusicTask.stopPlayer();
+        } catch (Exception e) {
+            Log.e("StopPlayer fail", e.getMessage());
+        }
     }
+
+
 
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    /**
+     * Method that sets the song track id.
+     * @param theSong
+     */
+    @Override
+    public void songNum(int theSong) {
+        mSong = theSong;
+    }
+
+    /**
+     * Method that saves the high scores for the current game.
+     *
+     * @param context
+     * @param key
+     * @param list
+     * @param <T>
+     */
+    public static <T> void saveHighScores(final Context context,
+                                          final String key,
+                                          final List<T> list) {
+        final Gson gson = new Gson();
+        final String json = gson.toJson(list);
+
+        updateScores(context, key, json);
+    }
+
+    /**
+     * Method that updates the high scores.
+     * @param context
+     * @param key
+     * @param value
+     */
+    private static void updateScores(final Context context,
+                                     final String key,
+                                     final String value) {
+        final SharedPreferences.Editor setPrefs =
+                context.getSharedPreferences(context.getString(R.string.scores_preference),
+                        Context.MODE_PRIVATE).edit();
+        setPrefs.putString(key, value);
+        setPrefs.apply();
+    }
+
+    /**
+     * Getter method that returns the current highscores
+     *
+     * @param context
+     * @param key
+     * @return
+     */
+    public static List<HighScore> getHighScores(final Context context,
+                                                final String key) {
+        final SharedPreferences getPrefs =
+                context.getSharedPreferences(context.getString(R.string.scores_preference),
+                        Context.MODE_PRIVATE);
+
+        final Gson gson = new Gson();
+        List<HighScore> highScores;
+        final String listOfScores = getPrefs.getString(key, "");
+
+        Type type = new TypeToken<List<HighScore>>() {}.getType();
+        highScores = gson.fromJson(listOfScores, type);
+
+        return highScores;
     }
 
     /**

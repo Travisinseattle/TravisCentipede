@@ -6,7 +6,6 @@ import android.util.Log;
 import java.util.Set;
 import java.util.UUID;
 
-import group7.tcss450.uw.edu.centipedeandroid.game.GameActivity;
 import group7.tcss450.uw.edu.centipedeandroid.game.GameView;
 import group7.tcss450.uw.edu.centipedeandroid.game.SubSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
@@ -24,7 +23,7 @@ public class PhysicsSystem extends SubSystem {
         Set<UUID> allHitBoxes = mGameView.mEntityManager.getAllEntitiesPossessingComponent(Components.HitBox.class);
         for (UUID id: allHitBoxes) {
             if (!mGameView.mEntityManager.hasComponent(id, Components.Collision.class)) {
-                if (mGameView.mEntityManager.hasComponent(id, Components.Movable.class)) {
+            if (mGameView.mEntityManager.hasComponent(id, Components.Movable.class)) {
 
                     Components.HitBox box = mGameView.mEntityManager.getComponent(id, Components.HitBox.class);
                     for (UUID otherID : allHitBoxes) {
@@ -36,12 +35,17 @@ public class PhysicsSystem extends SubSystem {
                         }
 
                     }
-
                 }
             }
         }
+
     }
 
+    /**
+     * Method used for getting the string name of the system.
+     *
+     * @return a string of the system.
+     */
     @Override
     public String getSimpleName() {
         return null;

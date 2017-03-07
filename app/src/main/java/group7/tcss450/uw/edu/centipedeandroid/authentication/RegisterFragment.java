@@ -39,11 +39,11 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
      * @return Inflated view.
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
+                             final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_register, container, false);
-        Button b = (Button) v.findViewById(R.id.submitButton);
+        final View v = inflater.inflate(R.layout.fragment_register, container, false);
+        final Button b = (Button) v.findViewById(R.id.submitButton);
         b.setOnClickListener(this);
         return v;
     }
@@ -79,26 +79,30 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (mListener !=null) {
-            View test = getView();
-            EditText userText =( EditText)test.findViewById(R.id.userText);
-            String user = userText.getText().toString();
-            EditText passText = ((EditText)test.findViewById(R.id.passText));
-            String pass = passText.getText().toString();
-            EditText passConfirmText = ((EditText)test.findViewById(R.id.confirmPassword));
-            String passConfirm = passConfirmText.getText().toString();
-            if (!user.equals("") && !pass.equals("") &&  pass.equals(passConfirm))
+            final View test = getView();
+            assert test != null;
+            final EditText userText = (EditText) test.findViewById(R.id.userText);
+            final String user = userText.getText().toString();
+            final EditText passText = ((EditText) test.findViewById(R.id.passText));
+            final String pass = passText.getText().toString();
+            final EditText passConfirmText = ((EditText) test.findViewById(R.id.confirmPassword));
+            final String passConfirm = passConfirmText.getText().toString();
+
+            if (user.equals("") || user.length() < 4) {
+                userText.setError("You must provide a user name 4 digits or longer.!");
+            } else if (pass.equals("") || passConfirm.equals("") || pass.length() < 6 ||
+                    passConfirm.length() < 6) {
+                passText.setError("You must provide a password 6 digits or longer.!");
+                passConfirmText.setError("You must provide a password 6 digits or longer.!");
+            } else if (pass.toLowerCase().equals(pass) || !(pass.matches(".*\\d+.*"))) {
+                passText.setError("Password must contain Upper/Lower Case and a Number.");
+                passConfirmText.setError("Password must contain Upper/Lower Case and a Number.");
+            } else if ( user.equals(pass) || user.equals(passConfirm) ||
+                    pass.equals(user) || passConfirm.equals(user)) {
+                userText.setError("User and Passwords cannot be the same.");
+                passText.setError("User and Passwords cannot be the same.");
+            } else {
                 mListener.onRegisterInteraction(user, pass);
-            else {
-                if (user.equals("")) {
-                    passText.setError("Enter a username!");
-                }
-                if (pass.equals("")) {
-                    passText.setError("Enter a password!");
-                }
-                if (!pass.equals(passConfirm))
-                {
-                    passConfirmText.setError("Passwords do not match!");
-                }
             }
         }
     }

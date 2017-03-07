@@ -17,7 +17,6 @@ import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
 public class EntityFactory {
 
     private static final float SHRINK_VALUE = GameActivity.getBlockSize() / 6;
-
 //    public static MetaEntity createCentipede(int theSize) {
 //        MetaEntity centipede = new MetaEntity("why travis");
 //        UUID[] segments = new UUID[theSize];
@@ -43,40 +42,55 @@ public class EntityFactory {
 //        return segment;
 //    }
 
+    /**
+     * Method that creates a board entity.
+     *
+     * @return A MetaEntity object of the board.
+     */
     public static MetaEntity createGameBoard() {
         MetaEntity board = new MetaEntity("board");
         return board;
     }
 
+    /**
+     * Method that creates a a mushroom entity that will spawn
+     * on the screen. Entity is comprised of components that
+     * control behavior.
+     *
+     * @return A MetaEntity object of the mushroom.
+     */
     public static MetaEntity createMushroom() { // Mushrooms will look like aliens for now.
-        MetaEntity mushroom = new MetaEntity("mushroom",
-                new Components.EntitySize(GameActivity.getBlockSize(),
-                        GameActivity.getBlockSize()),
-                new Components.Health(4),
-                new Components.Position(),
-                new Components.CAndroidDrawable(R.drawable.shroom));
-
+        MetaEntity mushroom = new MetaEntity("mushroom");
+        mushroom.add(new Components.EntitySize(GameActivity.getBlockSize(),
+                GameActivity.getBlockSize()));
+        mushroom.add(new Components.Health(4));
+        mushroom.add(new Components.Position());
+        mushroom.add(new Components.CAndroidDrawable(R.drawable.shroom));
         return mushroom;
     }
 
+    /**
+     * Method that creates a a mushroom entity that will spawn
+     * on the screen. Entity is comprised of components that
+     * control behavior.
+     *
+     * @param p is the position of the mushroom
+     * @return A MetaEntity object of the mushroom.
+     */
     public static MetaEntity createMushroom(Components.Position p) { // Mushrooms will look like aliens for now.
+        MetaEntity mushroom = new MetaEntity("mushroom");
         Components.EntitySize es = new Components.EntitySize(GameActivity.getBlockSize(),
                 GameActivity.getBlockSize());
-        MetaEntity mushroom = new MetaEntity("mushroom", es, p,
-                new Components.Health(4),
-                new Components.DamagedDrawable(
-                        new int[] {R.drawable.shroom,
-                        R.drawable.shroom3,
-                        R.drawable.shroom2,
-                        R.drawable.shroom1}),
-                new Components.HitBox(
-                        p.getX() + SHRINK_VALUE,
-                        p.getY() + SHRINK_VALUE,
-                        p.getX() + (es.getEntityWidth() - SHRINK_VALUE),
-                        p.getY() + (es.getEntityHeight() - SHRINK_VALUE)));
+        mushroom.add(es);
+        mushroom.add(new Components.Health(4));
+//        mushroom.add(new Components.Damage(new Random().nextInt(3))); // for now lets give the mushroom some random damage
+        mushroom.add(p);
+        mushroom.add(new Components.DamagedDrawable(new int[] {R.drawable.shroom, R.drawable.shroom3, R.drawable.shroom2, R.drawable.shroom1}));
+        mushroom.add(new Components.HitBox(p.getX(), p.getY(), p.getX() + es.getEntityWidth(), p.getY() + es.getEntityHeight()));
         return mushroom;
     }
 
+//<<<<<<< HEAD
     public static MetaEntity createShip() {
         Components.EntitySize es = new Components.EntitySize(GameActivity.getBlockSize() * 2,
                 GameActivity.getBlockSize());
@@ -94,10 +108,41 @@ public class EntityFactory {
                         p.getX() + (es.getEntityWidth() - SHRINK_VALUE),
                         p.getY() + (es.getEntityHeight() - SHRINK_VALUE)));
    ;
+//=======
+//    /**
+//     * Method that creates a ship entity that will spawn
+//     * on the screen. Entity is comprised of components that
+//     * control behavior such as touch for the ships movement.
+//     *
+//     * @param theGameView is the surface view of the game.
+//     * @return A MetaEntity object of the ship.
+//     */
+//    public static MetaEntity createShip(GameView theGameView) {
+//        MetaEntity ship = new MetaEntity();
+//        ship.add(new Components.EntitySize(GameActivity.getBlockSize() * 2,
+//                GameActivity.getBlockSize()));
+//        ship.add(new Components.CAndroidDrawable(R.drawable.alienblaster));
+//        ship.add(new Components.Touch());
+//        ship.add(new Components.Movable());
+//        ship.add(new Components.Position((GameActivity.mWidth / 2),  (GameActivity.mHeight -
+//                GameActivity.mBlockSize)));
+////        ship.add(new Components.Health());
+////        ship.add(new Components.HitBox());
+//>>>>>>> c3fd90360f1296db9953ee4f9e76266349164f6f
         return ship;
     }
 
-    public static MetaEntity createBullet(float x, float y) {
+    /**
+     * Method that creates a bullet entity that will spawn
+     * on the screen. Entity is comprised of components that
+     * control behavior. Bullet spawn is controlled by where the ship is.
+     *
+     * @param theGameView is a reference to the game view.
+     * @param x is the x position of the bullet.
+     * @param y is the y position of the bullet.
+     * @return A MetaEntity object of the bullet.
+     */
+    public static MetaEntity createBullet(GameView theGameView, float x, float y) {
         Components.EntitySize es = new Components.EntitySize(GameActivity.getBlockSize() / 2,
                 GameActivity.getBlockSize() / 2);
         MetaEntity bullet = new MetaEntity("bullet", es,
@@ -153,7 +198,17 @@ public class EntityFactory {
         EntityFactory.createCentipede(rightCent);
     }
 
+    /**
+     * Method that creates a centipede entity.
+     * Entity is comprised of components that
+     * control behavior. The centipede is made up of several segments.
+     *
+     * @param theGameView is a reference to the game view.
+     * @param theSize is the number of segments in the centipede.
+     * @return A MetaEntity object of the centipede.
+     */
     public static MetaEntity createCentipede(GameView theGameView, int theSize) {
+//        MetaEntity centipede = new MetaEntity();
         UUID[] ids = new UUID[theSize];
         int k = 0;
         MetaEntity centipede = new MetaEntity("Centipede");
@@ -167,19 +222,38 @@ public class EntityFactory {
         return centipede;
     }
 
+    /**
+     * Method that creates a centipede entity.
+     * Entity is comprised of components that
+     * control behavior. This centipede takes a list of
+     * already created segements for a new centipede to be created.
+     *
+     * @param theIDS is a list of segement ids
+     * @return A MetaEntity object of the centipede.
+     */
     public static MetaEntity createCentipede(UUID[] theIDS) {
-        MetaEntity centipede = new MetaEntity("Centipede",
-                new Components.CentipedeID(theIDS));
+        MetaEntity centipede = new MetaEntity("centipede");
+        centipede.add(new Components.CentipedeID(theIDS));
         return centipede;
     }
-
+    /**
+     * Method that creates a scorpian entity that will spawn
+     * on the screen. Entity is comprised of components that
+     * control behavior. Scorpian moves in a horizontal line on the screen.
+     *
+     * @param theGameView is a reference to the game view.
+     * @param x is the x position of the scorpian.
+     * @param y is the y position of the scorpian.
+     * @return A MetaEntity object of the scorpian.
+     */
     public static MetaEntity createScorpian(GameView theGameView, float x, float y) {
-        MetaEntity scorpian = new MetaEntity("Scorpian",
-                new Components.EntitySize(GameActivity.getBlockSize() + 40,
-                GameActivity.getBlockSize() + 40),
-                new Components.CAndroidDrawable(R.drawable.scorpianeast),
-                new Components.Movable(1/2,0),
-                new Components.Position(x,y));
+        MetaEntity scorpian = new MetaEntity("scorpion");
+        scorpian.add(new Components.EntitySize(GameActivity.getBlockSize() + 40,
+                GameActivity.getBlockSize() + 40)); // POSSIBLE CHANGE SIZE OF THIS CREATURE CURRENT NUMBERS ARE TEST NUMBERS
+        scorpian.add(new Components.CAndroidDrawable(R.drawable.scorpianeast));
+        scorpian.add(new Components.Movable(1/2,0));
+        scorpian.add(new Components.Position(x,y));
+//        scorpian.add(new Components.Health());
         return scorpian;
     }
 }

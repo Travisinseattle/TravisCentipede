@@ -247,8 +247,9 @@ public class GameView extends SurfaceView implements Runnable {
         return mScreenSizeY;
     }
 
-    public boolean myUpdateSegments;
-
+    public int getmScore() {
+        return mScore;
+    }
     /*****************************************Public Methods***************************************/
 
     /**
@@ -259,8 +260,6 @@ public class GameView extends SurfaceView implements Runnable {
          * set the score
          */
         mScore = 0;
-
-        myUpdateSegments = false;
 
         /**
          * set the bullet speed.
