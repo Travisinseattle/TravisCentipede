@@ -110,14 +110,29 @@ public class GameActivity extends AppCompatActivity implements GameOverFragment.
         mWidth = size.x;
         mHeight = size.y;
         calculateBlockSize();
-
+        mPlayMusicTask = new PlayMusicTask();
         /*Initialize Gameview object and set the content to it.*/
         mGameView = new GameView(this, mWidth, mHeight, mBlockSize);
         setContentView(mGameView);
-
-
+        int theSong = getIntent().getIntExtra("int_value", 0);
+        if (theSong == 0) {
+            mPlayMusicTask.setTrack(293);
+            mPlayMusicTask.stopPlayer();
+            mPlayMusicTask.execute(293);
+        } else if (theSong == 1) {
+            mPlayMusicTask.setTrack(294);
+            mPlayMusicTask.stopPlayer();
+            mPlayMusicTask.execute(292);
+        } else if (theSong == 2){
+            mPlayMusicTask.setTrack(292);
+            mPlayMusicTask.stopPlayer();
+            mPlayMusicTask.execute(292);
+        }
     }
 
+    /**
+     * Method that launches the game over fragment when the game ends.
+     */
     public void onGameOver() {
         GameOverFragment gameFrag = new GameOverFragment();
         this.getSupportFragmentManager().beginTransaction()
@@ -133,7 +148,7 @@ public class GameActivity extends AppCompatActivity implements GameOverFragment.
     protected void onPause() {
         super.onPause();
         mGameView.pause();
-       // mPlayMusicTask.stopPlayer();
+        mPlayMusicTask.stopPlayer();
     }
 
     @Override
@@ -192,6 +207,11 @@ public class GameActivity extends AppCompatActivity implements GameOverFragment.
         }
     }
 
+    /**
+     * Implemented methods from import.
+     *
+     * @param uri the uri object
+     */
     public void onFragmentInteraction(Uri uri) {
 
     }
