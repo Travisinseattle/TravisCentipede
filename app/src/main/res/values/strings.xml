@@ -28,4 +28,9 @@
     <string name="high_scores">High Scores</string>
     <string name="scores_list">scores</string>
     <string name="scores_preference">scores_preference</string>
+    <string-array name="music_list">
+        <item>Cool Drums</item>
+        <item>Hip Beats</item>
+        <item>Ambient Piano</item>
+    </string-array>
 </resources>
