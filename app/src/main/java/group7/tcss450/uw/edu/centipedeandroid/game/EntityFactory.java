@@ -12,35 +12,13 @@ import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
 
 /**
  * Created by nicholas on 2/13/17.
+ * This class defines how different entities are created and what components they would hold.
  */
 
 public class EntityFactory {
 
     private static final float SHRINK_VALUE = GameActivity.getBlockSize() / 6;
-//    public static MetaEntity createCentipede(int theSize) {
-//        MetaEntity centipede = new MetaEntity("why travis");
-//        UUID[] segments = new UUID[theSize];
-//        for (int i = 0; i < theSize; i++) {
-//            segments[i] = createCentipedeSegment(centipede.entity).entity;
-//        }
-//        centipede.add(new Components.ParentComponent(segments));
-//        return centipede;
-//    }
-//
-//    public static MetaEntity createCentipede(UUID[] theSegments) {
-//        MetaEntity centipede = new MetaEntity("whyyyy");
-//        centipede.add(new Components.ParentComponent(theSegments));
-//        return centipede;
-//    }
 
-//    public static MetaEntity createCentipedeSegment(UUID theParent) {
-//        MetaEntity segment = new MetaEntity("y no default constructor");
-//        segment.add(new Components.EntitySize());
-//        segment.add(new Components.Health(1));
-//        segment.add(new Components.Movable());
-//        segment.add(new Components.SegmentComponent(theParent));
-//        return segment;
-//    }
 
     /**
      * Method that creates a board entity.
@@ -83,14 +61,16 @@ public class EntityFactory {
                 GameActivity.getBlockSize());
         mushroom.add(es);
         mushroom.add(new Components.Health(4));
-//        mushroom.add(new Components.Damage(new Random().nextInt(3))); // for now lets give the mushroom some random damage
         mushroom.add(p);
         mushroom.add(new Components.DamagedDrawable(new int[] {R.drawable.shroom, R.drawable.shroom3, R.drawable.shroom2, R.drawable.shroom1}));
-        mushroom.add(new Components.HitBox(p.getX(), p.getY(), p.getX() + es.getEntityWidth(), p.getY() + es.getEntityHeight()));
+        mushroom.add(new Components.HitBox(
+                p.getX() + SHRINK_VALUE,
+                p.getY() + SHRINK_VALUE,
+                p.getX() + (es.getEntityWidth() - SHRINK_VALUE),
+                p.getY() + (es.getEntityHeight() - SHRINK_VALUE)));
         return mushroom;
     }
 
-//<<<<<<< HEAD
     public static MetaEntity createShip() {
         Components.EntitySize es = new Components.EntitySize(GameActivity.getBlockSize() * 2,
                 GameActivity.getBlockSize());
@@ -107,28 +87,6 @@ public class EntityFactory {
                         p.getY() + SHRINK_VALUE,
                         p.getX() + (es.getEntityWidth() - SHRINK_VALUE),
                         p.getY() + (es.getEntityHeight() - SHRINK_VALUE)));
-   ;
-//=======
-//    /**
-//     * Method that creates a ship entity that will spawn
-//     * on the screen. Entity is comprised of components that
-//     * control behavior such as touch for the ships movement.
-//     *
-//     * @param theGameView is the surface view of the game.
-//     * @return A MetaEntity object of the ship.
-//     */
-//    public static MetaEntity createShip(GameView theGameView) {
-//        MetaEntity ship = new MetaEntity();
-//        ship.add(new Components.EntitySize(GameActivity.getBlockSize() * 2,
-//                GameActivity.getBlockSize()));
-//        ship.add(new Components.CAndroidDrawable(R.drawable.alienblaster));
-//        ship.add(new Components.Touch());
-//        ship.add(new Components.Movable());
-//        ship.add(new Components.Position((GameActivity.mWidth / 2),  (GameActivity.mHeight -
-//                GameActivity.mBlockSize)));
-////        ship.add(new Components.Health());
-////        ship.add(new Components.HitBox());
-//>>>>>>> c3fd90360f1296db9953ee4f9e76266349164f6f
         return ship;
     }
 
@@ -143,8 +101,8 @@ public class EntityFactory {
      * @return A MetaEntity object of the bullet.
      */
     public static MetaEntity createBullet(GameView theGameView, float x, float y) {
-        Components.EntitySize es = new Components.EntitySize(GameActivity.getBlockSize() / 2,
-                GameActivity.getBlockSize() / 2);
+        Components.EntitySize es = new Components.EntitySize(GameActivity.getBlockSize() / 3,
+                GameActivity.getBlockSize() / 3);
         MetaEntity bullet = new MetaEntity("bullet", es,
                 new Components.CAndroidDrawable(R.drawable.fireball),
                 new Components.Health(1),
@@ -170,11 +128,15 @@ public class EntityFactory {
                 new Components.SegmentComponent(parent),
                 new Components.Team(Components.Team.Color.Red),
                 new Components.Health(1),
-                new Components.HitBox(x + SHRINK_VALUE, y + SHRINK_VALUE,
-                        x + es.getEntityWidth() - SHRINK_VALUE,
-                        y + es.getEntityHeight() - SHRINK_VALUE));
+                new Components.HitBox(
+                        x,
+                        y,
+                        x + es.getEntityWidth(),
+                        y + es.getEntityHeight()));
         return centBody;
     }
+
+
     public static void splitCentipede(UUID[] theIDS, UUID theSeg) {
         int head = 0;
         int tail = 0;
@@ -185,6 +147,7 @@ public class EntityFactory {
                 tail = (i + 1);
             }
         }
+
         UUID[] leftCent = new UUID[head];
         UUID[] rightCent = new UUID[tail];
         for (int j = 0; j < head; j++) {
@@ -219,6 +182,7 @@ public class EntityFactory {
             ids[i] = temp.entity;
         }
         centipede.add(new Components.CentipedeID(ids));
+
         return centipede;
     }
 
@@ -236,6 +200,7 @@ public class EntityFactory {
         centipede.add(new Components.CentipedeID(theIDS));
         return centipede;
     }
+
     /**
      * Method that creates a scorpian entity that will spawn
      * on the screen. Entity is comprised of components that
