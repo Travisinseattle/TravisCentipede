@@ -1,24 +1,20 @@
 package group7.tcss450.uw.edu.centipedeandroid.menu;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
 
 import group7.tcss450.uw.edu.centipedeandroid.R;
 import group7.tcss450.uw.edu.centipedeandroid.game.GameActivity;
@@ -26,21 +22,22 @@ import group7.tcss450.uw.edu.centipedeandroid.game.GameActivity;
 /**
  * An activity to handle the game main menu.
  */
-public class MenuActivity extends AppCompatActivity implements MenuFragment.OnStartGame, GameOverFragment.OnFragmentInteractionListener {
-
+public class MenuActivity extends AppCompatActivity implements MenuFragment.OnStartGame, GameOverFragment.OnFragmentInteractionListener, MenuFragment.SendSong {
 
     /**
      * A task to play music
      */
     private PlayMusicTask mPlayMusicTask;
 
+    private int mSong;
+
+    private MenuFragment.SendSong mSengSong;
+
     /**
      * Creates the view.
-     *
      * @param savedInstanceState
      */
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
@@ -57,7 +54,8 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
      */
     @Override
     public void onStartGame() {
-        Intent intent = new Intent(this, GameActivity.class);
+        Intent intent = new Intent(this, GameActivity.class).putExtra(
+                "int_value", mSong);
         startActivity(intent);
     }
 
@@ -73,6 +71,10 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
                 .commit();
     }
 
+    public void setSong(int theSong) {
+        mSong = theSong;
+    }
+
     /**
      * Stops the player on back
      */
@@ -86,15 +88,82 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
         }
     }
 
+
+
     @Override
     public void onFragmentInteraction(Uri uri) {
 
     }
 
     /**
+     * Method that sets the song track id.
+     * @param theSong
+     */
+    @Override
+    public void songNum(int theSong) {
+        mSong = theSong;
+    }
+
+    /**
+     * Method that saves the high scores for the current game.
+     *
+     * @param context
+     * @param key
+     * @param list
+     * @param <T>
+     */
+    public static <T> void saveHighScores(final Context context,
+                                          final String key,
+                                          final List<T> list) {
+        final Gson gson = new Gson();
+        final String json = gson.toJson(list);
+
+        updateScores(context, key, json);
+    }
+
+    /**
+     * Method that updates the high scores.
+     * @param context
+     * @param key
+     * @param value
+     */
+    private static void updateScores(final Context context,
+                                     final String key,
+                                     final String value) {
+        final SharedPreferences.Editor setPrefs =
+                context.getSharedPreferences(context.getString(R.string.scores_preference),
+                        Context.MODE_PRIVATE).edit();
+        setPrefs.putString(key, value);
+        setPrefs.apply();
+    }
+
+    /**
+     * Getter method that returns the current highscores
+     *
+     * @param context
+     * @param key
+     * @return
+     */
+    public static List<HighScore> getHighScores(final Context context,
+                                                final String key) {
+        final SharedPreferences getPrefs =
+                context.getSharedPreferences(context.getString(R.string.scores_preference),
+                        Context.MODE_PRIVATE);
+
+        final Gson gson = new Gson();
+        List<HighScore> highScores;
+        final String listOfScores = getPrefs.getString(key, "");
+
+        Type type = new TypeToken<List<HighScore>>() {}.getType();
+        highScores = gson.fromJson(listOfScores, type);
+
+        return highScores;
+    }
+
+    /**
      * A task for playing music from SoundCloud
      */
-    private class PlayMusicTask extends AsyncTask<Integer, Void, String> {
+    private class PlayMusicTask extends AsyncTask<Integer,Void, String> {
         /**
          * The MedisPlsyer instance
          */
@@ -112,7 +181,6 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
 
         /**
          * Gets the right url
-         *
          * @param params the track to get.
          * @return the redirected URL
          */
@@ -140,7 +208,6 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
 
         /**
          * Plays the song from the link.
-         *
          * @param theURL source of song
          */
         @Override
@@ -164,48 +231,16 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
         /**
          * Stops the player
          */
-        public void stopPlayer() {
-            if (mMediaPlayer != null) {
-                if (mMediaPlayer.isPlaying()) {
+        public void stopPlayer()
+        {
+            if(mMediaPlayer != null)
+            {
+                if (mMediaPlayer.isPlaying())
+                {
                     mMediaPlayer.stop();
                 }
             }
         }
-    }
-
-    public static <T> void saveHighScores(final Context context,
-                                          final String key,
-                                          final List<T> list) {
-        final Gson gson = new Gson();
-        final String json = gson.toJson(list);
-
-        updateScores(context, key, json);
-    }
-
-    private static void updateScores(final Context context,
-                                     final String key,
-                                     final String value) {
-       final SharedPreferences.Editor setPrefs =
-                context.getSharedPreferences(context.getString(R.string.scores_preference),
-                        Context.MODE_PRIVATE).edit();
-        setPrefs.putString(key, value);
-        setPrefs.apply();
-    }
-
-    public static List<HighScore> getHighScores(final Context context,
-                                                final String key) {
-        final SharedPreferences getPrefs =
-                context.getSharedPreferences(context.getString(R.string.scores_preference),
-                        Context.MODE_PRIVATE);
-
-        final Gson gson = new Gson();
-        List<HighScore> highScores;
-        final String listOfScores = getPrefs.getString(key, "");
-
-        Type type = new TypeToken<List<HighScore>>() {}.getType();
-        highScores = gson.fromJson(listOfScores, type);
-
-        return highScores;
     }
 
 //    public void playTrack(int trackID){
@@ -252,6 +287,5 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
 //        }
 //
 //    }
-
 }
 
