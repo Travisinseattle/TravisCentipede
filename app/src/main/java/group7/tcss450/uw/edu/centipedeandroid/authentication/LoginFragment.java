@@ -18,6 +18,7 @@ import group7.tcss450.uw.edu.centipedeandroid.R;
  * to handle interaction events.
  */
 public class LoginFragment extends Fragment implements View.OnClickListener {
+
     /**
      * The {@link LoginFragment.OnLogin} instance
      */
@@ -37,10 +38,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
      * @param savedInstanceState The saved instance.
      * @return Inflated view.
      */
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
+                             final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_login, container, false);
+        final View v = inflater.inflate(R.layout.fragment_login, container, false);
         Button b = (Button) v.findViewById(R.id.submitButton);
         b.setOnClickListener(this);
         b = (Button) v.findViewById(R.id.registerButton);
@@ -78,19 +79,18 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
      */
     @Override
     public void onClick(View v) {
-        switch (v.getId())
-        {
+        switch (v.getId()) {
             case R.id.registerButton:
                 mListener.onRegisterInteraction();
                 break;
             default:
                 if (mListener !=null) {
-                    View test = getView();
+                    final View test = getView();
                     assert test != null;
-                    EditText userText =( EditText)test.findViewById(R.id.userText);
-                    String user = userText.getText().toString();
-                    EditText passText = ((EditText)test.findViewById(R.id.passText));
-                    String pass = passText.getText().toString();
+                    final EditText userText =( EditText)test.findViewById(R.id.userText);
+                    final String user = userText.getText().toString();
+                    final EditText passText = ((EditText)test.findViewById(R.id.passText));
+                    final String pass = passText.getText().toString();
                     //int numDigits = Utilities.getNumberDigits(pass);
                     if (user.equals("") || user.length() < 4) {
                         userText.setError("You must provide a user name 4 digits or longer.!");
