@@ -9,7 +9,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by addis on 2/28/2017.
+ * Class that uses the soundcloud webservice to pull a song from a URL
+ * and then play that song in the application.
  */
 
 public class PlayMusicTask extends AsyncTask<Integer,Void, String>{
@@ -19,6 +20,11 @@ public class PlayMusicTask extends AsyncTask<Integer,Void, String>{
         private MediaPlayer mMediaPlayer;
 
         /**
+        * The track id number.
+        */
+        private int mTrack = 293;
+
+        /**
          * Sets up the MediaPlayer
          */
         @Override
@@ -26,6 +32,10 @@ public class PlayMusicTask extends AsyncTask<Integer,Void, String>{
             super.onPreExecute();
             mMediaPlayer = new MediaPlayer();
             mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        }
+
+        public void setTrack(int theTrack) {
+            mTrack = theTrack;
         }
 
         /**
@@ -42,7 +52,7 @@ public class PlayMusicTask extends AsyncTask<Integer,Void, String>{
 
             try {
                 // Follows the URL redirects
-                URL url = new URL("https://api.soundcloud.com/tracks/292/stream?client_id=f86c23ad615019f9a1d0bc51cff62a3f");
+                URL url = new URL("https://api.soundcloud.com/tracks/" + mTrack +"/stream?client_id=f86c23ad615019f9a1d0bc51cff62a3f");
                 HttpURLConnection ucon = (HttpURLConnection) url.openConnection();
                 ucon.setInstanceFollowRedirects(false);
                 URL secondURL = new URL(ucon.getHeaderField("Location"));

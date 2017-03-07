@@ -14,17 +14,20 @@ import group7.tcss450.uw.edu.centipedeandroid.R;
 import group7.tcss450.uw.edu.centipedeandroid.game.GameView;
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link GameOverFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
+ * Gameover fragment that can direct the user to play the game again or go back to the main menu.
  */
 public class GameOverFragment extends Fragment implements View.OnClickListener {
 
+    /**
+     * Listener to watch for the game being started.
+     */
     private MenuFragment.OnStartGame mListener;
 
+    /**
+     * Required empty constructor.
+     */
     public GameOverFragment() {
-        // Required empty public constructor
+
     }
 
 
@@ -35,7 +38,15 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
 //        fragment.setArguments(args);
 //        return fragment;
 //    }
-
+    /**
+     * Method that creates the fragment behavior when launched. Creates two buttons for play again
+     * and main menu.
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return a View.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,6 +62,10 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
         return v;
     }
 
+    /**
+     * Attaches the listener to a context.
+     * @param context the context.
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -62,12 +77,19 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * Detaches the listener
+     */
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
 
+    /**
+     * Emits an event based on the view id.
+     * @param v the view
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

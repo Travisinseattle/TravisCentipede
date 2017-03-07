@@ -10,12 +10,21 @@ import group7.tcss450.uw.edu.centipedeandroid.game.manager.GameManager;
  */
 
 public abstract class SubSystem {
-
+	/** View for the game engine */
 	protected GameView mGameView;
 
+	/**
+	 * Main Constructor for the class.
+	 *
+	 * @param theGameView
+	 */
 	public SubSystem(GameView theGameView) {
 		mGameView = theGameView;
 	}
+
+	/**
+	 * Method that process one game tick.
+	 */
 	public abstract void processOneGameTick( long lastFrameTime );
     
     /**
