@@ -21,7 +21,7 @@ public class GameWinSystem extends SubSystem {
     public void processOneGameTick(long lastFrameTime) {
         Set<UUID> centipedes = mGameView.mEntityManager.getAllEntitiesPossessingComponent(Components.CentipedeID.class);
         if (centipedes.size() == 0) {
-            //mGameView.gameWin();
+            mGameView.gameWin();
         }
 
     }

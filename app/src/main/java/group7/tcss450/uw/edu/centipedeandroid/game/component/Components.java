@@ -100,6 +100,7 @@ public class Components  {
     public static class Direction implements Component {
 
         private boolean mDir;
+        public boolean collided = false;
 
         public Direction(boolean theDir) {
             mDir = theDir;
@@ -109,44 +110,21 @@ public class Components  {
             return mDir;
         }
 
-        public void swapDir(boolean theDir) {
-            mDir = !theDir;
+        public void setDir(boolean theDir) {
+            mDir = theDir;
         }
 
     }
 
     public static class CentipedeID implements Component {
-        private UUID[] mIDs;
+        public UUID[] myIDs;
 
-        private UUID mHead;
+        public UUID myHead;
 
         public CentipedeID(UUID[] theIDs) {
-            mIDs = theIDs;
-            mHead = mIDs[0];
+            myIDs = theIDs;
+            myHead = myIDs[0];
         }
-    }
-
-    public void splitCentipede(UUID[] theIDS, UUID theSeg) {
-        int head = 0;
-        int tail = 0;
-        ArrayList<MetaEntity> newCentipedes = new ArrayList<>();
-        for (int i = 0; i<theIDS.length; i++) {
-            if (theIDS[i] == theSeg) {
-                head = (i - 1);
-                tail = (i + 1);
-            }
-        }
-        UUID[] leftCent = new UUID[head];
-        UUID[] rightCent = new UUID[tail];
-        for (int j = 0; j < head; j++) {
-            leftCent[j] = theIDS[j];
-        }
-
-        for (int k = tail; k < theIDS.length; k++) {
-            rightCent[k] = theIDS[k];
-        }
-        EntityFactory.createCentipede(leftCent);
-        EntityFactory.createCentipede(rightCent);
     }
 
     public static class ParentComponent implements Component {

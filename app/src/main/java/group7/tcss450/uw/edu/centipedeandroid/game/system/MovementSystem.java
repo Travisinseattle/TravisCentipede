@@ -5,6 +5,8 @@ import android.util.Log;
 import java.util.Set;
 import java.util.UUID;
 
+import group7.tcss450.uw.edu.centipedeandroid.game.EntityFactory;
+import group7.tcss450.uw.edu.centipedeandroid.game.GameActivity;
 import group7.tcss450.uw.edu.centipedeandroid.game.GameView;
 import group7.tcss450.uw.edu.centipedeandroid.game.SubSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
@@ -16,9 +18,13 @@ import group7.tcss450.uw.edu.centipedeandroid.game.manager.GameManager;
  */
 
 public class MovementSystem extends SubSystem {
+    private int counter;
+    private boolean moveSegement;
 
     public MovementSystem(GameView theGameView) {
         super(theGameView);
+        counter = 0;
+        moveSegement = false;
     }
 
     /**
@@ -31,33 +37,76 @@ public class MovementSystem extends SubSystem {
      */
     @Override
     public void processOneGameTick(long lastFrameTime) {
-        Set<UUID> allMove = mGameView.mEntityManager.getAllEntitiesPossessingComponent(Components.Movable.class);
-        for (UUID entityID : allMove) {
-            Components.Movable move = mGameView.mEntityManager.getComponent(entityID, Components.Movable.class);
-            Components.Position pos = mGameView.mEntityManager.getComponent(entityID, Components.Position.class);
-            float x = pos.getX();
-            float y = pos.getY();
-            if (move.dx != 0 || move.dy != 0) {
-                if (move.dx != 0) {
-                    if ((x + move.getDx()) > 0 && (x + move.getDx()) < mGameView.getWidth()) {
-                        pos.setX(x + move.dx);
-                    }
-                }
-                if (move.dy != 0) {
-                    if ((y + move.getDy()) > 0 && (y + move.getDy()) < mGameView.getHeight()) {
-                        pos.setY(y + move.dy);
-                    }
-                }
-                if (mGameView.mEntityManager.hasComponent(entityID, Components.Movable.class) && (!mGameView.mEntityManager.hasComponent(entityID, Components.Touch.class))) {
-                    Components.HitBox hitBox = mGameView.mEntityManager.getComponent(entityID, Components.HitBox.class);
+        counter += lastFrameTime;
+            Set<UUID> allMove = mGameView.mEntityManager.getAllEntitiesPossessingComponent(Components.Movable.class);
+            if(counter > 500) {
+                moveSegement = true;
+                counter = 0;
+            }
+            for (UUID entityID : allMove) {
+                Components.Movable move = mGameView.mEntityManager.getComponent(entityID, Components.Movable.class);
+                Components.Position pos = mGameView.mEntityManager.getComponent(entityID, Components.Position.class);
+                float x = pos.getX();
+                float y = pos.getY();
+                if (mGameView.mEntityManager.hasComponent(entityID, Components.SegmentComponent.class)) {
+                    Components.Direction dir = mGameView.mEntityManager.getComponent(entityID, Components.Direction.class);
+                    if(moveSegement) {
+                            if (pos.getX() + move.getDx() + mGameView.mBlockSize > mGameView.getmScreenSizeX()) { //if it hits the right side.
+                                dir.collided = true;
 
-                    x = pos.getX();
-                    y = pos.getY();
-                    Components.EntitySize es = mGameView.mEntityManager.getComponent(entityID, Components.EntitySize.class);
-                    hitBox.setHitBox(x, y, x + es.getEntityWidth(), y + es.getEntityHeight());
+                            } else if (pos.getX() + move.getDx() < 0) { //if it hits the left side.
+                                dir.collided = true;
+                            }
+
+                        if (dir.collided) {
+                            dir.setDir(!dir.getDir());
+                            move.dy = mGameView.mBlockSize;
+                            move.dx = 0;
+                        } else {
+                            move.dy = 0;
+                        }
+                        pos.setX(x + move.dx);
+                        pos.setY(y + move.dy);
+                        Components.HitBox hitBox = mGameView.mEntityManager.getComponent(entityID, Components.HitBox.class);
+
+                        x = pos.getX();
+                        y = pos.getY();
+                        Components.EntitySize es = mGameView.mEntityManager.getComponent(entityID, Components.EntitySize.class);
+                        hitBox.setHitBox(x + GameActivity.getBlockSize() / 6, y + GameActivity.getBlockSize() / 6, x + es.getEntityWidth() - GameActivity.getBlockSize() / 6, y + es.getEntityHeight() - GameActivity.getBlockSize() / 6);
+                        if (dir.collided) {
+                            if (dir.getDir()) {
+                               move.dx = mGameView.mBlockSize;
+                            } else {
+                                move.dx = -mGameView.mBlockSize;
+                            }
+                        }
+                        dir.collided = false;
+                    }
+                    continue;
+                }
+                if (move.dx != 0 || move.dy != 0) {
+                        if (move.dx != 0) {
+                            if ((x + move.getDx()) > 0 && (x + move.getDx()) < mGameView.getWidth()) {
+                                pos.setX(x + move.dx);
+                            }
+                        }
+                        if (move.dy != 0) {
+                            if ((y + move.getDy()) > 0 && (y + move.getDy()) < mGameView.getHeight()) {
+                                pos.setY(y + move.dy);
+                            }
+                        }
+                        if (mGameView.mEntityManager.hasComponent(entityID, Components.HitBox.class)) {
+                            Components.HitBox hitBox = mGameView.mEntityManager.getComponent(entityID, Components.HitBox.class);
+
+                            x = pos.getX();
+                            y = pos.getY();
+                            Components.EntitySize es = mGameView.mEntityManager.getComponent(entityID, Components.EntitySize.class);
+                            hitBox.setHitBox(x, y, x + es.getEntityWidth(), y + es.getEntityHeight());
+                        }
                 }
             }
-        }
+            moveSegement = false;
+
     }
 
     @Override

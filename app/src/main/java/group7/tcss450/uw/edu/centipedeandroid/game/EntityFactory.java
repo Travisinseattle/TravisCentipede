@@ -3,6 +3,7 @@ package group7.tcss450.uw.edu.centipedeandroid.game;
 
 import android.view.View;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.UUID;
 
@@ -18,7 +19,7 @@ public class EntityFactory {
     private static final float SHRINK_VALUE = GameActivity.getBlockSize() / 6;
 
 //    public static MetaEntity createCentipede(int theSize) {
-//        MetaEntity centipede = new MetaEntity();
+//        MetaEntity centipede = new MetaEntity("why travis");
 //        UUID[] segments = new UUID[theSize];
 //        for (int i = 0; i < theSize; i++) {
 //            segments[i] = createCentipedeSegment(centipede.entity).entity;
@@ -28,16 +29,15 @@ public class EntityFactory {
 //    }
 //
 //    public static MetaEntity createCentipede(UUID[] theSegments) {
-//        MetaEntity centipede = new MetaEntity();
+//        MetaEntity centipede = new MetaEntity("whyyyy");
 //        centipede.add(new Components.ParentComponent(theSegments));
 //        return centipede;
 //    }
 
 //    public static MetaEntity createCentipedeSegment(UUID theParent) {
-//        MetaEntity segment = new MetaEntity();
+//        MetaEntity segment = new MetaEntity("y no default constructor");
 //        segment.add(new Components.EntitySize());
-//        segment.add(new Components.Health());
-//        segment.add(new Components.Damage());
+//        segment.add(new Components.Health(1));
 //        segment.add(new Components.Movable());
 //        segment.add(new Components.SegmentComponent(theParent));
 //        return segment;
@@ -78,15 +78,22 @@ public class EntityFactory {
     }
 
     public static MetaEntity createShip() {
+        Components.EntitySize es = new Components.EntitySize(GameActivity.getBlockSize() * 2,
+                GameActivity.getBlockSize());
+        Components.Position p = new Components.Position((GameActivity.mWidth / 2),
+                (GameActivity.mHeight - GameActivity.mBlockSize));
         MetaEntity ship = new MetaEntity("ship",
-                new Components.EntitySize(GameActivity.getBlockSize() * 2,
-                        GameActivity.getBlockSize()),
+                p,
+                es,
                 new Components.CAndroidDrawable(R.drawable.alienblaster),
                 new Components.Touch(),
                 new Components.Movable(),
-                new Components.Position((GameActivity.mWidth / 2),
-                        (GameActivity.mHeight -
-                        GameActivity.mBlockSize)));
+                new Components.HitBox(
+                        p.getX() + SHRINK_VALUE,
+                        p.getY() + SHRINK_VALUE,
+                        p.getX() + (es.getEntityWidth() - SHRINK_VALUE),
+                        p.getY() + (es.getEntityHeight() - SHRINK_VALUE)));
+   ;
         return ship;
     }
 
@@ -100,38 +107,63 @@ public class EntityFactory {
                 new Components.Position(x, y),
                 new Components.Hazard(1),
                 new Components.Shoot(),
+                new Components.Team(Components.Team.Color.Blue),
                 new Components.HitBox(x, y,
                         x + es.getEntityWidth(),
                         y + es.getEntityHeight()));
         return bullet;
     }
 
-    public static MetaEntity createCentBody(float x, float y) {
-        Components.EntitySize es = new Components.EntitySize(GameActivity.getBlockSize() /2,
-                GameActivity.getBlockSize() / 2);
-        MetaEntity centBody = new MetaEntity("Centepede Body", es,
+    public static MetaEntity createCentBody(float x, float y, UUID parent) {
+        Components.EntitySize es = new Components.EntitySize(GameActivity.getBlockSize(),
+                GameActivity.getBlockSize());
+        MetaEntity centBody = new MetaEntity("Centipede Body", es,
                 new Components.CAndroidDrawable(R.drawable.centipede),
-                new Components.Movable(10,0),
+                new Components.Movable(GameActivity.getBlockSize(),0),
                 new Components.Direction(true),
                 new Components.Position(x,y),
+                new Components.SegmentComponent(parent),
+                new Components.Team(Components.Team.Color.Red),
                 new Components.Health(1),
-                new Components.HitBox(x, y,
-                        x + es.getEntityWidth(),
-                        y + es.getEntityHeight()));
+                new Components.HitBox(x + SHRINK_VALUE, y + SHRINK_VALUE,
+                        x + es.getEntityWidth() - SHRINK_VALUE,
+                        y + es.getEntityHeight() - SHRINK_VALUE));
         return centBody;
+    }
+    public static void splitCentipede(UUID[] theIDS, UUID theSeg) {
+        int head = 0;
+        int tail = 0;
+        ArrayList<MetaEntity> newCentipedes = new ArrayList<>();
+        for (int i = 0; i<theIDS.length; i++) {
+            if (theIDS[i] == theSeg) {
+                head = (i - 1);
+                tail = (i + 1);
+            }
+        }
+        UUID[] leftCent = new UUID[head];
+        UUID[] rightCent = new UUID[tail];
+        for (int j = 0; j < head; j++) {
+            leftCent[j] = theIDS[j];
+        }
+
+        for (int k = tail; k < theIDS.length; k++) {
+            rightCent[k] = theIDS[k];
+        }
+        EntityFactory.createCentipede(leftCent);
+        EntityFactory.createCentipede(rightCent);
     }
 
     public static MetaEntity createCentipede(GameView theGameView, int theSize) {
         UUID[] ids = new UUID[theSize];
         int k = 0;
+        MetaEntity centipede = new MetaEntity("Centipede");
         for (int i = 0; i<theSize; i++ ) {
             k -= theGameView.mBlockSize;
 //            MetaEntity temp = EntityFactory.createCentBody((theGameView.mScreenSizeX)/2-k, -theGameView.mBlockSize);
-            MetaEntity temp = EntityFactory.createCentBody((theGameView.mScreenSizeX)/2-k, 50);
+            MetaEntity temp = EntityFactory.createCentBody((theGameView.mScreenSizeX)/2 - k, 0, centipede.entity);
             ids[i] = temp.entity;
         }
-        MetaEntity centipede = new MetaEntity("Centipede",
-                new Components.CentipedeID(ids));
+        centipede.add(new Components.CentipedeID(ids));
         return centipede;
     }
 

@@ -21,6 +21,7 @@ import group7.tcss450.uw.edu.centipedeandroid.game.system.CentMovementSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.CollisionSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.DestroySystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.DrawHitBoxSystem;
+import group7.tcss450.uw.edu.centipedeandroid.game.system.GameWinSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.MovementSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.PhysicsSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.RenderDamagedSystem;
@@ -246,6 +247,8 @@ public class GameView extends SurfaceView implements Runnable {
         return mScreenSizeY;
     }
 
+    public boolean myUpdateSegments;
+
     /*****************************************Public Methods***************************************/
 
     /**
@@ -256,6 +259,8 @@ public class GameView extends SurfaceView implements Runnable {
          * set the score
          */
         mScore = 0;
+
+        myUpdateSegments = false;
 
         /**
          * set the bullet speed.
@@ -283,19 +288,20 @@ public class GameView extends SurfaceView implements Runnable {
          */
         mCentipede = EntityFactory.createCentipede(this, 1);
 
-        mOrderedSubSystems.add(new CentMovementSystem(this));
         mOrderedSubSystems.add(new TouchSystem(this));
         mOrderedSubSystems.add(new PhysicsSystem(this));
         mOrderedSubSystems.add(new CollisionSystem(this));
-        mOrderedSubSystems.add(new DestroySystem(this));
         mOrderedSubSystems.add(new ShootSystem(this));
         mOrderedSubSystems.add(new MovementSystem(this));
+        mOrderedSubSystems.add(new CentMovementSystem(this));
+        mOrderedSubSystems.add(new DestroySystem(this));
+        mOrderedSubSystems.add(new GameWinSystem(this));
     }
 
     private void renderScore() {
         mCanvas.drawText(getResources().getString(R.string.score) + mScore, FONT_SIZE_LARGE,
                 FONT_SIZE_LARGE + 10, mPaint);
-        mCanvas.drawText("Lives: 3", mScreenSizeX - FONT_SIZE_LARGE * 2, FONT_SIZE_LARGE + 10, mPaint);
+//        mCanvas.drawText("Lives: 3", mScreenSizeX - FONT_SIZE_LARGE * 2, FONT_SIZE_LARGE + 10, mPaint);
     }
 
     /**
@@ -397,6 +403,10 @@ public class GameView extends SurfaceView implements Runnable {
         return true;
     }
 
+    public void gameWin() {
+        pause();
+    }
+
     /**
      * Pause method that stops the view from being drawn until resume() is called.
      */
@@ -405,7 +415,7 @@ public class GameView extends SurfaceView implements Runnable {
         try {
             mGameThread.join();
         } catch (InterruptedException e) {
-            Log.e("Error: ", "Joinging thread");
+            Log.e("Error: ", "Joining thread");
         }
     }
 
@@ -425,55 +435,94 @@ public class GameView extends SurfaceView implements Runnable {
     @Override
     public void run() {
 
-        long lastLoopStartTime = System.currentTimeMillis();
+//        double previous = getCurrentTime();
+//        double lag = 0.0;
+//        while (true)
+//        {
+//            double current = getCurrentTime();
+//            double elapsed = current - previous;
+//            previous = current;
+//            lag += elapsed;
+//
+//            processInput();
+//
+//            while (lag >= MS_PER_UPDATE)
+//            {
+//                update();
+//                lag -= MS_PER_UPDATE;
+//            }
+//
+//            render();
+//        }
+//        double t = 0.0;
+//const double dt = 0.01;
+//
+//        double currentTime = hires_time_in_seconds();
+//        double accumulator = 0.0;
+//
+//        while ( !quit )
+//        {
+//            double newTime = hires_time_in_seconds();
+//            double frameTime = newTime - currentTime;
+//            currentTime = newTime;
+//
+//            accumulator += frameTime;
+//
+//            while ( accumulator >= dt )
+//            {
+//                integrate( state, t, dt );
+//                accumulator -= dt;
+//                t += dt;
+//            }
+//
+//            render( state );
+//        }
+
+        long lastLoopTime = System.currentTimeMillis();
+
         while (mPlaying) {
             //capture current time in milliseconds.
-            long startFrameTime = System.currentTimeMillis();
+//            try {
+//                Thread.sleep(lastLoopTime + 10 - System.currentTimeMillis());
+//            } catch (Exception e) {
+//                Log.e("this",e.toString());
+//            }
 
-            for (SubSystem system : mOrderedSubSystems) {
-                system.processOneGameTick(startFrameTime - lastLoopStartTime);
-            }
+            long delta = System.currentTimeMillis() - lastLoopTime;
+            lastLoopTime = System.currentTimeMillis();
+//            lastFpsTime += delta;
 
-            synchronized(mHolder)
-            {
-                //validity check on surface area to catch crashes.
-                if (mHolder.getSurface().isValid()) {
-                    //lock the canvas
-                    mCanvas = mHolder.lockCanvas();
-
-                    //draw the background color.
-                    mCanvas.drawColor(Color.BLACK);
-
-                    //set the brush color
-                    mPaint.setColor(Color.WHITE);
-
-                    //set text size
-                    mPaint.setTextSize(45);
-
-//                mRenderSystem.drawBackground();
-                    myHitDebug.processOneGameTick(startFrameTime);
-                    mRenderSystem.processOneGameTick(startFrameTime);
-                    mRenderDamagedSystem.processOneGameTick(startFrameTime);
-                    renderScore();
-                    mHolder.unlockCanvasAndPost(mCanvas);
+                for (SubSystem system : mOrderedSubSystems) {
+                    system.processOneGameTick(delta);
                 }
 
-            }
-//            //Call the update thread.
-//            update();
-//            //call the draw method.
-//            draw();
+                synchronized(mHolder)
+                {
+                    //validity check on surface area to catch crashes.
+                    if (mHolder.getSurface().isValid()) {
+                        //lock the canvas
+                        mCanvas = mHolder.lockCanvas();
 
-            /**
-             * Counts the frame decay time length.
-             * */
-            long mFrameLength = System.currentTimeMillis() - startFrameTime;
-            if(mFrameLength > 0) {
-                mFps = 1000 / mFrameLength;
+                        //draw the background color.
+                        mCanvas.drawColor(Color.BLACK);
+
+                        //set the brush color
+                        mPaint.setColor(Color.WHITE);
+
+                        //set text size
+                        mPaint.setTextSize(45);
+
+//                mRenderSystem.drawBackground();
+                        myHitDebug.processOneGameTick(delta);
+                        mRenderSystem.processOneGameTick(delta);
+                        mRenderDamagedSystem.processOneGameTick(delta);
+                        renderScore();
+                        mHolder.unlockCanvasAndPost(mCanvas);
+                    }
+
+                }
             }
-            lastLoopStartTime = startFrameTime;
         }
-    }
 
     /**
      * The update method, updates the behavior of the objects in the game so that they
