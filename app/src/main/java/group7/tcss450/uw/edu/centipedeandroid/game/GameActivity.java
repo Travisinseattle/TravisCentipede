@@ -6,7 +6,10 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Display;
+import android.widget.FrameLayout;
+
 import java.math.BigInteger;
 
 import group7.tcss450.uw.edu.centipedeandroid.R;
@@ -113,7 +116,11 @@ public class GameActivity extends AppCompatActivity implements GameOverFragment.
         mPlayMusicTask = new PlayMusicTask();
         /*Initialize Gameview object and set the content to it.*/
         mGameView = new GameView(this, mWidth, mHeight, mBlockSize);
-        setContentView(mGameView);
+        setContentView(R.layout.activity_game);
+
+        FrameLayout v = (FrameLayout) findViewById(R.id.activity_game);
+        v.addView(mGameView);
+
         int theSong = getIntent().getIntExtra("int_value", 0);
         if (theSong == 0) {
             mPlayMusicTask.setTrack(293);
@@ -134,9 +141,13 @@ public class GameActivity extends AppCompatActivity implements GameOverFragment.
      * Method that launches the game over fragment when the game ends.
      */
     public void onGameOver() {
+        Bundle b = new Bundle();
+        b.putInt("score", mGameView.getmScore());
         GameOverFragment gameFrag = new GameOverFragment();
+        Log.e("GAME ACTIVITY", Integer.toHexString( R.id.activity_game) + "");
+
         this.getSupportFragmentManager().beginTransaction()
-                .replace(R.id.activity_game, gameFrag ,"Game Over")
+                .add(R.id.activity_game, gameFrag ,"Game Over")
                 .addToBackStack(null)
                 .commit();
     }

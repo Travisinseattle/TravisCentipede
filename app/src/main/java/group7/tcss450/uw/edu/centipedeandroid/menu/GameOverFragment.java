@@ -1,6 +1,7 @@
 package group7.tcss450.uw.edu.centipedeandroid.menu;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,8 @@ import group7.tcss450.uw.edu.centipedeandroid.game.GameView;
  * Gameover fragment that can direct the user to play the game again or go back to the main menu.
  */
 public class GameOverFragment extends Fragment implements View.OnClickListener {
+
+    public TextView textView;
 
     /**
      * Listener to watch for the game being started.
@@ -53,12 +56,9 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
         View v = inflater.inflate(R.layout.fragment_game_over, container, false);
         Button b = (Button) v.findViewById(R.id.playAgain);
         b.setOnClickListener(this);
-        Button mainButt = (Button) v.findViewById(R.id.mainMenu);
-        mainButt.setOnClickListener(this);
-//        Bundle args = getArguments();
-//        int score = args.getInt("Score", 0);
-        TextView textView = (TextView) v.findViewById(R.id.score);
-//        textView.setText("Score " + score);
+        b = (Button) v.findViewById(R.id.mainMenu);
+        b.setOnClickListener(this);
+        textView = (TextView) v.findViewById(R.id.score);
         return v;
     }
 
@@ -75,6 +75,13 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //String score = "Score: " + String.valueOf(getArguments().getInt("score"));
+        textView.setText(String.valueOf(10));
     }
 
     /**
@@ -97,6 +104,8 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
                 mListener.onStartGame();
                 break;
             case R.id.mainMenu:
+//                Intent intent = new Intent(getActivity(), MenuActivity.class);
+//                startActivity(intent);
                 MenuFragment menuFrag = new MenuFragment();
                 this.getFragmentManager().beginTransaction()
                        .replace(R.id.activity_menu, menuFrag, "Menu Fragment")
