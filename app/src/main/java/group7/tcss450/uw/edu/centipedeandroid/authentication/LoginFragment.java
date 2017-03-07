@@ -99,7 +99,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     } else if ( user.equals(pass) || pass.equals(user)) {
                         userText.setError("User and Passwords cannot be the same.");
                         passText.setError("User and Passwords cannot be the same.");
-                    } else if (!(pass.toLowerCase().equals(pass)) || !(pass.matches(".*\\d+.*"))) {
+                    } else if (pass.toLowerCase().equals(pass) || !(pass.matches(".*\\d+.*"))) {
                         passText.setError("Password must contain Upper/Lower Case and a Number.");
                     } else {
                             mListener.onLoginInteraction(user, pass);
