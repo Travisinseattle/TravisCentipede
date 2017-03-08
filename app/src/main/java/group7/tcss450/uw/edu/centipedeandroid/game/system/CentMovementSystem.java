@@ -24,46 +24,38 @@ public class CentMovementSystem extends SubSystem{
 
     @Override
     public void processOneGameTick(long lastFrameTime) {
+        if (mGameView.myMoveSegement) {
         Set<UUID> allCentipedes = mGameView.mEntityManager.getAllEntitiesPossessingComponent(Components.CentipedeID.class);
         for (UUID entityID : allCentipedes) {
             Components.CentipedeID id = mGameView.mEntityManager.getComponent(entityID, Components.CentipedeID.class);
-            for (int i = 0; i < id.myIDs.length; ++i) {
-                UUID segmentBack = id.myIDs[i];
-                Components.Movable movB = mGameView.mEntityManager.getComponent(segmentBack, Components.Movable.class);
-                Components.Position pos = mGameView.mEntityManager.getComponent(segmentBack, Components.Position.class);
-//                if (i > 0) {
-//                    UUID segmentFront = id.myIDs[i - 1];
-//                    Components.Movable movF = mGameView.mEntityManager.getComponent(segmentFront, Components.Movable.class);
-//
-//                    movB.setDx(movF.getDx());
-//                    movB.setDy(movF.getDy());
-//                }
-//                    if (pos.getX() + movB.getDx() + mGameView.mBlockSize > mGameView.getmScreenSizeX()) { //if it hits the right side.
-//                        if (movB.getDy() == mGameView.mBlockSize) {
-//                            movB.setDx(-mGameView.mBlockSize);
-//                            movB.setDy(0);
-//                        }
-//                        else {
-//                            movB.setDy(mGameView.mBlockSize); //set the change in Y to be half a block downwards.
-////                            movB.setDx(0); //set the change in X to go left.
-//                        }
-//                    } else if(pos.getX() + movB.getDx() < 0) { //if it hits the left side.
-//                        if (movB.getDy() == mGameView.mBlockSize) {
-//                            movB.setDx(mGameView.mBlockSize);
-//                            movB.setDy(0);
-//                        } else {
-//                            movB.setDy(mGameView.mBlockSize); //set the change in Y to be half a block downwards.
-////                            movB.setDx(0); //set the change in X to go left.
-//                        }
-//                    } else if (movB.getDy() == mGameView.mBlockSize) {
-//
-//                        movB.setDx(mGameView.mBlockSize);
-//                        movB.setDy(0);
-//                    }
-//                    pos.setX(movB.getDx() + pos.getX());
-//                pos.setY(movB.getDy() + pos.getY());
-            }
+            if (id.myIDs.length > 1) {
+                for (int i = id.myIDs.length - 1; i > 0; --i) {
+                    UUID segmentBack = id.myIDs[i];
+                    Components.SegmentMovable movB = mGameView.mEntityManager.getComponent(segmentBack, Components.SegmentMovable.class);
+                    Components.Position pos = mGameView.mEntityManager.getComponent(segmentBack, Components.Position.class);
+                    UUID segmentFront = id.myIDs[i - 1];
+                    if (i == 1) {
+                        Components.Movable movF = mGameView.mEntityManager.getComponent(segmentFront, Components.Movable.class);
+                        movB.dx = movF.getDx();
+                        movB.dy = movF.getDy();
+                        if (movB.dy == mGameView.mBlockSize) {
+                            movB.dx = 0;
+                        }
+                    } else {
+                        Components.SegmentMovable movF = mGameView.mEntityManager.getComponent(segmentFront, Components.SegmentMovable.class);
+                        float test1 = movF.dx;
+                        float test2 = movF.dy;
+                        movB.dx = test1;
+                        movB.dy = test2;
+                        if (movB.dy == mGameView.mBlockSize) {
+                            movB.dx = 0;
+                        }
+                    }
+                }
 
+            }
+        }
+            mGameView.myMoveSegement = false;
         }
     }
 

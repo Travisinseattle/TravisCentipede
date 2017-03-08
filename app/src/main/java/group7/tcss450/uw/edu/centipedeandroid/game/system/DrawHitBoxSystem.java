@@ -27,7 +27,7 @@ public class DrawHitBoxSystem extends SubSystem {
         for (UUID entityID : allDrawables) {
             Components.HitBox hit = mGameView.mEntityManager.getComponent(entityID, Components.HitBox.class);
 
-            //mGameView.mCanvas.drawRect(hit.getHitBox(), mGameView.mPaint);
+            mGameView.mCanvas.drawRect(hit.getHitBox(), mGameView.mPaint);
         }
     }
 

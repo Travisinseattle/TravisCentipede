@@ -35,6 +35,10 @@ public class DestroySystem extends SubSystem {
 //                    EntityFactory.splitCentipede(ids, );
 
                 }
+                if (mGameView.mEntityManager.hasComponent(entity, Components.Score.class)) {
+                    Components.Score score = mGameView.mEntityManager.getComponent(entity, Components.Score.class);
+                    mGameView.mScore += score.myScore;
+                }
                 alive.remove();
                 mGameView.mEntityManager.killEntity(entity);
             }
