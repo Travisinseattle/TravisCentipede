@@ -22,6 +22,14 @@ import group7.tcss450.uw.edu.centipedeandroid.game.MetaEntity;
  */
 public class Components  {
 
+    public static class Score implements Component {
+        public int myScore;
+
+        public Score(int theScore) {
+            myScore = theScore;
+        }
+    }
+
     /**
      * Container class component.
      */

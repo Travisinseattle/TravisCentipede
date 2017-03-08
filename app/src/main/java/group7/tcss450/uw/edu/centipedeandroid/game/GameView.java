@@ -144,7 +144,7 @@ public class GameView extends SurfaceView implements Runnable {
     /**
      * Int Representing the Score
      */
-    private int mScore;
+    public int mScore;
 
     /**
      * intial state of mShip.
