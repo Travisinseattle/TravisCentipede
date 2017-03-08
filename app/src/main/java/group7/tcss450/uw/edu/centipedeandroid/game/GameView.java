@@ -88,11 +88,6 @@ public class GameView extends SurfaceView implements Runnable {
     public Context mContext;
 
     /**
-     * object to count FPS.
-     */
-    protected long mFps;
-
-    /**
      * Boolean representing an active game.  Set to true if game is not over, otherwise false.
      */
     protected boolean mGameState;
@@ -114,10 +109,6 @@ public class GameView extends SurfaceView implements Runnable {
 
     private DrawHitBoxSystem myHitDebug;
 
-    /**
-     * Bullet object for the player
-     */
-    protected MetaEntity mPlayerBullet;
 
     /**
      * The playership object.
@@ -238,14 +229,6 @@ public class GameView extends SurfaceView implements Runnable {
      */
     public int getBulletSpeed() {
         return mBulletSpeed;
-    }
-
-    public float getmTouchX() {
-        return mTouchX;
-    }
-
-    public float getmTouchY() {
-        return mTouchY;
     }
 
     public int getmScreenSizeX() {
@@ -414,16 +397,11 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void gameWin() {
         ((GameActivity) getContext()).onGameOver();
-        Log.e("GAMEWIN: ", "*******************************************************************************************************************************************");
-        Log.e("GAMEWIN: ", "*******************************************************************************************************************************************");
-        Log.e("GAMEWIN: ", "*******************************************************************************************************************************************");
-        Log.e("GAMEWIN: ", "*******************************************************************************************************************************************");
-        Log.e("GAMEWIN: ", "*******************************************************************************************************************************************");
+        for (int i = 0; i < 20; i++) {
+            Log.e("GAMEWIN: ", "*******************************************************************************************************************************************");
+        }
+        updateScores();
         pause();
-    }
-
-    public void gameLose() {
-        this.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
     }
 
     /**
@@ -610,9 +588,12 @@ public class GameView extends SurfaceView implements Runnable {
      * A private method to update the shared preferences with the new player Score.
      */
     private void updateScores() {
-        List<HighScore> scores = MenuActivity.getHighScores(mContext,
-                mContext.getString(R.string.scores_list)); //Get the old list of scores.
-        scores.add(new HighScore(getmScore(), new Date())); //Add new HighScore object to list.
+        List<HighScore> scores = MenuActivity.getHighScores(mContext, mContext.getString(R.string.scores_list)); //Get the old list of scores.
+        try {
+            scores.add(new HighScore(getmScore(), new Date())); //Add new HighScore object to list.
+        } catch (Exception e) {
+            Log.e("ADD SCORES", e.getMessage() + "********************************************************************************************************************************************");
+        }
 
         PriorityQueue<HighScore> queue = new PriorityQueue<>(); //Sort the list.
         for (HighScore temp : scores) {

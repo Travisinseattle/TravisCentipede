@@ -130,6 +130,7 @@ public class Components  {
             myTeam = theTeam;
         }
     }
+
     /**
      * Interface for collision.
      */

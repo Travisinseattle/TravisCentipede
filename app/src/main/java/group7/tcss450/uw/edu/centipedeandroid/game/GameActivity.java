@@ -144,8 +144,7 @@ public class GameActivity extends AppCompatActivity implements GameOverFragment.
         Bundle b = new Bundle();
         b.putInt("score", mGameView.getmScore());
         GameOverFragment gameFrag = new GameOverFragment();
-        Log.e("GAME ACTIVITY", Integer.toHexString( R.id.activity_game) + "");
-
+        gameFrag.setArguments(b);
         this.getSupportFragmentManager().beginTransaction()
                 .add(R.id.activity_game, gameFrag ,"Game Over")
                 .addToBackStack(null)

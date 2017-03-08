@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,14 +34,6 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
 
     }
 
-
-//    public static GameOverFragment newInstance(int theScore) {
-//        GameOverFragment fragment = new GameOverFragment();
-//        Bundle args = new Bundle();
-//        args.putInt("Score", theScore);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
     /**
      * Method that creates the fragment behavior when launched. Creates two buttons for play again
      * and main menu.
@@ -80,8 +73,13 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onStart() {
         super.onStart();
-        //String score = "Score: " + String.valueOf(getArguments().getInt("score"));
-        textView.setText(String.valueOf(10));
+        String score = "0";
+        try {
+            score = "Score: " + String.valueOf(getArguments().getInt("score"));
+        } catch (Exception e) {
+            Log.e("GAMEOVER BUNDLE", e.getMessage());
+        }
+        textView.setText(score);
     }
 
     /**
