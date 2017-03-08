@@ -33,8 +33,6 @@ public class HealthSystem extends SubSystem {
         Set<UUID> allHealth = mGameView.mEntityManager.getAllEntitiesPossessingComponent(Components.Health.class);
         for (UUID entityID : allHealth) {
             Components.Health health = mGameView.mEntityManager.getComponent(entityID, Components.Health.class);
-
-
         }
     }
 

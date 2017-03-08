@@ -17,6 +17,7 @@ import group7.tcss450.uw.edu.centipedeandroid.game.manager.GameManager;
  */
 
 public class TouchSystem extends SubSystem {
+    private final float Y_BOUNDRY = mGameView.getmScreenSizeY() - (mGameView.mBlockSize * 3);
     private static final float MOVEMENT_DIVISOR = 5;
     private static final float CLOSE_ENOUGH = 20;
 
@@ -59,7 +60,12 @@ public class TouchSystem extends SubSystem {
                 if (Math.abs(differenceY) < CLOSE_ENOUGH) {
                     move.setDy(0);
                 } else {
-                    move.setDy(Math.min(-(differenceY / MOVEMENT_DIVISOR), mGameView.mBlockSize));
+                    if (pos.getY() +
+                            (Math.min(-(differenceY / MOVEMENT_DIVISOR), mGameView.mBlockSize)) < Y_BOUNDRY) {
+                        move.setDy(0);
+                    } else {
+                        move.setDy(Math.min(-(differenceY / MOVEMENT_DIVISOR), mGameView.mBlockSize));
+                    }
                 }
 
             } else {

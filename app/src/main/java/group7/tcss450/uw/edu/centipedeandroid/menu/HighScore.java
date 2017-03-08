@@ -2,6 +2,7 @@ package group7.tcss450.uw.edu.centipedeandroid.menu;
 
 import android.support.annotation.NonNull;
 
+import java.util.Comparator;
 import java.util.Date;
 
 /**
@@ -9,7 +10,7 @@ import java.util.Date;
  * A custom class to track scores.
  */
 
-public class HighScore implements Comparable<HighScore>{
+public class HighScore implements Comparable<HighScore> {
 
         private int score;
         private Date date;
@@ -37,6 +38,19 @@ public class HighScore implements Comparable<HighScore>{
             return -1;
         } else {
             return 1;
+        }
+    }
+
+    public class HighScoreComparator implements Comparator<HighScore> {
+
+        @Override
+        public int compare(HighScore highScore1, HighScore highScore2) {
+            if (highScore1.getScore() < highScore2.getScore()) {
+                return -1;
+            } else if (highScore1.getScore() > highScore2.getScore()) {
+                return 1;
+            }
+            return 0;
         }
     }
 }

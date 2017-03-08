@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,7 @@ import group7.tcss450.uw.edu.centipedeandroid.R;
  * Use the {@link MenuFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MenuFragment extends Fragment implements View.OnClickListener  {
+public class MenuFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     // UNUSED
 
 //    private static final String ARG_PARAM1 = "param1";
@@ -45,6 +46,10 @@ public class MenuFragment extends Fragment implements View.OnClickListener  {
      * int of the song track.
      */
     private int mSong;
+
+    /** Context */
+    private Context mContext;
+
     /**
      * Song listener for track id's.
      */
@@ -108,7 +113,8 @@ public class MenuFragment extends Fragment implements View.OnClickListener  {
                 R.array.music_list, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         musicSpinner.setAdapter(adapter);
-
+        musicSpinner.setOnItemSelectedListener(this);
+        musicSpinner.setPrompt("Pick in game music");
         return v;
     }
 
@@ -122,9 +128,8 @@ public class MenuFragment extends Fragment implements View.OnClickListener  {
      */
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
-        ((TextView) parent.getChildAt(pos)).setTextColor(Color.WHITE);
-        ((TextView) parent.getChildAt(pos)).setTextSize(5);
         mSendSong.songNum(pos);
+
     }
 
     /**
@@ -152,7 +157,14 @@ public class MenuFragment extends Fragment implements View.OnClickListener  {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        //mSendSong = (SendSong) context;
+        mContext = context;
+
+        try {
+            mSendSong = (MenuFragment.SendSong) context;
+        } catch (Exception e){
+            Log.e("Send Song", e.getMessage());
+        }
+
         if (context instanceof OnStartGame) {
             mListener = (OnStartGame) context;
         } else {

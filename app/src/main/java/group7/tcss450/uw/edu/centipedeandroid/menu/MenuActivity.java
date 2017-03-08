@@ -29,7 +29,8 @@ import group7.tcss450.uw.edu.centipedeandroid.game.GameActivity;
 /**
  * An activity to handle the game main menu.
  */
-public class MenuActivity extends AppCompatActivity implements MenuFragment.OnStartGame, GameOverFragment.OnFragmentInteractionListener, MenuFragment.SendSong {
+public class MenuActivity extends AppCompatActivity implements MenuFragment.OnStartGame,
+        MenuFragment.SendSong {
 
     /**
      * A task to play music
@@ -51,7 +52,9 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
 
         if (savedInstanceState == null) {
             if (findViewById(R.id.activity_menu) != null) {
-                getSupportFragmentManager().beginTransaction().add(R.id.activity_menu, new MenuFragment()).commit();
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.activity_menu, new MenuFragment())
+                        .commit();
             }
         }
     }
@@ -95,12 +98,6 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
         }
     }
 
-
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
 
     /**
      * Method that sets the song track id.
@@ -166,6 +163,7 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
 
         return highScores;
     }
+
 
     /**
      * A task for playing music from SoundCloud

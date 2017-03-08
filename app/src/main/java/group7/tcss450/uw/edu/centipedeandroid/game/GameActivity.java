@@ -1,5 +1,6 @@
 package group7.tcss450.uw.edu.centipedeandroid.game;
 
+import android.content.Intent;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,9 +16,11 @@ import java.math.BigInteger;
 import group7.tcss450.uw.edu.centipedeandroid.R;
 import group7.tcss450.uw.edu.centipedeandroid.authentication.RegisterFragment;
 import group7.tcss450.uw.edu.centipedeandroid.menu.GameOverFragment;
+import group7.tcss450.uw.edu.centipedeandroid.menu.MenuActivity;
 import group7.tcss450.uw.edu.centipedeandroid.menu.MenuFragment;
 
-public class GameActivity extends AppCompatActivity implements GameOverFragment.OnFragmentInteractionListener, MenuFragment.OnStartGame {
+public class GameActivity extends AppCompatActivity implements GameOverFragment.ReturnToMenuListner,
+        MenuFragment.OnStartGame {
 
     /****************************************Constants*********************************************/
 
@@ -144,8 +147,7 @@ public class GameActivity extends AppCompatActivity implements GameOverFragment.
         Bundle b = new Bundle();
         b.putInt("score", mGameView.getmScore());
         GameOverFragment gameFrag = new GameOverFragment();
-        Log.e("GAME ACTIVITY", Integer.toHexString( R.id.activity_game) + "");
-
+        gameFrag.setArguments(b);
         this.getSupportFragmentManager().beginTransaction()
                 .add(R.id.activity_game, gameFrag ,"Game Over")
                 .addToBackStack(null)
@@ -218,15 +220,6 @@ public class GameActivity extends AppCompatActivity implements GameOverFragment.
         }
     }
 
-    /**
-     * Implemented methods from import.
-     *
-     * @param uri the uri object
-     */
-    public void onFragmentInteraction(Uri uri) {
-
-    }
-
     @Override
     public void onStartGame() {
 
@@ -237,5 +230,9 @@ public class GameActivity extends AppCompatActivity implements GameOverFragment.
 
     }
 
-
+    @Override
+    public void ReturnToMenu() {
+        Intent intent = new Intent(this,MenuActivity.class);
+        startActivity(intent);
+    }
 }

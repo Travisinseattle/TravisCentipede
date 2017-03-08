@@ -12,6 +12,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -61,6 +62,7 @@ public class HighScoreFragment extends Fragment {
         super.onStart();
         List<HighScore> listOfScores =
                 MenuActivity.getHighScores(mContext, mContext.getString(R.string.scores_list));
+        Collections.sort(listOfScores);
         List<String> scores = new ArrayList<>();
         if (listOfScores != null) {
             for (HighScore temp : listOfScores) {
