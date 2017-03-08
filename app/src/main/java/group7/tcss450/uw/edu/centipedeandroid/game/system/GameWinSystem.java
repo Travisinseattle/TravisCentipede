@@ -48,7 +48,6 @@ public class GameWinSystem extends SubSystem {
     public void processOneGameTick(long lastFrameTime) {
         Set<UUID> segments = mGameView.mEntityManager.getAllEntitiesPossessingComponent(Components.SegmentComponent.class);
         if (segments.size() <= 0) {
-            Log.e("IT HAPPENED!!!", "*************************************IT SURE DID!***************************************");
             mGameView.gameWin();
         }
     }

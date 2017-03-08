@@ -397,9 +397,6 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void gameWin() {
         ((GameActivity) getContext()).onGameOver();
-        for (int i = 0; i < 20; i++) {
-            Log.e("GAMEWIN: ", "*******************************************************************************************************************************************");
-        }
         updateScores();
         pause();
     }
@@ -590,7 +587,7 @@ public class GameView extends SurfaceView implements Runnable {
     private void updateScores() {
         List<HighScore> scores = MenuActivity.getHighScores(mContext, mContext.getString(R.string.scores_list)); //Get the old list of scores.
         try {
-            scores.add(new HighScore(getmScore(), new Date())); //Add new HighScore object to list.
+            scores.add(new HighScore(mScore, new Date())); //Add new HighScore object to list.
         } catch (Exception e) {
             Log.e("ADD SCORES", e.getMessage() + "********************************************************************************************************************************************");
         }

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -157,7 +158,13 @@ public class MenuFragment extends Fragment implements View.OnClickListener, Adap
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-        mSendSong = (SendSong) context;
+
+        try {
+            mSendSong = (MenuFragment.SendSong) context;
+        } catch (Exception e){
+            Log.e("Send Song", e.getMessage());
+        }
+
         if (context instanceof OnStartGame) {
             mListener = (OnStartGame) context;
         } else {

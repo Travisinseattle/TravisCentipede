@@ -20,7 +20,8 @@ import group7.tcss450.uw.edu.centipedeandroid.game.GameView;
  */
 public class GameOverFragment extends Fragment implements View.OnClickListener {
 
-    public TextView textView;
+    private TextView textView;
+    private ReturnToMenuListner menuListner;
 
     /**
      * Listener to watch for the game being started.
@@ -62,6 +63,7 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        menuListner = (ReturnToMenuListner) context;
         if (context instanceof MenuFragment.OnStartGame) {
             mListener = (MenuFragment.OnStartGame) context;
         } else {
@@ -102,11 +104,15 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
                 mListener.onStartGame();
                 break;
             case R.id.mainMenu:
+                menuListner.ReturnToMenu();
+                for (int i = 0; i < 20; i++) {
+                    Log.e("MAINMENU: ", "*******************************************************************************************************************************************");
+                }
 //                Intent intent = new Intent(getActivity(), MenuActivity.class);
 //                startActivity(intent);
                 MenuFragment menuFrag = new MenuFragment();
                 this.getFragmentManager().beginTransaction()
-                       .replace(R.id.activity_menu, menuFrag, "Menu Fragment")
+                       .replace(R.id.activity_game, menuFrag, "Menu Fragment")
                         .addToBackStack(null)
                        .commit();
                 break;
@@ -123,7 +129,7 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
+    public interface ReturnToMenuListner {
+        void ReturnToMenu();
     }
 }
