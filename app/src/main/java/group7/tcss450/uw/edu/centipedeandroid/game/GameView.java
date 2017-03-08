@@ -14,6 +14,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -592,12 +593,7 @@ public class GameView extends SurfaceView implements Runnable {
             Log.e("ADD SCORES", e.getMessage() + "********************************************************************************************************************************************");
         }
 
-        PriorityQueue<HighScore> queue = new PriorityQueue<>(); //Sort the list.
-        for (HighScore temp : scores) {
-            queue.add(temp);
-        }
-
-        scores = new ArrayList<>(queue); //create a new array using the sorted list.
+        Collections.sort(scores);
 
         MenuActivity.saveHighScores(mContext, mContext.getString(R.string.scores_list),
                 scores); //Pass the list to the method for saving preferences.

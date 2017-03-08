@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import group7.tcss450.uw.edu.centipedeandroid.R;
@@ -22,6 +23,7 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
 
     private TextView textView;
     private ReturnToMenuListner menuListner;
+    private FrameLayout frameLayout;
 
     /**
      * Listener to watch for the game being started.
@@ -52,6 +54,7 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
         b.setOnClickListener(this);
         b = (Button) v.findViewById(R.id.mainMenu);
         b.setOnClickListener(this);
+        frameLayout = (FrameLayout) v.findViewById(R.id.activity_game);
         textView = (TextView) v.findViewById(R.id.score);
         return v;
     }

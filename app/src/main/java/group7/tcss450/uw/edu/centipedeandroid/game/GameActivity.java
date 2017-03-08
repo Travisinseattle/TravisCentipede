@@ -19,7 +19,8 @@ import group7.tcss450.uw.edu.centipedeandroid.menu.GameOverFragment;
 import group7.tcss450.uw.edu.centipedeandroid.menu.MenuActivity;
 import group7.tcss450.uw.edu.centipedeandroid.menu.MenuFragment;
 
-public class GameActivity extends AppCompatActivity implements GameOverFragment.ReturnToMenuListner, MenuFragment.OnStartGame {
+public class GameActivity extends AppCompatActivity implements GameOverFragment.ReturnToMenuListner,
+        MenuFragment.OnStartGame {
 
     /****************************************Constants*********************************************/
 
