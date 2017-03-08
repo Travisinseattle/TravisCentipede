@@ -231,16 +231,22 @@ public class Components  {
     public static class CentipedeID implements Component {
         public UUID[] myIDs;
 
-        public UUID myHead;
+        UUID myHead;
 
         /** Constructor for that intializes fields
          *
          * @param theIDs for this centipede.
+         * @param theSize
          */
         public CentipedeID(UUID[] theIDs) {
             myIDs = theIDs;
             myHead = myIDs[0];
         }
+
+        public int getSize() {
+            return myIDs.length;
+        }
+
     }
 
     /**

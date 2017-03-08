@@ -83,9 +83,16 @@ public class MovementSystem extends SubSystem {
                         }
                         dir.collided = false;
                     } else {
+
                             Components.SegmentMovable segmov = mGameView.mEntityManager.getComponent(entityID, Components.SegmentMovable.class);
                             pos.setX(x + segmov.dx);
                             pos.setY(y + segmov.dy);
+                            x = pos.getX();
+                            y = pos.getY();
+                            Components.HitBox hitBox = mGameView.mEntityManager.getComponent(entityID, Components.HitBox.class);
+
+                            Components.EntitySize es = mGameView.mEntityManager.getComponent(entityID, Components.EntitySize.class);
+                            hitBox.setHitBox(x + GameActivity.getBlockSize() / 6, y + GameActivity.getBlockSize() / 6, x + es.getEntityWidth() - GameActivity.getBlockSize() / 6, y + es.getEntityHeight() - GameActivity.getBlockSize() / 6);
                         }
                     }
 

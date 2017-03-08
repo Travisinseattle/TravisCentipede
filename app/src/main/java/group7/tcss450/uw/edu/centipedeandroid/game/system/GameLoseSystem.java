@@ -1,11 +1,20 @@
 package group7.tcss450.uw.edu.centipedeandroid.game.system;
 
+import android.content.Context;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.UUID;
 
+import group7.tcss450.uw.edu.centipedeandroid.menu.HighScore;
+import group7.tcss450.uw.edu.centipedeandroid.R;
 import group7.tcss450.uw.edu.centipedeandroid.game.GameView;
 import group7.tcss450.uw.edu.centipedeandroid.game.SubSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
+import group7.tcss450.uw.edu.centipedeandroid.menu.MenuActivity;
 
 /**
  * Class that determines if the game was lost by checking if the player entity still exists.
@@ -13,6 +22,11 @@ import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
  * Created by nicholas on 3/3/17.
  */
 public class GameLoseSystem extends SubSystem {
+
+    /**
+     * The context of the gameview.
+     */
+    private final Context context = mGameView.mContext;
 
     /**
      * Constructor for the game lose system.
@@ -33,7 +47,7 @@ public class GameLoseSystem extends SubSystem {
     public void processOneGameTick(long lastFrameTime) {
         Set<UUID> player = mGameView.mEntityManager.getAllEntitiesPossessingComponent(Components.Touch.class);
         if (player.size() == 0) {
-//            mGameView.gameLose();
+            mGameView.gameLose();
         }
     }
     /**
@@ -45,4 +59,5 @@ public class GameLoseSystem extends SubSystem {
     public String getSimpleName() {
         return null;
     }
+
 }

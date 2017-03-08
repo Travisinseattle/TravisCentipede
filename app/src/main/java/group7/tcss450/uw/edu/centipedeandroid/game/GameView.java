@@ -1,18 +1,23 @@
 package group7.tcss450.uw.edu.centipedeandroid.game;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.PriorityQueue;
 
 import group7.tcss450.uw.edu.centipedeandroid.R;
 import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
@@ -21,6 +26,7 @@ import group7.tcss450.uw.edu.centipedeandroid.game.system.CentMovementSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.CollisionSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.DestroySystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.DrawHitBoxSystem;
+import group7.tcss450.uw.edu.centipedeandroid.game.system.GameLoseSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.GameWinSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.MovementSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.PhysicsSystem;
@@ -28,6 +34,8 @@ import group7.tcss450.uw.edu.centipedeandroid.game.system.RenderDamagedSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.RenderSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.ShootSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.system.TouchSystem;
+import group7.tcss450.uw.edu.centipedeandroid.menu.HighScore;
+import group7.tcss450.uw.edu.centipedeandroid.menu.MenuActivity;
 
 /**
  * Created by Travis Holloway on 1/24/2017.
@@ -286,7 +294,7 @@ public class GameView extends SurfaceView implements Runnable {
         /**
          * Creates the centipede object.
          */
-        mCentipede = EntityFactory.createCentipede(this, 7);
+        mCentipede = EntityFactory.createCentipede(this, 5);
 
         mOrderedSubSystems.add(new TouchSystem(this));
         mOrderedSubSystems.add(new PhysicsSystem(this));
@@ -296,6 +304,7 @@ public class GameView extends SurfaceView implements Runnable {
         mOrderedSubSystems.add(new MovementSystem(this));
         mOrderedSubSystems.add(new DestroySystem(this));
         mOrderedSubSystems.add(new GameWinSystem(this));
+        mOrderedSubSystems.add(new GameLoseSystem(this));
     }
 
     private void renderScore() {
@@ -404,7 +413,17 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     public void gameWin() {
+        ((GameActivity) getContext()).onGameOver();
+        Log.e("GAMEWIN: ", "*******************************************************************************************************************************************");
+        Log.e("GAMEWIN: ", "*******************************************************************************************************************************************");
+        Log.e("GAMEWIN: ", "*******************************************************************************************************************************************");
+        Log.e("GAMEWIN: ", "*******************************************************************************************************************************************");
+        Log.e("GAMEWIN: ", "*******************************************************************************************************************************************");
         pause();
+    }
+
+    public void gameLose() {
+        this.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
     }
 
     /**
@@ -434,7 +453,6 @@ public class GameView extends SurfaceView implements Runnable {
      */
     @Override
     public void run() {
-
 //        double previous = getCurrentTime();
 //        double lag = 0.0;
 //        while (true)
@@ -477,20 +495,12 @@ public class GameView extends SurfaceView implements Runnable {
 //
 //            render( state );
 //        }
-
         long lastLoopTime = System.currentTimeMillis();
 
         while (mPlaying) {
-            //capture current time in milliseconds.
-//            try {
-//                Thread.sleep(lastLoopTime + 10 - System.currentTimeMillis());
-//            } catch (Exception e) {
-//                Log.e("this",e.toString());
-//            }
 
             long delta = System.currentTimeMillis() - lastLoopTime;
             lastLoopTime = System.currentTimeMillis();
-//            lastFpsTime += delta;
 
                 for (SubSystem system : mOrderedSubSystems) {
                     system.processOneGameTick(delta);
@@ -511,18 +521,16 @@ public class GameView extends SurfaceView implements Runnable {
 
                         //set text size
                         mPaint.setTextSize(45);
-
-//                mRenderSystem.drawBackground();
                         myHitDebug.processOneGameTick(delta);
                         mRenderSystem.processOneGameTick(delta);
                         mRenderDamagedSystem.processOneGameTick(delta);
                         renderScore();
                         mHolder.unlockCanvasAndPost(mCanvas);
                     }
-
-                }
-            }
+                };
         }
+        this.mGameThread.interrupt();
+    }
 
     /**
      * The update method, updates the behavior of the objects in the game so that they
@@ -596,5 +604,25 @@ public class GameView extends SurfaceView implements Runnable {
 //    }
 
     /*****************************************Private Methods**************************************/
+
+
+    /**
+     * A private method to update the shared preferences with the new player Score.
+     */
+    private void updateScores() {
+        List<HighScore> scores = MenuActivity.getHighScores(mContext,
+                mContext.getString(R.string.scores_list)); //Get the old list of scores.
+        scores.add(new HighScore(getmScore(), new Date())); //Add new HighScore object to list.
+
+        PriorityQueue<HighScore> queue = new PriorityQueue<>(); //Sort the list.
+        for (HighScore temp : scores) {
+            queue.add(temp);
+        }
+
+        scores = new ArrayList<>(queue); //create a new array using the sorted list.
+
+        MenuActivity.saveHighScores(mContext, mContext.getString(R.string.scores_list),
+                scores); //Pass the list to the method for saving preferences.
+    }
 
 }
