@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:textColor="#FFFFFF"
         android:id="@+id/userText"
+        android:inputType="text"
         android:maxLines="1"
         android:textColorHint="#FFFFFF"
         android:hint="@string/enterUsername"/>

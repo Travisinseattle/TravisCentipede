@@ -107,7 +107,7 @@ public class EntityFactory {
         MetaEntity bullet = new MetaEntity("bullet", es,
                 new Components.CAndroidDrawable(R.drawable.fireball),
                 new Components.Health(1),
-                new Components.Movable(0, - 100),
+                new Components.Movable(0, - 75),
                 new Components.Position(x, y),
                 new Components.Hazard(1),
                 new Components.Shoot(),
@@ -137,27 +137,7 @@ public class EntityFactory {
 
 
     public static void splitCentipede(UUID[] theIDS, UUID theSeg) {
-        int head = 0;
-        int tail = 0;
-        ArrayList<MetaEntity> newCentipedes = new ArrayList<>();
-        for (int i = 0; i<theIDS.length; i++) {
-            if (theIDS[i] == theSeg) {
-                head = (i - 1);
-                tail = (i + 1);
-            }
-        }
 
-        UUID[] leftCent = new UUID[head];
-        UUID[] rightCent = new UUID[tail];
-        for (int j = 0; j < head; j++) {
-            leftCent[j] = theIDS[j];
-        }
-
-        for (int k = tail; k < theIDS.length; k++) {
-            rightCent[k] = theIDS[k];
-        }
-        EntityFactory.createCentipede(leftCent);
-        EntityFactory.createCentipede(rightCent);
     }
 
     /**

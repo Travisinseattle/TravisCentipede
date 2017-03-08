@@ -316,6 +316,13 @@ public class Components  {
         }
 
         /**
+         * Setter method for the resource id
+         */
+        public void setDrawable(int theResourceID) {
+            myResourceID = theResourceID;
+        }
+
+        /**
          * Getter method for the resource id
          *
          * @return an integer of the resource id.
@@ -323,6 +330,7 @@ public class Components  {
         public int getMyResourceID() {
             return myResourceID;
         }
+
     }
 
     /**
