@@ -19,12 +19,10 @@ import group7.tcss450.uw.edu.centipedeandroid.game.manager.GameManager;
 
 public class MovementSystem extends SubSystem {
     private int counter;
-    private boolean moveSegement;
 
     public MovementSystem(GameView theGameView) {
         super(theGameView);
         counter = 0;
-        moveSegement = false;
     }
 
     /**
@@ -40,7 +38,7 @@ public class MovementSystem extends SubSystem {
         counter += lastFrameTime;
             Set<UUID> allMove = mGameView.mEntityManager.getAllEntitiesPossessingComponent(Components.Movable.class);
             if(counter > 500) {
-                moveSegement = true;
+                mGameView.myMoveSegement = true;
                 counter = 0;
             }
             for (UUID entityID : allMove) {
@@ -50,7 +48,8 @@ public class MovementSystem extends SubSystem {
                 float y = pos.getY();
                 if (mGameView.mEntityManager.hasComponent(entityID, Components.SegmentComponent.class)) {
                     Components.Direction dir = mGameView.mEntityManager.getComponent(entityID, Components.Direction.class);
-                    if(moveSegement) {
+                    if(mGameView.myMoveSegement) {
+                        if (!mGameView.mEntityManager.hasComponent(entityID, Components.SegmentMovable.class)) {
                             if (pos.getX() + move.getDx() + mGameView.mBlockSize > mGameView.getmScreenSizeX()) { //if it hits the right side.
                                 dir.collided = true;
 
@@ -76,12 +75,20 @@ public class MovementSystem extends SubSystem {
                         if (dir.collided) {
                             if (dir.getDir()) {
                                move.dx = mGameView.mBlockSize;
+//                                move.dy = 0;
                             } else {
                                 move.dx = -mGameView.mBlockSize;
+//                                move.dy = 0;
                             }
                         }
                         dir.collided = false;
+                    } else {
+                            Components.SegmentMovable segmov = mGameView.mEntityManager.getComponent(entityID, Components.SegmentMovable.class);
+                            pos.setX(x + segmov.dx);
+                            pos.setY(y + segmov.dy);
+                        }
                     }
+
                     continue;
                 }
                 if (move.dx != 0 || move.dy != 0) {
@@ -106,7 +113,6 @@ public class MovementSystem extends SubSystem {
                 }
 
             }
-            moveSegement = false;
 
         }
 

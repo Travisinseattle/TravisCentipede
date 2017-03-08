@@ -168,6 +168,7 @@ public class GameView extends SurfaceView implements Runnable {
 //    public ArrayList<Collision> myCollisions;
 
     private Map mMap;
+    public boolean myMoveSegement;
 
 //    private A
 
@@ -205,7 +206,7 @@ public class GameView extends SurfaceView implements Runnable {
          */
         mScreenSizeX = screenX;
         mScreenSizeY = screenY;
-
+        myMoveSegement = false;
         myHitDebug = new DrawHitBoxSystem(this);
         this.mBlockSize = block;
         mMap = new Map(mScreenSizeX / mBlockSize, mScreenSizeY /mBlockSize, mBlockSize);
@@ -285,14 +286,14 @@ public class GameView extends SurfaceView implements Runnable {
         /**
          * Creates the centipede object.
          */
-        mCentipede = EntityFactory.createCentipede(this, 1);
+        mCentipede = EntityFactory.createCentipede(this, 7);
 
         mOrderedSubSystems.add(new TouchSystem(this));
         mOrderedSubSystems.add(new PhysicsSystem(this));
         mOrderedSubSystems.add(new CollisionSystem(this));
         mOrderedSubSystems.add(new ShootSystem(this));
-        mOrderedSubSystems.add(new MovementSystem(this));
         mOrderedSubSystems.add(new CentMovementSystem(this));
+        mOrderedSubSystems.add(new MovementSystem(this));
         mOrderedSubSystems.add(new DestroySystem(this));
         mOrderedSubSystems.add(new GameWinSystem(this));
     }

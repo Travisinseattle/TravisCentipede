@@ -90,7 +90,6 @@ public class EntityFactory {
         return mushroom;
     }
 
-//<<<<<<< HEAD
     public static MetaEntity createShip() {
         Components.EntitySize es = new Components.EntitySize(GameActivity.getBlockSize() * 2,
                 GameActivity.getBlockSize());
@@ -107,28 +106,6 @@ public class EntityFactory {
                         p.getY() + SHRINK_VALUE,
                         p.getX() + (es.getEntityWidth() - SHRINK_VALUE),
                         p.getY() + (es.getEntityHeight() - SHRINK_VALUE)));
-   ;
-//=======
-//    /**
-//     * Method that creates a ship entity that will spawn
-//     * on the screen. Entity is comprised of components that
-//     * control behavior such as touch for the ships movement.
-//     *
-//     * @param theGameView is the surface view of the game.
-//     * @return A MetaEntity object of the ship.
-//     */
-//    public static MetaEntity createShip(GameView theGameView) {
-//        MetaEntity ship = new MetaEntity();
-//        ship.add(new Components.EntitySize(GameActivity.getBlockSize() * 2,
-//                GameActivity.getBlockSize()));
-//        ship.add(new Components.CAndroidDrawable(R.drawable.alienblaster));
-//        ship.add(new Components.Touch());
-//        ship.add(new Components.Movable());
-//        ship.add(new Components.Position((GameActivity.mWidth / 2),  (GameActivity.mHeight -
-//                GameActivity.mBlockSize)));
-////        ship.add(new Components.Health());
-////        ship.add(new Components.HitBox());
-//>>>>>>> c3fd90360f1296db9953ee4f9e76266349164f6f
         return ship;
     }
 
@@ -163,8 +140,7 @@ public class EntityFactory {
         Components.EntitySize es = new Components.EntitySize(GameActivity.getBlockSize(),
                 GameActivity.getBlockSize());
         MetaEntity centBody = new MetaEntity("Centipede Body", es,
-                new Components.CAndroidDrawable(R.drawable.centipede),
-                new Components.Movable(GameActivity.getBlockSize(),0),
+
                 new Components.Direction(true),
                 new Components.Position(x,y),
                 new Components.SegmentComponent(parent),
@@ -213,9 +189,18 @@ public class EntityFactory {
         int k = 0;
         MetaEntity centipede = new MetaEntity("Centipede");
         for (int i = 0; i<theSize; i++ ) {
-            k -= theGameView.mBlockSize;
-//            MetaEntity temp = EntityFactory.createCentBody((theGameView.mScreenSizeX)/2-k, -theGameView.mBlockSize);
+            k += theGameView.mBlockSize;
             MetaEntity temp = EntityFactory.createCentBody((theGameView.mScreenSizeX)/2 - k, 0, centipede.entity);
+            if (i == 0) {
+                temp.add(new Components.Movable(theGameView.mBlockSize,0));
+                temp.add(new Components.CAndroidDrawable(R.drawable.centipedehead));
+            } else {
+                Components.SegmentMovable sm = new Components.SegmentMovable();
+                sm.dx = theGameView.mBlockSize;
+                temp.add(new Components.CAndroidDrawable(R.drawable.centipede));
+                temp.add(sm);
+                temp.add(new Components.Movable(0,0));
+            }
             ids[i] = temp.entity;
         }
         centipede.add(new Components.CentipedeID(ids));

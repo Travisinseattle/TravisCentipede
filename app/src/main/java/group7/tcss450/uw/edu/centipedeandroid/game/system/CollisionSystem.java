@@ -59,7 +59,7 @@ public class CollisionSystem extends SubSystem {
             Components.Movable entityMov = mGameView.mEntityManager.getComponent(id, Components.Movable.class);
 
 //            // Special Behaviour for Centipedes?
-            if (mGameView.mEntityManager.hasComponent(id, Components.Direction.class)) {
+            if (mGameView.mEntityManager.hasComponent(id, Components.SegmentComponent.class)) {
                 if (!mGameView.mEntityManager.hasComponent(collision.collidedWith, Components.Movable.class)) {
                     Components.Direction dir = mGameView.mEntityManager.getComponent(id, Components.Direction.class);
                     dir.collided = true;

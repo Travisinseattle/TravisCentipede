@@ -260,6 +260,11 @@ public class Components  {
         }
     }
 
+    public static class SegmentMovable implements Component {
+        public float dx;
+        public float dy;
+    }
+
     /**
      * Class component that assigns a centipede segment its parent entity
      */
