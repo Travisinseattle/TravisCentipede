@@ -19,7 +19,7 @@ import group7.tcss450.uw.edu.centipedeandroid.menu.GameOverFragment;
 import group7.tcss450.uw.edu.centipedeandroid.menu.MenuActivity;
 import group7.tcss450.uw.edu.centipedeandroid.menu.MenuFragment;
 
-public class GameActivity extends AppCompatActivity  {
+public class GameActivity extends AppCompatActivity implements GameOverFragment.ReturnToMenuListner, MenuFragment.OnStartGame {
 
     /*****************************************Fields***********************************************/
 
@@ -74,14 +74,14 @@ public class GameActivity extends AppCompatActivity  {
      * Method that launches the game over fragment when the game ends.
      */
     public void onGameOver() {
-//        Bundle b = new Bundle();
-//        b.putInt("score", mGameView.getmScore());
-//        GameOverFragment gameFrag = new GameOverFragment();
-//        gameFrag.setArguments(b);
-//        this.getSupportFragmentManager().beginTransaction()
-//                .add(R.id.activity_game, gameFrag ,"Game Over")
+        Bundle b = new Bundle();
+        b.putInt("score", 0);
+        GameOverFragment gameFrag = new GameOverFragment();
+        gameFrag.setArguments(b);
+        this.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.activity_game, gameFrag ,"Game Over")
 //                .addToBackStack(null)
-//                .commit();
+                .commit();
     }
 
     /**
@@ -113,19 +113,24 @@ public class GameActivity extends AppCompatActivity  {
 //    }
 //
 //
-//    @Override
-//    public void onStartGame() {
-//
-//    }
+    @Override
+    public void onStartGame() {
+
+    }
+
+    @Override
+    public void onPlayer() {
+
+    }
 //
 //    @Override
 //    public void onPlayer() {
 //
 //    }
 
-//    @Override
-//    public void ReturnToMenu() {
-//        Intent intent = new Intent(this,MenuActivity.class);
-//        startActivity(intent);
-//    }
+    @Override
+    public void ReturnToMenu() {
+        Intent intent = new Intent(this,MenuActivity.class);
+        startActivity(intent);
+    }
 }
