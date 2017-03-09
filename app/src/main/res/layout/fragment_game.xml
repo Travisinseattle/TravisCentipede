@@ -2,6 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="group7.tcss450.uw.edu.centipedeandroid.menu.GameFragment">
+    tools:context="group7.tcss450.uw.edu.centipedeandroid.game.GameFragment">
+
+    <group7.tcss450.uw.edu.centipedeandroid.game.GameView
+        android:id="@+id/game"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </FrameLayout>

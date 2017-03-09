@@ -16,11 +16,12 @@ import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
 
 public class MovementSystem extends SubSystem {
     private int counter;
-    private final static float SHRINK_AMOUNT = GameActivity.getBlockSize() / 6;
+    private float myShrinkAmount;
 
     public MovementSystem(GameView theGameView) {
         super(theGameView);
         counter = 0;
+        myShrinkAmount = theGameView.mBlockSize / 6;
     }
 
     /**
@@ -69,10 +70,10 @@ public class MovementSystem extends SubSystem {
                             y = pos.getY();
                             Components.EntitySize es = mGameView.mEntityManager.getComponent(entityID, Components.EntitySize.class);
                             hitBox.setHitBox(
-                                    x + SHRINK_AMOUNT,
-                                    y + SHRINK_AMOUNT,
-                                    x + (es.getEntityWidth() - SHRINK_AMOUNT),
-                                    y + (es.getEntityHeight() - SHRINK_AMOUNT));
+                                    x + myShrinkAmount,
+                                    y + myShrinkAmount,
+                                    x + (es.getEntityWidth() - myShrinkAmount),
+                                    y + (es.getEntityHeight() - myShrinkAmount));
                             if (dir.collided) {
                                 if (dir.getDir()) {
                                    move.dx = mGameView.mBlockSize;
@@ -94,10 +95,10 @@ public class MovementSystem extends SubSystem {
 
                             Components.EntitySize es = mGameView.mEntityManager.getComponent(entityID, Components.EntitySize.class);
                             hitBox.setHitBox(
-                                            x + SHRINK_AMOUNT,
-                                            y + SHRINK_AMOUNT,
-                                            x + (es.getEntityWidth() - SHRINK_AMOUNT),
-                                            y + (es.getEntityHeight() - SHRINK_AMOUNT));
+                                            x + myShrinkAmount,
+                                            y + myShrinkAmount,
+                                            x + (es.getEntityWidth() - myShrinkAmount),
+                                            y + (es.getEntityHeight() - myShrinkAmount));
                         }
                     }
 

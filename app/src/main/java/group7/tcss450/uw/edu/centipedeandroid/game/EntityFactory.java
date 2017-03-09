@@ -16,8 +16,9 @@ import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
  */
 
 public class EntityFactory {
-
-    private static final float SHRINK_VALUE = GameActivity.getBlockSize() / 6;
+//
+//    private static float BLOCK_SIZE;
+//    private static final float SHRINK_VALUE = BLOCK_SIZE / 6;
 
 
     /**
@@ -37,10 +38,9 @@ public class EntityFactory {
      *
      * @return A MetaEntity object of the mushroom.
      */
-    public static MetaEntity createMushroom() { // Mushrooms will look like aliens for now.
+    public static MetaEntity createMushroom(float theBlockSize) { // Mushrooms will look like aliens for now.
         MetaEntity mushroom = new MetaEntity("mushroom");
-        mushroom.add(new Components.EntitySize(GameActivity.getBlockSize(),
-                GameActivity.getBlockSize()));
+        mushroom.add(new Components.EntitySize(theBlockSize, theBlockSize));
         mushroom.add(new Components.Health(4));
         mushroom.add(new Components.Position());
         mushroom.add(new Components.CAndroidDrawable(R.drawable.shroom));
@@ -55,28 +55,28 @@ public class EntityFactory {
      * @param p is the position of the mushroom
      * @return A MetaEntity object of the mushroom.
      */
-    public static MetaEntity createMushroom(Components.Position p) { // Mushrooms will look like aliens for now.
+    public static MetaEntity createMushroom(Components.Position p, float theBlockSize) { // Mushrooms will look like aliens for now.
         MetaEntity mushroom = new MetaEntity("mushroom");
-        Components.EntitySize es = new Components.EntitySize(GameActivity.getBlockSize(),
-                GameActivity.getBlockSize());
+        Components.EntitySize es = new Components.EntitySize(theBlockSize, theBlockSize);
         mushroom.add(es);
         mushroom.add(new Components.Health(4));
         mushroom.add(p);
         mushroom.add(new Components.Score(10));
         mushroom.add(new Components.DamagedDrawable(new int[] {R.drawable.shroom, R.drawable.shroom3, R.drawable.shroom2, R.drawable.shroom1}));
         mushroom.add(new Components.HitBox(
-                p.getX() + SHRINK_VALUE,
-                p.getY() + SHRINK_VALUE,
-                p.getX() + (es.getEntityWidth() - SHRINK_VALUE),
-                p.getY() + (es.getEntityHeight() - SHRINK_VALUE)));
+                p.getX() + theBlockSize / 6,
+                p.getY() + theBlockSize / 6,
+                p.getX() + (es.getEntityWidth() - theBlockSize / 6),
+                p.getY() + (es.getEntityHeight() - theBlockSize / 6)));
         return mushroom;
     }
 
-    public static MetaEntity createShip() {
-        Components.EntitySize es = new Components.EntitySize(GameActivity.getBlockSize() * 2,
-                GameActivity.getBlockSize());
-        Components.Position p = new Components.Position((GameActivity.mWidth / 2),
-                (GameActivity.mHeight - GameActivity.mBlockSize));
+    public static MetaEntity createShip(float theX, float theY, float theBlockSize) {
+        Components.EntitySize es = new Components.EntitySize(theBlockSize * 2,
+                theBlockSize);
+//        Components.Position p = new Components.Position((GameActivity.mWidth / 2),
+//                (GameActivity.mHeight - GameActivity.mBlockSize));
+        Components.Position p = new Components.Position(theX, theY);
         MetaEntity ship = new MetaEntity("ship",
                 p,
                 es,
@@ -84,10 +84,10 @@ public class EntityFactory {
                 new Components.Touch(),
                 new Components.Movable(),
                 new Components.HitBox(
-                        p.getX() + SHRINK_VALUE,
-                        p.getY() + SHRINK_VALUE,
-                        p.getX() + (es.getEntityWidth() - SHRINK_VALUE),
-                        p.getY() + (es.getEntityHeight() - SHRINK_VALUE)));
+                        p.getX() + theBlockSize / 6,
+                        p.getY() + theBlockSize / 6,
+                        p.getX() + (es.getEntityWidth() - theBlockSize / 6),
+                        p.getY() + (es.getEntityHeight() - theBlockSize / 6)));
         return ship;
     }
 
@@ -96,14 +96,13 @@ public class EntityFactory {
      * on the screen. Entity is comprised of components that
      * control behavior. Bullet spawn is controlled by where the ship is.
      *
-     * @param theGameView is a reference to the game view.
      * @param x is the x position of the bullet.
      * @param y is the y position of the bullet.
      * @return A MetaEntity object of the bullet.
      */
-    public static MetaEntity createBullet(GameView theGameView, float x, float y) {
-        Components.EntitySize es = new Components.EntitySize(GameActivity.getBlockSize() / 3,
-                GameActivity.getBlockSize() / 3);
+    public static MetaEntity createBullet(float x, float y, float theBlockSize) {
+        Components.EntitySize es = new Components.EntitySize(theBlockSize/ 3,
+                theBlockSize / 3);
         MetaEntity bullet = new MetaEntity("bullet", es,
                 new Components.CAndroidDrawable(R.drawable.fireball),
                 new Components.Health(1),
@@ -118,9 +117,9 @@ public class EntityFactory {
         return bullet;
     }
 
-    public static MetaEntity createCentBody(float x, float y, UUID parent) {
-        Components.EntitySize es = new Components.EntitySize(GameActivity.getBlockSize(),
-                GameActivity.getBlockSize());
+    public static MetaEntity createCentBody(float x, float y, UUID parent, float theBlockSize) {
+        Components.EntitySize es = new Components.EntitySize(theBlockSize,
+                theBlockSize);
         MetaEntity centBody = new MetaEntity("Centipede Body", es,
                 new Components.Direction(true),
                 new Components.Position(x,y),
@@ -156,7 +155,7 @@ public class EntityFactory {
         MetaEntity centipede = new MetaEntity("Centipede");
         for (int i = 0; i<theSize; i++ ) {
             k += theGameView.mBlockSize;
-            MetaEntity temp = EntityFactory.createCentBody((theGameView.mScreenSizeX)/2 - k, 0, centipede.entity);
+            MetaEntity temp = EntityFactory.createCentBody((theGameView.mScreenSizeX)/2 - k, 0, centipede.entity, theGameView.mBlockSize);
             if (i == 0) {
                 temp.add(new Components.Movable(theGameView.mBlockSize,0));
                 temp.add(new Components.CAndroidDrawable(R.drawable.centipedehead));
@@ -203,8 +202,8 @@ public class EntityFactory {
      */
     public static MetaEntity createScorpian(GameView theGameView, float x, float y) {
         MetaEntity scorpian = new MetaEntity("scorpion");
-        scorpian.add(new Components.EntitySize(GameActivity.getBlockSize() + 40,
-                GameActivity.getBlockSize() + 40)); // POSSIBLE CHANGE SIZE OF THIS CREATURE CURRENT NUMBERS ARE TEST NUMBERS
+//        scorpian.add(new Components.EntitySize(GameActivity.getBlockSize() + 40,
+//                GameActivity.getBlockSize() + 40)); // POSSIBLE CHANGE SIZE OF THIS CREATURE CURRENT NUMBERS ARE TEST NUMBERS
         scorpian.add(new Components.CAndroidDrawable(R.drawable.scorpianeast));
         scorpian.add(new Components.Movable(1/2,0));
         scorpian.add(new Components.Position(x,y));

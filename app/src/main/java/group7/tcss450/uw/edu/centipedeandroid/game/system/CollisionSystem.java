@@ -63,6 +63,7 @@ public class CollisionSystem extends SubSystem {
                 if (!mGameView.mEntityManager.hasComponent(collision.collidedWith, Components.Movable.class)) {
                     Components.Direction dir = mGameView.mEntityManager.getComponent(id, Components.Direction.class);
                     dir.collided = true;
+
                 }
             } else {
                 // There was a collision it must be solid?

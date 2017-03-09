@@ -7,12 +7,14 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -46,7 +48,28 @@ public class GameView extends SurfaceView implements Runnable {
 
     /****************************************Constants*********************************************/
 
-    public static int INITIAL_BULLET_SPEED = 300;
+    /**
+     * Constant representing how tall the game view should be in terms of 'blocks'.  These blocks
+     * will be consistent in appearance as they take however much space is available and devide
+     * it by the amount specified in this constant.
+     */
+    private static final int BLOCK_COUNT_HEIGHT = 20;
+
+    /**
+     * Constant representing how wide the game view should be in terms of 'blocks'.  These blocks
+     * will be consistent in appearance as they take however much space is available and devide
+     * it by the amount specified in this constant.
+     */
+    private static final int BLOCK_COUNT_WIDTH = 10;
+
+    /**
+     * Constant representing the minimum amount of space that a block should be displayed at.
+     */
+    private static final int MIN_BLOCK_SIZE = 10 ;
+
+    /****************************************Constants*********************************************/
+
+    public static int INITIAL_BULLET_SPEED = 700;
 
     /**
      *
@@ -178,14 +201,16 @@ public class GameView extends SurfaceView implements Runnable {
      * The GameView Constructor.  Takes context and screen size from parent.
      *
      * @param context  The context of the parent constructing the ship.
-     * @param screenX  The X dimensions of the parent activity.  Used to determine the size
-     *                 of the ship.
-     * @param screenY  The Y dimensions of the parent activity.  Used to determine the size
-     *                 of the ship.
+//     * @param screenX  The X dimensions of the parent activity.  Used to determine the size
+//     *                 of the ship.
+//     * @param screenY  The Y dimensions of the parent activity.  Used to determine the size
+//     *                 of the ship.
      */
-    public GameView(Context context, int screenX, int screenY, int block) {
+//    public GameView(Context context, int screenX, int screenY, int block) {
+    public GameView(Context context, AttributeSet attrs){
+        super(context, attrs);
         //Call the parent first.
-        super(context);
+//        super(context);
 
         //intialize mContext to the context passed to the constructor.
         this.mContext = context;
@@ -202,24 +227,26 @@ public class GameView extends SurfaceView implements Runnable {
 //        myCollisions = new ArrayList<>();
 
         /**
-         * set the value for the screen size.
-         */
-        mScreenSizeX = screenX;
-        mScreenSizeY = screenY;
+//         * set the value for the screen size.
+//         */
+//        mScreenSizeX = getWidth();
+//        mScreenSizeY = getHeight();
         myMoveSegement = false;
         myHitDebug = new DrawHitBoxSystem(this);
-        this.mBlockSize = block;
-        mMap = new Map(mScreenSizeX / mBlockSize, mScreenSizeY /mBlockSize, mBlockSize);
-        /**
-         * Initialize the level.
-         */
-        createLevel();
+    }
 
-        /**
-         * Set the playing boolean to true.
-         */
-        mPlaying = true;
-        mStartMilli = System.currentTimeMillis();
+    public void initSystems() {
+        mOrderedSubSystems.add(new TouchSystem(this));
+        mOrderedSubSystems.add(new PhysicsSystem(this));
+        mOrderedSubSystems.add(new CollisionSystem(this));
+        mOrderedSubSystems.add(new ShootSystem(this));
+        mOrderedSubSystems.add(new CentMovementSystem(this));
+        mOrderedSubSystems.add(new MovementSystem(this));
+        mOrderedSubSystems.add(new DestroySystem(this));
+        mOrderedSubSystems.add(new GameWinSystem(this));
+        mOrderedSubSystems.add(new GameLoseSystem(this));
+
+
     }
 
     /*****************************************Getters and Setters**********************************/
@@ -249,6 +276,8 @@ public class GameView extends SurfaceView implements Runnable {
      * Method to initialize all objects and variables that will be drawn.
      */
     public void createLevel(){
+        mMap = new Map(mScreenSizeX / mBlockSize, mScreenSizeY /mBlockSize, mBlockSize);
+
         /**
          * set the score
          */
@@ -267,12 +296,12 @@ public class GameView extends SurfaceView implements Runnable {
         /**
          * Make a playership to be used in the game.
          */
-        mPlayerShip = EntityFactory.createShip();
+        mPlayerShip = EntityFactory.createShip(mScreenSizeX / 2, mScreenSizeY - mBlockSize, mBlockSize);
 
         ArrayList<Components.Position> mushroomPositions = mMap.getMushroomPositions();
 
         for (Components.Position p : mushroomPositions) {
-            EntityFactory.createMushroom(p);
+            EntityFactory.createMushroom(p, mBlockSize);
         }
 
         /**
@@ -280,15 +309,7 @@ public class GameView extends SurfaceView implements Runnable {
          */
         mCentipede = EntityFactory.createCentipede(this, 5);
 
-        mOrderedSubSystems.add(new TouchSystem(this));
-        mOrderedSubSystems.add(new PhysicsSystem(this));
-        mOrderedSubSystems.add(new CollisionSystem(this));
-        mOrderedSubSystems.add(new ShootSystem(this));
-        mOrderedSubSystems.add(new CentMovementSystem(this));
-        mOrderedSubSystems.add(new MovementSystem(this));
-        mOrderedSubSystems.add(new DestroySystem(this));
-        mOrderedSubSystems.add(new GameWinSystem(this));
-        mOrderedSubSystems.add(new GameLoseSystem(this));
+
     }
 
     private void renderScore() {
@@ -297,75 +318,13 @@ public class GameView extends SurfaceView implements Runnable {
 //        mCanvas.drawText("Lives: 3", mScreenSizeX - FONT_SIZE_LARGE * 2, FONT_SIZE_LARGE + 10, mPaint);
     }
 
-    /**
-     * Method to draw the mGameView and display graphics
-     */
-    public void draw() {
-        //validity check on surface area to catch crashes.
-        if (mHolder.getSurface().isValid()) {
-            //lock the canvas
-            mCanvas = mHolder.lockCanvas();
-
-            /**
-             * If Debug is true, display statistics of the objects on screen.
-             */
-            if (DEBUG) {
-//                int i = 1;
-//                mCanvas.drawText(getContext().getString(R.string.screen_width) + mScreenSizeX,
-//                        FONT_SIZE_SMALL, 10 + (FONT_SIZE_SMALL * i++), mPaint);
-//                mCanvas.drawText(getContext().getString(R.string.screen_height) + mScreenSizeY,
-//                        FONT_SIZE_SMALL, 10 + (FONT_SIZE_SMALL * i++), mPaint);
-//                mCanvas.drawText(getContext().getString(R.string.fps) + mFps, FONT_SIZE_SMALL,
-//                        10 + (FONT_SIZE_SMALL * i++), mPaint);
-//                mCanvas.drawText(getContext().getString(R.string.ship_x) + mPlayerShip.getX(),
-//                        FONT_SIZE_SMALL, 10 + (FONT_SIZE_SMALL * i++), mPaint);
-//                mCanvas.drawText(getContext().getString(R.string.ship_y) + mPlayerShip.getY(),
-//                        FONT_SIZE_SMALL, 10 + (FONT_SIZE_SMALL * i++), mPaint);
-//                mCanvas.drawText(getContext().getString(R.string.bullet_location) +
-//                        mPlayerBullet.getX() + getContext().getString(R.string.comma) +
-//                        mPlayerBullet.getY() + getContext().getString(R.string.para),
-//                        FONT_SIZE_SMALL, 10 + (FONT_SIZE_SMALL * i++), mPaint);
-//                mCanvas.drawText(getContext().getString(R.string.head_x) +
-//                        mCentipede.getHead().getXCoord(), FONT_SIZE_SMALL,
-//                        10 + (FONT_SIZE_SMALL * i++), mPaint);
-//                mCanvas.drawText(getContext().getString(R.string.head_y) +
-//                        mCentipede.getHead().getYCoord(), FONT_SIZE_SMALL,
-//                        10 + (FONT_SIZE_SMALL * i++), mPaint);
-//                mCanvas.drawText(getContext().getString(R.string.timer) +
-//                        getElapsedTimeInSeconds(), FONT_SIZE_SMALL,
-//                        10 + (FONT_SIZE_SMALL * i++), mPaint);
-//                mCanvas.drawText(getContext().getString(R.string.block_size) +
-//                        mBlockSize, FONT_SIZE_SMALL, 10 + (FONT_SIZE_SMALL * i++), mPaint);
-//                mCanvas.drawText(getContext().getString(R.string.score) + mScore,
-//                        FONT_SIZE_SMALL, 10 + (FONT_SIZE_SMALL * (i + 1)), mPaint);
-//            } else {
-//                //Display score and amount of centipede bodies left.
-//                mCanvas.drawText(getContext().getString(R.string.score) + mScore, FONT_SIZE_LARGE,
-//                        FONT_SIZE_LARGE + 10, mPaint);
-//                mCanvas.drawText(getContext().getString(R.string.segments) + mCentipede.getSize(),
-//                        FONT_SIZE_LARGE, 10 + (FONT_SIZE_LARGE * 2), mPaint);
-            }
-
-            /**
-             * If mGamestate is true, game is over and so draw the gameover message.
-             */
-            if (mGameState) {
-                String go = getContext().getString(R.string.game_over);
-                String score = getContext().getString(R.string.score) + mScore;
-                String back = getContext().getString(R.string.press_back);
-                mPaint.setTextSize(FONT_SIZE_LARGE);
-                mPaint.setColor(Color.GREEN);
-                float goWidth = mPaint.measureText(go);
-                float scoreWidth = mPaint.measureText(score);
-                float backWidth = mPaint.measureText(back);
-                mCanvas.drawText(go, (mScreenSizeX / 2) - (goWidth / 2),
-                        mScreenSizeY / 2 -(FONT_SIZE_LARGE), mPaint);
-                mCanvas.drawText(score, (mScreenSizeX / 2) - (scoreWidth / 2),
-                        mScreenSizeY / 2, mPaint);
-                mCanvas.drawText(back, (mScreenSizeX / 2) - (backWidth / 2),
-                        mScreenSizeY / 2 +(FONT_SIZE_LARGE), mPaint);
-            }
-        }
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        calculateBlockSize();
+        initSystems();
+        createLevel();
+        resume();
     }
 
     /**
@@ -402,6 +361,47 @@ public class GameView extends SurfaceView implements Runnable {
         pause();
     }
 
+    /*****************************************Private Methods**************************************/
+
+    /**
+     * Helper method to determine size of Panel.  Does modulus math on the width and height
+     * of the Panel.  If the quotient of the width is less than the height, assign the Block
+     * size to the width.  If the height is less, assign block size value to height.
+     */
+    public void calculateBlockSize() {
+        mScreenSizeX = getMeasuredWidth();
+        mScreenSizeY = getMeasuredHeight();
+        /*
+         * Capture the modulus values and panel dimensions and cast them to BigInteger,
+         * which has a method to obtain quotient and remainders.
+         */
+        final BigInteger width = BigInteger.valueOf(mScreenSizeX);
+        final BigInteger height = BigInteger.valueOf(mScreenSizeY);
+        final BigInteger modWidth = BigInteger.valueOf(BLOCK_COUNT_WIDTH);
+        final BigInteger modHeight = BigInteger.valueOf(BLOCK_COUNT_HEIGHT);
+
+
+        //Create an array using the BigInteger method divideAndRemainder.
+        final BigInteger[] widthValues = width.divideAndRemainder(modWidth);
+        final BigInteger[] heightValues = height.divideAndRemainder(modHeight);
+        final int newWidth = widthValues[0].intValue();
+        final int newHeight = heightValues[0].intValue();
+
+        /*
+         * If the newWidth is bigger than the allowed MIN_BLOCK_SIZE then examine
+         * the quotient values of newWidth and newHeight.  Whichever is smaller will
+         * then be used to update myBlockSize.  This insures that if the resize event
+         * only stretches width or height the view will not grow out of bounds.
+         */
+        if (newWidth >= MIN_BLOCK_SIZE) {
+            if (newWidth < newHeight) {
+                mBlockSize = newWidth;
+            } else if (newHeight < newWidth) {
+                mBlockSize = newHeight;
+            }
+        }
+    }
+
     /**
      * Pause method that stops the view from being drawn until resume() is called.
      */
@@ -429,48 +429,6 @@ public class GameView extends SurfaceView implements Runnable {
      */
     @Override
     public void run() {
-//        double previous = getCurrentTime();
-//        double lag = 0.0;
-//        while (true)
-//        {
-//            double current = getCurrentTime();
-//            double elapsed = current - previous;
-//            previous = current;
-//            lag += elapsed;
-//
-//            processInput();
-//
-//            while (lag >= MS_PER_UPDATE)
-//            {
-//                update();
-//                lag -= MS_PER_UPDATE;
-//            }
-//
-//            render();
-//        }
-//        double t = 0.0;
-//const double dt = 0.01;
-//
-//        double currentTime = hires_time_in_seconds();
-//        double accumulator = 0.0;
-//
-//        while ( !quit )
-//        {
-//            double newTime = hires_time_in_seconds();
-//            double frameTime = newTime - currentTime;
-//            currentTime = newTime;
-//
-//            accumulator += frameTime;
-//
-//            while ( accumulator >= dt )
-//            {
-//                integrate( state, t, dt );
-//                accumulator -= dt;
-//                t += dt;
-//            }
-//
-//            render( state );
-//        }
         long lastLoopTime = System.currentTimeMillis();
 
         while (mPlaying) {
@@ -505,79 +463,7 @@ public class GameView extends SurfaceView implements Runnable {
                     }
                 };
         }
-        this.mGameThread.interrupt();
     }
-
-    /**
-     * The update method, updates the behavior of the objects in the game so that they
-     * can be drawn correctly.
-     */
-//    public void update() {
-//
-///**
-// * Place the touch system before the movement system.
-// */
-//
-//
-//
-//        /**
-//         * If there are no more centipede objects to kill, trigger game over boolean.
-//         */
-//        if (mCentipede.getSize() < 1) {
-//            mGameState = true;
-//        } else {
-//            /**
-//             * Update the ship.
-//             */
-////            mPlayerShip.update(mShipMovement, mTouchX);
-//
-//            /**
-//             *  Update the centipede
-//             */
-//            if (!(getElapsedTimeInSeconds() < CENTIPEDE_DELAY)) {
-//                mCentipede.update();
-//            }
-//
-//            /**
-//             * Check the status of a player bullet.  If it is active, update it's location,
-//             * If it is inactive, shoot a new bullet.
-//             */
-//            if(mPlayerBullet.getStatus()) {
-//                mPlayerBullet.update(mFps);
-//                CentipedeBody temp = mCentipede.getHead();
-//                while (temp != null) {
-//                    if (temp.getVisible()) {
-//                        if (RectF.intersects(mPlayerBullet.getRect(), temp.getRect())) {
-//                            temp.setVisible(false);
-//                            mPlayerBullet.setInactive();
-//                            mScore = mScore + (mScreenSizeY - (int) temp.getYCoord());
-//                            mCentipede.setSize();
-//                        }
-//                    }
-//                    temp = temp.getNext();
-//                }
-//            } else {
-//
-//                /**
-//                 * Poll the current position of the ship, adjust to the right to center the bullet.
-//                 * and then call shoot.
-//                 */
-////                mPlayerBullet.shoot(mPlayerShip.getX(), mPlayerShip.getY(), 0);
-//            }
-//            if(mPlayerBullet.getY() < 0) {
-//                mPlayerBullet.setInactive();
-//            }
-//        }
-//    }
-
-//    /**
-//     * Getter for the current score, to be used for updating the score in the database.
-//     *
-//     * @return the Score.
-//     */
-//    public int getScore() {
-//        return this.mScore;
-//    }
 
     /*****************************************Private Methods**************************************/
 
