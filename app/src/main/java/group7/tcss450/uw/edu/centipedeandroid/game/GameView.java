@@ -67,6 +67,11 @@ public class GameView extends SurfaceView implements Runnable {
      */
     private static final int MIN_BLOCK_SIZE = 10 ;
 
+    /**
+     * Constant that determines how many bodies the centipede will be spawned with.
+     */
+    private static final int CENT_COUNT = 10;
+
     /****************************************Constants*********************************************/
 
     public static int INITIAL_BULLET_SPEED = 700;
@@ -307,7 +312,7 @@ public class GameView extends SurfaceView implements Runnable {
         /**
          * Creates the centipede object.
          */
-        mCentipede = EntityFactory.createCentipede(this, 5);
+        mCentipede = EntityFactory.createCentipede(this, CENT_COUNT);
 
 
     }
