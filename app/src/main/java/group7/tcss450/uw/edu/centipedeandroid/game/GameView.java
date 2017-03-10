@@ -357,6 +357,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void gameWin() {
         ((GameActivity) getContext()).onGameOver(mScore);
+        ((GameActivity) getContext()).stopPlayer();
         updateScores();
         pause();
     }

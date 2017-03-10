@@ -19,7 +19,7 @@ import group7.tcss450.uw.edu.centipedeandroid.menu.GameOverFragment;
 import group7.tcss450.uw.edu.centipedeandroid.menu.MenuActivity;
 import group7.tcss450.uw.edu.centipedeandroid.menu.MenuFragment;
 
-public class GameActivity extends AppCompatActivity implements GameOverFragment.ReturnToMenuListner, MenuFragment.OnStartGame {
+public class GameActivity extends AppCompatActivity implements GameOverFragment.ReturnToMenuListner, MenuFragment.OnStartGame, MenuFragment.SendSong {
 
     /*****************************************Fields***********************************************/
 
@@ -53,21 +53,21 @@ public class GameActivity extends AppCompatActivity implements GameOverFragment.
                 getSupportFragmentManager().beginTransaction().add(R.id.activity_game, new GameFragment()).commit();
             }
         }
-//
-//        int theSong = getIntent().getIntExtra("int_value", 0);
-//        if (theSong == 0) {
-//            mPlayMusicTask.setTrack(293);
-//            mPlayMusicTask.stopPlayer();
-//            mPlayMusicTask.execute(293);
-//        } else if (theSong == 1) {
-//            mPlayMusicTask.setTrack(294);
-//            mPlayMusicTask.stopPlayer();
-//            mPlayMusicTask.execute(292);
-//        } else if (theSong == 2){
-//            mPlayMusicTask.setTrack(292);
-//            mPlayMusicTask.stopPlayer();
-//            mPlayMusicTask.execute(292);
-//        }
+
+        int theSong = getIntent().getIntExtra("int_value", 0);
+        if (theSong == 0) {
+            mPlayMusicTask.setTrack(293);
+            mPlayMusicTask.stopPlayer();
+            mPlayMusicTask.execute(293);
+        } else if (theSong == 1) {
+            mPlayMusicTask.setTrack(294);
+            mPlayMusicTask.stopPlayer();
+            mPlayMusicTask.execute(292);
+        } else if (theSong == 2){
+            mPlayMusicTask.setTrack(292);
+            mPlayMusicTask.stopPlayer();
+            mPlayMusicTask.execute(292);
+        }
     }
 
     /**
@@ -84,6 +84,10 @@ public class GameActivity extends AppCompatActivity implements GameOverFragment.
                 .commit();
     }
 
+    public void stopPlayer() {
+        mPlayMusicTask.stopPlayer();
+    }
+
     /**
      * OnPause method to determine behavior when the app pauses
      */
@@ -91,14 +95,14 @@ public class GameActivity extends AppCompatActivity implements GameOverFragment.
     protected void onPause() {
         super.onPause();
 //        super.onPause();
-//        mGameView.pause();
-//        mPlayMusicTask.stopPlayer();
+       // mGameView.pause();
+        mPlayMusicTask.stopPlayer();
     }
 
     @Override
     protected void onStop() {
         super.onStop();  // Always call the superclass method first
-        //mPlayMusicTask.stopPlayer();
+        mPlayMusicTask.stopPlayer();
     }
 
 //    /**
@@ -132,5 +136,10 @@ public class GameActivity extends AppCompatActivity implements GameOverFragment.
     public void ReturnToMenu() {
         Intent intent = new Intent(this,MenuActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void songNum(int theSong) {
+
     }
 }

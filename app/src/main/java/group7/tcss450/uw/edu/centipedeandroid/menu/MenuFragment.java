@@ -103,6 +103,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener, Adap
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_menu, container, false);
+
         Button b = (Button)v.findViewById(R.id.playButton);
         b.setOnClickListener(this);
         b = (Button)v.findViewById(R.id.highScoreButton);
@@ -114,7 +115,6 @@ public class MenuFragment extends Fragment implements View.OnClickListener, Adap
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         musicSpinner.setAdapter(adapter);
         musicSpinner.setOnItemSelectedListener(this);
-        musicSpinner.setPrompt("Pick in game music");
         return v;
     }
 
@@ -128,7 +128,11 @@ public class MenuFragment extends Fragment implements View.OnClickListener, Adap
      */
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
-        //mSendSong.songNum(pos);
+//        if (pos == 0) {
+//            mSendSong.songNum(0);
+//        } else {
+            mSendSong.songNum(pos);
+//        }
 
     }
 
@@ -158,7 +162,6 @@ public class MenuFragment extends Fragment implements View.OnClickListener, Adap
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-
         try {
             mSendSong = (MenuFragment.SendSong) context;
         } catch (Exception e){
