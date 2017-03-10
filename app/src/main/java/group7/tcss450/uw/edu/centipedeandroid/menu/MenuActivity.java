@@ -8,6 +8,9 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.preference.PreferenceManager;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -19,10 +22,14 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import group7.tcss450.uw.edu.centipedeandroid.MainActivity;
 import group7.tcss450.uw.edu.centipedeandroid.R;
 import group7.tcss450.uw.edu.centipedeandroid.game.GameActivity;
 
@@ -41,6 +48,9 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
 
     private MenuFragment.SendSong mSengSong;
 
+    private SharedPreferences getPrefs;
+    private  SharedPreferences.Editor setPrefs;
+
     /**
      * Creates the view.
      * @param savedInstanceState
@@ -56,6 +66,9 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
                         .add(R.id.activity_menu, new MenuFragment())
                         .commit();
             }
+
+            getPrefs = getSharedPreferences(getBaseContext().getString(R.string.scores_list), Context.MODE_PRIVATE);
+            setPrefs = getPrefs.edit();
         }
     }
 
@@ -114,11 +127,11 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
      * @param context
      * @param key
      * @param list
-     * @param <T>
+     * @param <HighScore>
      */
-    public static <T> void saveHighScores(final Context context,
+    public static <HighScore> void saveHighScores(final Context context,
                                           final String key,
-                                          final List<T> list) {
+                                          final List<HighScore> list) {
         final Gson gson = new Gson();
         final String json = gson.toJson(list);
 
@@ -135,8 +148,9 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
                                      final String key,
                                      final String value) {
         final SharedPreferences.Editor setPrefs =
-                context.getSharedPreferences(context.getString(R.string.scores_preference),
-                        Context.MODE_PRIVATE).edit();
+                context.getSharedPreferences(context.getString(R.string.scores_list), Context.MODE_PRIVATE).edit();
+
+        setPrefs.clear();
         setPrefs.putString(key, value);
         setPrefs.apply();
     }
@@ -148,20 +162,26 @@ public class MenuActivity extends AppCompatActivity implements MenuFragment.OnSt
      * @param key
      * @return
      */
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public static List<HighScore> getHighScores(final Context context,
                                                 final String key) {
-        final SharedPreferences getPrefs =
-                context.getSharedPreferences(context.getString(R.string.scores_preference),
-                        Context.MODE_PRIVATE);
-
+        SharedPreferences getPrefs =
+                context.getSharedPreferences(context.getString(R.string.scores_list), Context.MODE_PRIVATE);
         final Gson gson = new Gson();
-        List<HighScore> highScores;
-        final String listOfScores = getPrefs.getString(key, "");
+        List<HighScore> highScores = new ArrayList<>();
+        String listOfScores = getPrefs.getString(key, "");
 
-        Type type = new TypeToken<List<HighScore>>() {}.getType();
-        highScores = gson.fromJson(listOfScores, type);
+        if (listOfScores.equals("")) {
+            HighScore highScore = new HighScore(0, new Date());
+            highScores.add(highScore);
+            saveHighScores(context,key, highScores);
+            return highScores;
+        } else {
+            Type type = new TypeToken<List<HighScore>>() {}.getType();
+            highScores = gson.fromJson(listOfScores, type);
 
-        return highScores;
+            return highScores;
+        }
     }
 
 

@@ -356,7 +356,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     public void gameWin() {
-        ((GameActivity) getContext()).onGameOver();
+        ((GameActivity) getContext()).onGameOver(mScore);
         updateScores();
         pause();
     }
@@ -472,17 +472,15 @@ public class GameView extends SurfaceView implements Runnable {
      * A private method to update the shared preferences with the new player Score.
      */
     private void updateScores() {
-//        List<HighScore> scores = MenuActivity.getHighScores(mContext, mContext.getString(R.string.scores_list)); //Get the old list of scores.
-//        try {
-//            scores.add(new HighScore(mScore, new Date())); //Add new HighScore object to list.
-//        } catch (Exception e) {
-//            Log.e("ADD SCORES", e.getMessage() + "********************************************************************************************************************************************");
-//        }
-//
-//        Collections.sort(scores);
-//
-//        MenuActivity.saveHighScores(mContext, mContext.getString(R.string.scores_list),
-//                scores); //Pass the list to the method for saving preferences.
+        List<HighScore> scores = MenuActivity.getHighScores(getContext(), getContext().getString(R.string.scores_list)); //Get the old list of scores.
+        try {
+            scores.add(new HighScore(mScore, new Date())); //Add new HighScore object to list.
+        } catch (Exception e) {
+            Log.e("ADD SCORES", e.getMessage() + "********************************************************************************************************************************************");
+        }
+
+        MenuActivity.saveHighScores(getContext(), getContext().getString(R.string.scores_list),
+                scores); //Pass the list to the method for saving preferences.
     }
 
 }

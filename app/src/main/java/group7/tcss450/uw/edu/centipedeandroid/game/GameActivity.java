@@ -73,9 +73,9 @@ public class GameActivity extends AppCompatActivity implements GameOverFragment.
     /**
      * Method that launches the game over fragment when the game ends.
      */
-    public void onGameOver() {
+    public void onGameOver(int score) {
         Bundle b = new Bundle();
-        b.putInt("score", 0);
+        b.putInt("score", score);
         GameOverFragment gameFrag = new GameOverFragment();
         gameFrag.setArguments(b);
         this.getSupportFragmentManager().beginTransaction()

@@ -128,7 +128,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener, Adap
      */
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
-        mSendSong.songNum(pos);
+        //mSendSong.songNum(pos);
 
     }
 

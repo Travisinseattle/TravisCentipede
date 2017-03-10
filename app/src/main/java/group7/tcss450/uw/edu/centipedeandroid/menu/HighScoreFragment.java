@@ -4,6 +4,7 @@ package group7.tcss450.uw.edu.centipedeandroid.menu;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,8 +62,13 @@ public class HighScoreFragment extends Fragment {
     public void onStart() {
         super.onStart();
         List<HighScore> listOfScores =
-                MenuActivity.getHighScores(mContext, mContext.getString(R.string.scores_list));
-        Collections.sort(listOfScores);
+                MenuActivity.getHighScores(getContext(), getContext().getString(R.string.scores_list));
+        try {
+            Collections.sort(listOfScores);
+        } catch (Exception e) {
+            Log.e("COLLECTION IS NULL", e.getMessage() + "**************************************************************************");
+        }
+
         List<String> scores = new ArrayList<>();
         if (listOfScores != null) {
             for (HighScore temp : listOfScores) {
