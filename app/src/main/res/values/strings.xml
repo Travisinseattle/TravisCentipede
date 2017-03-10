@@ -28,6 +28,9 @@
     <string name="high_scores">High Scores</string>
     <string name="scores_list">scores</string>
     <string name="scores_preference">scores_preference</string>
+    <string name="main_menu">Main Menu</string>
+    <string name="game_over_text">Game Over!</string>
+    <string name="score_text">score</string>
     <string-array name="music_list">
         <item>Cool Drums</item>
         <item>Hip Beats</item>

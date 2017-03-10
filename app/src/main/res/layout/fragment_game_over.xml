@@ -7,31 +7,20 @@
 
     <Button
         style="@android:style/Widget.Holo.Button"
-        android:text="Play Again"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="199dp"
-        android:id="@+id/playAgain" />
-
-    <Button
-        style="@android:style/Widget.Holo.Button"
-        android:text="Main Menu"
+        android:text="@string/main_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="52dp"
         android:id="@+id/mainMenu"
-        android:layout_alignTop="@+id/playAgain"
-        android:layout_alignLeft="@+id/playAgain"
-        android:layout_alignStart="@+id/playAgain" />
-
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="199dp"/>
     <TextView
         android:textColor="#FFFFFF"
-        android:text="Game Over!"
+        android:text="@string/game_over_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/playAgain"
+        android:layout_above="@+id/mainMenu"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="82dp"
         android:id="@+id/gameOver"
@@ -39,13 +28,14 @@
 
     <TextView
         android:textColor="#FFFFFF"
-        android:text="score"
+        android:text="@string/score_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="34dp"
         android:id="@+id/score"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:layout_above="@+id/playAgain"
+        android:layout_above="@+id/mainMenu"
         android:layout_alignLeft="@+id/gameOver"
         android:layout_alignStart="@+id/gameOver" />
+
 </RelativeLayout>

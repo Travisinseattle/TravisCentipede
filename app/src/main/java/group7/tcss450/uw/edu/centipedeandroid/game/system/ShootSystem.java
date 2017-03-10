@@ -1,15 +1,11 @@
 package group7.tcss450.uw.edu.centipedeandroid.game.system;
 
-import android.graphics.Bitmap;
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 import group7.tcss450.uw.edu.centipedeandroid.game.EntityFactory;
-import group7.tcss450.uw.edu.centipedeandroid.game.GameActivity;
 import group7.tcss450.uw.edu.centipedeandroid.game.GameView;
 import group7.tcss450.uw.edu.centipedeandroid.game.SubSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
@@ -24,11 +20,11 @@ public class ShootSystem extends SubSystem {
     /** the rate at which bullets shoot out */
     private final static int MOD_RATE = 2;
 
-    /** counter for speed control */
+    /** counter for SPEED control */
     private int counter;
 
-    /** speed of the bullet */
-    private int speed;
+    /** SPEED of the bullet */
+    private final static int SPEED = 500;
 
     /** list of UUID's */
     private List<UUID> killList;
@@ -41,11 +37,10 @@ public class ShootSystem extends SubSystem {
     public ShootSystem(GameView theGameView) {
         super(theGameView);
         counter = 0;
-        speed = theGameView.getBulletSpeed();
     }
     /**
      * Method that process a game tick and creates a bullet entity based on the position of the ship.
-     * The system also sets the speed of the bullet and the frequency at which they are created.
+     * The system also sets the SPEED of the bullet and the frequency at which they are created.
      *
      * @param lastFrameTime is the frame being processed.
      */
@@ -58,8 +53,8 @@ public class ShootSystem extends SubSystem {
                 .getAllEntitiesPossessingComponent(Components.Touch.class);
         for (UUID entityID : allTouch) {
             Components.Position pos = mGameView.mEntityManager.getComponent(entityID, Components.Position.class);
-            if (counter > speed) {
-                counter -= speed;
+            if (counter > SPEED) {
+                counter -= SPEED;
                 EntityFactory.createBullet(pos.getX(), pos.getY(), mGameView.mBlockSize);
             }
         }

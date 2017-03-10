@@ -71,6 +71,15 @@ public class EntityFactory {
         return mushroom;
     }
 
+    /**
+     * A static method to instantiate a player ship.
+     *
+     * @param theX The X coordinate of the ship.
+     * @param theY The Y coordinate of the ship.
+     * @param theBlockSize The size of a block in the screen grid.
+     *
+     * @return The player ship.
+     */
     public static MetaEntity createShip(float theX, float theY, float theBlockSize) {
         Components.EntitySize es = new Components.EntitySize(theBlockSize * 2,
                 theBlockSize);
@@ -106,7 +115,7 @@ public class EntityFactory {
         MetaEntity bullet = new MetaEntity("bullet", es,
                 new Components.CAndroidDrawable(R.drawable.fireball),
                 new Components.Health(1),
-                new Components.Movable(0, - 75),
+                new Components.Movable(0, -50),
                 new Components.Position(x, y),
                 new Components.Hazard(1),
                 new Components.Shoot(),
