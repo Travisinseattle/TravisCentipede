@@ -50,6 +50,8 @@ public class RenderDamagedSystem extends SubSystem {
             mGameView.mCanvas.drawBitmap(mBitmap, pos.getX(), pos.getY(), mGameView.mPaint);
 
 
+
+
         }
     }
 

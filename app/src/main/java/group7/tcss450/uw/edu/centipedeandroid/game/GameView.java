@@ -1,7 +1,6 @@
 package group7.tcss450.uw.edu.centipedeandroid.game;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -9,18 +8,15 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.PriorityQueue;
 
 import group7.tcss450.uw.edu.centipedeandroid.R;
 import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
@@ -74,22 +70,17 @@ public class GameView extends SurfaceView implements Runnable {
 
     /****************************************Constants*********************************************/
 
+    /**
+     * Constant to set bullet speed
+     */
     public static int INITIAL_BULLET_SPEED = 700;
 
-    /**
-     *
-     */
-    public static boolean DEBUG = true;
 
     /**
      * Constant to determine the size of the font.
      */
-    public static final float FONT_SIZE_LARGE = 100;
+    public static final float Font_SIZE = 100;
 
-    /**
-     * Constant to determine the size of the font.
-     */
-    public static final float FONT_SIZE_SMALL = 40;
 
     /*****************************************Fields***********************************************/
 
@@ -99,6 +90,9 @@ public class GameView extends SurfaceView implements Runnable {
      */
     public int mBlockSize;
 
+    /**
+     * The current bullet speed.
+     */
     private int mBulletSpeed;
 
     /**
@@ -136,8 +130,10 @@ public class GameView extends SurfaceView implements Runnable {
      */
     public Paint mPaint;
 
+    /**
+     * Makes hit box visible during debug
+     */
     private DrawHitBoxSystem myHitDebug;
-
 
     /**
      * The playership object.
@@ -318,9 +314,9 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void renderScore() {
-        mCanvas.drawText(getResources().getString(R.string.score) + mScore, FONT_SIZE_LARGE,
-                FONT_SIZE_LARGE + 10, mPaint);
-//        mCanvas.drawText("Lives: 3", mScreenSizeX - FONT_SIZE_LARGE * 2, FONT_SIZE_LARGE + 10, mPaint);
+        mCanvas.drawText(getResources().getString(R.string.score) + mScore, Font_SIZE,
+                Font_SIZE + 10, mPaint);
+//        mCanvas.drawText("Lives: 3", mScreenSizeX - Font_SIZE * 2, Font_SIZE + 10, mPaint);
     }
 
     @Override
@@ -477,6 +473,7 @@ public class GameView extends SurfaceView implements Runnable {
     /**
      * A private method to update the shared preferences with the new player Score.
      */
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void updateScores() {
         List<HighScore> scores = MenuActivity.getHighScores(getContext(), getContext().getString(R.string.scores_list)); //Get the old list of scores.
         try {

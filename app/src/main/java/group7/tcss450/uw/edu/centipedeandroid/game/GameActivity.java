@@ -84,6 +84,9 @@ public class GameActivity extends AppCompatActivity implements GameOverFragment.
                 .commit();
     }
 
+    /**
+     * Method to stop the Music Player.
+     */
     public void stopPlayer() {
         mPlayMusicTask.stopPlayer();
     }
@@ -99,47 +102,39 @@ public class GameActivity extends AppCompatActivity implements GameOverFragment.
         mPlayMusicTask.stopPlayer();
     }
 
+    /**
+     * Method that overrides the onStop() method to stop the music player.
+     */
     @Override
     protected void onStop() {
         super.onStop();  // Always call the superclass method first
         mPlayMusicTask.stopPlayer();
     }
 
-//    /**
-//     * OnResume method to determine behavior when the app resumes
-//     */
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        mGameView.resume();
-//        //mPlayMusicTask = new PlayMusicTask();
-//        //mPlayMusicTask.execute(292);
-//    }
-//
-//
-    @Override
-    public void onStartGame() {
-
-    }
-
-    @Override
-    public void onPlayer() {
-
-    }
-//
-//    @Override
-//    public void onPlayer() {
-//
-//    }
-
+    /**
+     * Method that returns user to the main menu.
+     */
     @Override
     public void ReturnToMenu() {
         Intent intent = new Intent(this,MenuActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * required to for implementation
+     */
     @Override
-    public void songNum(int theSong) {
+    public void onStartGame() {}
 
-    }
+    /**
+     * required to for implementation
+     */
+    @Override
+    public void onPlayer() {}
+
+    /**
+     * required to for implementation
+     */
+    @Override
+    public void songNum(int theSong) {}
 }

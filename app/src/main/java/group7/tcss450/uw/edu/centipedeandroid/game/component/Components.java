@@ -197,10 +197,6 @@ public class Components  {
         }
     }
 
-//    public static class Collided implements Component {
-//        public UUID
-//    }
-
     /**
      * Direction class component that controls the direction of the centipede segments.
      */
@@ -275,6 +271,9 @@ public class Components  {
         }
     }
 
+    /**
+     * Class component determines the Dx/Dy for a segment.
+     */
     public static class SegmentMovable implements Component {
         public float dx;
         public float dy;

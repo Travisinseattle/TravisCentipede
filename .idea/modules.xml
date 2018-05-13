@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AndroidCentipede.iml" filepath="$PROJECT_DIR$/AndroidCentipede.iml" />
+      <module fileurl="file://D:\StudioProjects\AndroidCentipede\AndroidCentipede.iml" filepath="D:\StudioProjects\AndroidCentipede\AndroidCentipede.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://D:\StudioProjects\AndroidCentipede\app\app.iml" filepath="D:\StudioProjects\AndroidCentipede\app\app.iml" />
     </modules>
   </component>
 </project>
