@@ -64,8 +64,9 @@ public class DestroySystem extends SubSystem {
                             if(mGameView.mEntityManager.hasComponent(head,Components.SegmentMovable.class)) {
                                 Components.SegmentMovable segmentMovable = mGameView.mEntityManager.getComponent(head,Components.SegmentMovable.class);
                                 Components.Movable movable = mGameView.mEntityManager.getComponent(head, Components.Movable.class);
-                                Components.CAndroidDrawable draw = mGameView.mEntityManager.getComponent(head, Components.CAndroidDrawable.class);
-                                draw.setDrawable(R.drawable.centipedehead);
+                                Components.DamagedDrawable draw = mGameView.mEntityManager.getComponent(head, Components.DamagedDrawable.class);
+                                draw.setDrawable(new int[] {R.drawable.centipedeheadsouth, R.drawable.centipedeheadeast, R.drawable.centipedeheadwest,});
+                                mGameView.mEntityManager.addComponent(head, new Components.HeadComponent()); //add the HeadComponent()
                                 movable.dx = segmentMovable.dx;
                                 movable.dy = segmentMovable.dy;
 //                                Components.Direction direction = mGameView
@@ -92,7 +93,12 @@ public class DestroySystem extends SubSystem {
                                 Components.SegmentMovable segmentMovable = mGameView.mEntityManager.getComponent(head,Components.SegmentMovable.class);
                                 Components.Movable movable = mGameView.mEntityManager.getComponent(head, Components.Movable.class);
                                 Components.CAndroidDrawable draw = mGameView.mEntityManager.getComponent(head, Components.CAndroidDrawable.class);
-                                draw.setDrawable(R.drawable.centipedehead);
+                                mGameView.mEntityManager.removeComponent(head, draw);  //Remove the body drawable from the UUID
+                                mGameView.mEntityManager.addComponent(head, new Components.DamagedDrawable(new int[] {R.drawable.centipedeheadsouth,
+                                        R.drawable.centipedeheadeast, R.drawable.centipedeheadwest,}));  //add a Head drawable
+                                mGameView.mEntityManager.addComponent(head, new Components.HeadComponent()); //add the HeadComponent()
+//                                draw.setDrawable(R.drawable.centipedehead);
+//                                Components.DamagedDrawable draw = mGameView.mEntityManager.getComponent(head, Components.DamagedDrawable.class);
                                 movable.dx = segmentMovable.dx;
                                 movable.dy = segmentMovable.dy;
 //                                Components.Direction direction = mGameView

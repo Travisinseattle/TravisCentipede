@@ -36,7 +36,21 @@ public class RenderDamagedSystem extends SubSystem {
             Components.EntitySize size = mGameView.mEntityManager.getComponent(entityID, Components.EntitySize.class);
             int resourceIDs[] = mGameView.mEntityManager.getComponent(entityID, Components.DamagedDrawable.class).myResourceID;
             int value = health.getMyMaxHitPoints() - health.getHitPoints();
-//            int value = 0;
+            if (mGameView.mEntityManager.hasComponent(entityID, Components.HeadComponent.class)) {
+                Components.Movable mov = mGameView.mEntityManager.getComponent(entityID, Components.Movable.class);
+                float movX = mov.getDx();
+                float movY = mov.getDy();
+                if(movY == 0){
+                    if (movX > 0){
+                        value = 1;
+                    } else {
+                        value = 2;
+                    }
+                } else {
+                    value = 0;
+                }
+            }
+
             if (value > resourceIDs.length) {
                 value = resourceIDs.length - 1;
             }

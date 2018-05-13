@@ -167,8 +167,9 @@ public class EntityFactory {
             MetaEntity temp = EntityFactory.createCentBody((theGameView.mScreenSizeX)/2 - k, 0, centipede.entity, theGameView.mBlockSize);
             if (i == 0) {
                 temp.add(new Components.Movable(theGameView.mBlockSize,0));
-                temp.add(new Components.CAndroidDrawable(R.drawable.centipedehead));
+                temp.add(new Components.DamagedDrawable(new int[] {R.drawable.centipedeheadsouth, R.drawable.centipedeheadeast, R.drawable.centipedeheadwest,}));
                 temp.add(new Components.Score(50));
+                temp.add(new Components.HeadComponent());
             } else {
                 Components.SegmentMovable sm = new Components.SegmentMovable();
                 sm.dx = theGameView.mBlockSize;

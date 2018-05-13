@@ -241,7 +241,6 @@ public class Components  {
         /** Constructor for that intializes fields
          *
          * @param theIDs for this centipede.
-         * @param theSize
          */
         public CentipedeID(UUID[] theIDs) {
             myIDs = theIDs;
@@ -297,6 +296,8 @@ public class Components  {
         }
     }
 
+    public static class HeadComponent implements Component {}
+
     /**
      * Class component that sets the bitmap for all of the entities.
      */
@@ -341,6 +342,10 @@ public class Components  {
         // 0 index is no damage
         /** The array of id's */
         public int[] myResourceID;
+
+        public void setDrawable(int theResourceID[]) {
+            myResourceID = theResourceID;
+        }
 
         /**
          * Constructor for DamageDrawable, puts all of the ID's into the correct array
@@ -806,4 +811,5 @@ public class Components  {
                     entityHeight + ").";
         }
     }
+
 }
