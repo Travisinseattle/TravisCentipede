@@ -1,21 +1,15 @@
 package group7.tcss450.uw.edu.centipedeandroid.game.system;
 
 import android.content.Context;
-import android.util.Log;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.UUID;
 
-import group7.tcss450.uw.edu.centipedeandroid.menu.HighScore;
-import group7.tcss450.uw.edu.centipedeandroid.R;
 import group7.tcss450.uw.edu.centipedeandroid.game.GameView;
 import group7.tcss450.uw.edu.centipedeandroid.game.SubSystem;
 import group7.tcss450.uw.edu.centipedeandroid.game.component.Components;
-import group7.tcss450.uw.edu.centipedeandroid.menu.MenuActivity;
 
 /**
  * Class that determines if the game was won by checking if the centipede entity still exists.
@@ -44,11 +38,17 @@ public class GameWinSystem extends SubSystem {
      *
      * @param lastFrameTime is the most recent frame.
      */
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void processOneGameTick(long lastFrameTime) {
         Set<UUID> segments = mGameView.mEntityManager.getAllEntitiesPossessingComponent(Components.SegmentComponent.class);
-        if (segments.size() <= 0) {
-            mGameView.gameWin();
+        if (segments.size() <= 0 ) { //All current Centipedes have been killed.
+            if (mGameView.mCurrentCount >= mGameView.CENT_COUNT) { //The player has killed more than the set amount of spawnable centipedes
+                mGameView.gameWin(); //win game
+            } else {
+                mGameView.mCurrentCount++; //Increment the counter for how many centipedes killed.
+                mGameView.updateLevel(); //spawn a new map and centipede
+            }
         }
     }
 
