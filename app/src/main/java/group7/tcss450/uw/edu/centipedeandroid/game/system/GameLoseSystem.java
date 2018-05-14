@@ -1,6 +1,8 @@
 package group7.tcss450.uw.edu.centipedeandroid.game.system;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,6 +48,7 @@ public class GameLoseSystem extends SubSystem {
      *
      * @param lastFrameTime is the most recent frame.
      */
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void processOneGameTick(long lastFrameTime) {
         Set<UUID> player = mGameView.mEntityManager.getAllEntitiesPossessingComponent(Components.Score.class);

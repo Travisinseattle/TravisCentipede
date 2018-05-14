@@ -63,17 +63,17 @@ public class GameView extends SurfaceView implements Runnable {
      */
     private static final int MIN_BLOCK_SIZE = 10 ;
 
-    /**
-     * Constant that determines how many bodies the centipede will be spawned with.
-     */
-    private static final int CENT_COUNT = 10;
-
     /****************************************Constants*********************************************/
 
     /**
      * Constant to set bullet speed
      */
     public static int INITIAL_BULLET_SPEED = 700;
+
+    /**
+     * Constant to set how many total centipedes will spawn in a game.
+     */
+    public final int CENT_COUNT = 10;
 
 
     /**
@@ -104,6 +104,11 @@ public class GameView extends SurfaceView implements Runnable {
      * The Centipede object.
      */
     protected MetaEntity mCentipede;
+
+    /**
+     * Int to track how many total centipedes have been seen so far.
+     */
+    public int mCurrentCount = 0;
 
     /**
      * Context object.
@@ -313,6 +318,19 @@ public class GameView extends SurfaceView implements Runnable {
 
     }
 
+    public void updateLevel() {
+        mMap = new Map(mScreenSizeX / mBlockSize, mScreenSizeY /mBlockSize, mBlockSize);
+
+        ArrayList<Components.Position> mushroomPositions = mMap.getMushroomPositions();
+
+        for (Components.Position p : mushroomPositions) {
+            EntityFactory.createMushroom(p, mBlockSize);
+        }
+
+        mCentipede = EntityFactory.createCentipede(this, CENT_COUNT + mCurrentCount);
+
+    }
+
     private void renderScore() {
         mCanvas.drawText(getResources().getString(R.string.score) + mScore, Font_SIZE,
                 Font_SIZE + 10, mPaint);
@@ -356,6 +374,7 @@ public class GameView extends SurfaceView implements Runnable {
         return true;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void gameWin() {
         ((GameActivity) getContext()).onGameOver(mScore);
         ((GameActivity) getContext()).stopPlayer();
